@@ -1,0 +1,171 @@
+---
+title: "Lesson_Outline" 
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered  
+---
+<!-- the above should be in the beginning of each lesson -->
+
+<!-- code to format so all text appears rtl (Hebrew) -->
+<style>
+h1, h2, h3, h4, h5, h6 {
+  direction: rtl;
+}
+p {
+  direction: rtl;
+}
+</style>
+
+
+<!-- tutorial options and cheching options - TODO set params -->
+```{r setup, include=FALSE}
+library(learnr)
+
+tutorial_options(
+  exercise.timelimit = 60,
+  # A simple checker function that just returns the message in the check chunk
+  exercise.checker = function(check_code, ...) {
+    list(
+      message = eval(parse(text = check_code)),
+      correct = logical(0),
+      type = "info",
+      location = "append"
+    )
+  }
+)
+knitr::opts_chunk$set(error = TRUE)
+```
+
+<!-- 
+HOW TO:
+line down -> double space
+large title -> #
+small title + "continue" botton in same page -> ### 
+"next topic" botton + chapter -> ##
+italic -> *
+highlight -> ``
+
+TO DOs:
+change the names of the bottons to hebrew
+actually make submissions and checking work
+-->
+## מבוא
+
+טקסט של ההקדמה
+  
+בפורמט הנוכחי אפשר גם לשלב hebrew עם אנגלית ואפילו מספרים כמו - 1939.  הבעיה היא שהעריכה של הטקסט מאוד מעצבנת כי בקוד הכל הפוך
+
+אפשר לשלב גם רשימות כמו:   
+1. נושא א  
+2. נושא ב  
+3. נושא ג  
+4. נושא ד 
+
+
+
+
+## נושא א
+
+
+דוגמה לפרק עם תתי נושאים: 
+
+### תת נושא 1
+
+טקסט
+
+### תת נושא 2
+
+תרגיל נושא א:
+```{r topic_a, exercise=TRUE, exercise.eval = FALSE}
+1 + 1
+```
+<!-- each code segment needs to have a unique name -->
+
+```{r topic_a-check}
+"הסבר לתשובה"
+```
+<!-- add explanations -->
+
+```{r topic_a-solution}
+a <- 1 + 1
+```
+<!-- define solutions -->
+## נושא ב
+
+הסבר על נושא ב
+
+### תרגיל נושא ב בצורת שאלה
+
+```{r logicals, echo = FALSE}
+question(" מה התשובה לגבי `נושא ב` ",
+         answer("תשובה נכונה", correct = TRUE),
+         answer("אלטרנטיבה 1", message = "הודעת הסבר."),
+         answer("אלטרנטיבה 2", message = "הודעת הסבר."),
+         answer("אלטרנטיבה 3", message = "עוד אחד."),
+         allow_retry = TRUE
+)
+```
+
+## נושא ג 
+
+הצגה של שורות קוד ללא עריכה 
+
+```{r}
+# הערות וכו.
+x <- 3
+
+# ואז עוד משהו.
+y <- 4
+
+# אפשר גם להדפיס
+x+y
+
+# and plot
+plot(c(1,2,3,4,5))
+```
+
+## תרגיל מסכם
+
+טקסט והסבר  
+
+אפשר לתת שאלות שמציגות פתרון   
+
+
+1. שאלה ראשונה
+
+```{r ex1, exercise = TRUE}
+
+```
+```{r ex1-solution}
+    a -> 1
+```
+
+2. שאלות שמציגות רמזים
+
+```{r ex2, exercise = TRUE}
+
+```
+    
+```{r ex2-solution}
+    b -> 5
+    # the solution is here
+```
+<div id="ex2-hint">
+  **רמז:** כשיש רמז הוא מחליף פתרון גם אם הוגדר.
+</div>
+
+## הגשת התרגיל
+  סיימת? מעולה! עכשיו הגיע הזמן להגיש את התרגיל.  
+  יש ללחוץ על הכפתור:  Generate  
+  להעתיק את הטקסט שמופיע בחלון למטה ולהגישו במודל  
+  בהצלחה!
+
+```{r context="server"}
+learnrhash::encoder_logic()
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui()
+```
