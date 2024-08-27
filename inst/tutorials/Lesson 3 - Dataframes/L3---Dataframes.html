@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="progressive" content="true" />
+<meta name="allow-skip" content="false" />
+<meta name="learnr-version-prerender" content="0.11.5" />
+
+<title>Lesson 3: Dataframes</title>
+
+<!-- header-includes START -->
+<!-- HEAD_CONTENT -->
+<!-- header-includes END -->
+<!-- HEAD_CONTENT -->
+
+<!-- highlightjs -->
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+<!-- taken from https://github.com/rstudio/rmarkdown/blob/de8a9c38618903627ca509f5401d50a0876079f7/inst/rmd/h/default.html#L293-L343 -->
+<!-- tabsets -->
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+<!-- end tabsets -->
+
+
+</head>
+
+<body>
+<a class='sr-only sr-only-focusable visually-hidden-focusable' href='#learnr-tutorial-content'>Skip to Tutorial Content</a>
+
+
+
+<div class="pageContent band">
+<main class="bandContent page">
+
+<article class="topics" id="learnr-tutorial-content">
+
+<!-- the above should be in the beginning of each lesson -->
+<!-- code to format so all text appears rtl (Hebrew) -->
+<style>
+
+/* Adjust tab navigation */
+.nav-tabs {
+    direction: rtl; /* Set the direction to RTL */
+    float: right; /* Align tabs container to the right */
+    margin-bottom: 15px; /* Add space below tabs */
+}
+
+.nav-tabs > li {
+    float: none; /* Disable float for individual tab items */
+    display: inline-block; /* Display tab items inline */
+    direction: rtl; /* Ensure tabs respect RTL direction */
+}
+
+.nav-tabs > li > a {
+    margin-left: 2px; /* Space between tabs */
+}
+
+.nav-tabs > li.active > a {
+    border-bottom-color: #ddd; /* Adjust the active tab's bottom border */
+}
+</style>
+
+
+<!-- tutorial options and cheching options - TODO set params -->
+<div id="section-טבלאות---היכרות" class="section level2">
+<h2>טבלאות - היכרות</h2>
+<p>בשיעור הנוכחי נלמד לעבוד עם סוג נוסף של אובייקטים, שנפוצים מאוד
+בעבודה שלנו בR: טבלאות, או באנגלית - Dataframes</p>
+<p>אובייקטים אלו מורכבי מטבלאות המכילות שורות ועמודות, כמו באקסל, עם
+ערכים בתוך כל אחת מהמשבצות של הטבלה. לכל עמודה יש כותרת, המתארת את המידע
+באותה עמודה. שורות שונות בדרך כלל יבטאו תצפיות שונות, למשל - נתונים של
+נבדקים שונים או סבבים שונים של מטלה מסוימת עבור אותו נבדק. לפניכם דוגמה
+של מבנה נתונים המתאר את הנתונים הדמוגרפיים והציונים במדד תחושת מסוגלות
+עצמית עבור שישה נבדקים פיקטיביים.</p>
+<pre class="r"><code>df1 = data.frame(subject = 1:6,
+                city = c(&quot;Jerusalem&quot;,&quot;Haifa&quot;,&quot;Tel-Aviv&quot;,&quot;Eilat&quot;,&quot;Jerusalem&quot;,&quot;Tel-Aviv&quot;),
+                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))
+
+print(df1)</code></pre>
+<pre><code>##   subject      city self_efficacy_score
+## 1       1 Jerusalem                 2.3
+## 2       2     Haifa                 2.5
+## 3       3  Tel-Aviv                 2.1
+## 4       4     Eilat                 3.0
+## 5       5 Jerusalem                 2.2
+## 6       6  Tel-Aviv                 2.6</code></pre>
+<p>ניתן לראות כי נבדק 1 גר בירושלים והוא בעל ציון 2.3 במדד תחושת
+המסוגלות העצמית. לעומת זאת נבדק 2 גר בחיפה והוא בעל ציון של 2.5 במדד
+המסוגלות העצמית.</p>
+<p>כפי שניתן לראות בשורות הקוד המייצרות את הטבלה הנ”ל, טבלאות
+(Dataframes) הן אסופה של מספר וקטורים בעלי אותו אורך - כשלכל וקטור
+מוצמדת כותרת. במקרה הנ”ל הטבלה מורכבת מ3 וקטורים, כל אחד בעל 6 ערכים.
+בהתאם לכך שמדובר בוקטורים - כל עמודה חייבת להכיל סוג אחד של נתונים בלבד-
+numeric, charachtor, boolean וכו’, אך עמודות שונות באותה טבלה יכולות
+להכיל סוגים שונים של מידע.</p>
+</div>
+<div id="section-יצירת-מסגרת-נתונים-וחיתוכים" class="section level2">
+<h2>יצירת מסגרת נתונים וחיתוכים</h2>
+<div id="section-יצירת-טבלאות" class="section level3">
+<h3>יצירת טבלאות</h3>
+<p>הדרך הכי פשוטה לייצר טבלה היא באמצעות הפקודה data.frame(), שמאפשרת
+לנו לצרף יחד מספר וקטורים לכדי טבלה. זו לרוב לא תהיה הדרך בה נייצר את
+הטבלאות שאיתן נעבוד, אבל חושב להכיר גם אותה.</p>
+<p>ניתן לייצר את מסגרת הנתונים באמצעות וקטורים שאנחנו מגדירים בתוך
+הפונקציה, כפי שעשינו בדוגמה לעיל, אך אפשר גם להשתמש בוקטורים שהגדרנו
+מראש. שימו לב: העמודות החדשות חייבות לנהיות באותו האורך של העמדות שכבר
+קיימות בטבלה. במידה ונדיר עמודה חדשה באמצעות וקטור קצר או ארוך יותר,
+נקבל הודעת שגיאה - אלא אם כן השתמשנו בוקטור בעל אורך שהוא בדיוק חצי,
+שליש, רבע וכו’ מאורך הטבלה. במקרים כאלו התכנה תשכפל את הוקטור לפי מספר
+הפעמים הנדרש כדי להגיע לאורך התואם את מספר השורות בטבלה</p>
+<p>שורות הקוד הבאות מייצרות טבלה זהה לטבלה הקודמת. ערכו את הפונקציה
+המייצרת את הטבלה כך שתתווסף עמודה רביעית בשם “gender” ומלאו אותה בערכים
+לבחירתכם. **</p>
+<div class="tutorial-exercise" data-label="exercise1"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code>subjects = 1:6
+city_per_subject = c(&quot;Jerusalem&quot;,&quot;Haifa&quot;,&quot;Tel-Aviv&quot;,&quot;Eilat&quot;,&quot;Jerusalem&quot;,&quot;Tel-Aviv&quot;)
+self_efficacy_per_subject =  c(2.3, 2.5, 2.1, 3, 2.2, 2.6)
+
+df1 = data.frame(subject = subjects,
+                 city =  city_per_subject,
+                 self_efficacy_score = self_efficacy_per_subject)
+
+print(df1)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"יצירת טבלה"}</script>
+</div>
+</div>
+<div id="section-חיתוך-באמצעות-סוגריים-מרובעים" class="section level3">
+<h3>חיתוך באמצעות סוגריים מרובעים [,]</h3>
+<div id="section-חיתוך-משבצות-בודדות" class="section level4">
+<h4>חיתוך משבצות בודדות</h4>
+<p>כשם שאנחנו יכולים לשלוף ערכים מתוך וקטור או לערוך ערך מסויים מתוכו,
+כך ניתן לעשות גם בטבלאות - אבל כיוון שלטבלאות יש 2 מימדים (שורות
+ועמודות) נצטרך להשתמש ב2 אינדקסים כדי להתייחס למשבצת ספציפית. במקרים
+כאלו האינדקס תמיד יתחיל בשורות (ערך ראשון משמאל) ואז יעבור לעמודות,
+כשבין שני האינדקסים מפריד פסיק. למשל: החיתוך df1[2,3] מתייחס לשורה 2,
+עמודה 3 של הטבלה שנקראת df1.</p>
+<p>בשורות הקוד הבאות אנחנו שולפים את הערך של העיר בה גר הנבדק שבשורה
+השלישית ומדפיסים אותו ואז משנים את הערך של ציון תחושת המסוגלות העצמית של
+הנבדק בשורה הרביעית ל3.1 ומדפיסים את הטבלה הערוכה.</p>
+<div class="tutorial-exercise" data-label="df3" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<pre class="text"><code>x = df1[3,2]
+print(x)
+
+df1[4,3] = 2
+print(df1)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<p>נסו בעצמכם: בחרו משבצת מסוימת שאתם רוצים לשלוף ותערכו את האינדקסים כך
+שיפנו למשבצת הנכונה. נסו לערוך את הערכים במשבצות שונות.</p>
+<div class="panel panel-default tutorial-question-container">
+<div data-label="logicals" class="tutorial-question panel-body">
+<div id="logicals-answer_container" class="shiny-html-output"></div>
+<div id="logicals-message_container" class="shiny-html-output"></div>
+<div id="logicals-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
+</div>
+<div id="section-חיתוך-תת-טבלאות" class="section level4">
+<h4>חיתוך תת-טבלאות</h4>
+<p>ניתן להשתמש בסוגריים מרובעים גם כדי לחתוך תת-טבלה מתוך הטבלה המקורית.
+בחיתוך כזה במקום לתת מספר בודד כאינדקס עבור השורות / העמודות נשתמש
+בוקטור המציין את מספרי השורות / עמודות שאנחנו רוצים לחתוך.</p>
+<p>בנוסף, אנחנו יכולים גם לחתוך מתוך הטבלה שורה או עמודה שלמה באמצעות
+השארת אינדקס ריק.</p>
+<p>כשמדובר בעמודות, ניתן גם לציין את העמודות שברצוננו לחתוך באמצעות שמות
+העמודות. במקום לשים באינדקס העמודות מספר, נספק את שם העמודה או וקטור של
+שמות העמודות אותן נרצה לחתוך.</p>
+<p>לפניכם מספר דוגמאות:</p>
+<div class="tutorial-exercise" data-label="df4" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<pre class="text"><code># (1)
+df2 = df1[c(2,4,6),1:2] # Rows 2,4 and 6 of columns 1 and 2
+print(df2)
+
+# (2)
+row1 = df1[1,] # All columns, row 1
+print(row1)
+
+columns_2_and_3 = df[,c(2,3)] # All rows, columns 2 and 3
+print(columns_2_and_3)
+
+
+city_subj_3_and_1 = df1[c(3,1),&quot;city&quot;] # The cities of subjects 3 and 1
+print(city_subj_3_and_1)
+
+subj_and_self_efficacy = df1[,c(&quot;subject&quot;,&quot;self_efficacy_score&quot;)]
+print(subj_and_self_efficacy)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+</div>
+</div>
+<div id="section-פקד-ה" class="section level3">
+<h3>פקד ה$</h3>
+<p>דרך נוספת לשלוף עמודה שלמה מתוך הנתונים נעזרת בפקד ה$ מלווה בשם
+העמודה.</p>
+<p>אם נבצע השמה לחיתוך שכזה נוכל לערוך עמודה קיימת או לייצר עמודה חדש -
+במידה ונשתמש בשם של עמודה קיימת הוקטור שנכניס ידרוס את העמודה ויחליף
+אותה. במידה ונשתמש בשם של עמודה שלא נמצאת במסגרת הנתונים נייצר עמודה
+חדשה בשם זה.</p>
+<div class="tutorial-exercise" data-label="df5" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<pre class="text"><code># חיתוך עמודת הערים מתוך הטבלה
+print(df1$city)
+
+# יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים
+df1$age = c(21,35,42,32,24,19)
+
+# דריסת עמודת הערים
+df1$city = c(&quot;Haifa&quot;,&quot;Be&#39;er-Sheva&quot;,&quot;Jerusalem&quot;,&quot;Be&#39;er-Sheva&quot;,&quot;Jerusalem&quot;,&quot;Acre&quot;)
+
+
+# יצירת עמודות על סמך עמודות קיימות
+df1$age_in_months = df1$age * 12
+df1$age_over_25 = df1$age &gt; 25
+df1$age_relative_to_mean = df1$age  -  mean(df1$age )
+
+
+print(df1)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+</div>
+<div id="section-טעינת-טבלאות" class="section level3">
+<h3>טעינת טבלאות</h3>
+<p>עד עכשיו הגדרנו את הטבלאות שלנו בעצמנו. בפועל - רוב הטבלאות איתן
+נעבוד בR יכילו נתונים שנאספו על ידי תוכנות אחרות. כדי לנתח אותן בR נצטרך
+קודם כל לייבא את הנתונים לסביבת העבודה שלנו.</p>
+<p>ישנן מספר פונקציות בR אשר מאפשרות לנו לטעון קובצים מפורמט CSV או XSLX
+(שני הפורמטים העיקריים לשמירת נתונים המיוצגים בטבלה), אך הדרך הידודותית
+ביותר למשתמש נעזרת בכלי של Rstudio שנועד להקל על ייבוא הקבצים.</p>
+<p>כדי לגשת לכלי הייבוא, פתחו את R Rstudio ובחרו בלשונית “file” שבסרגל
+הכלים שבראש החלון של התוכנה. מכאן בחרו ב “Import Dataset” ובאחת מ2
+האפשרויות הראשונות במידה ואתן מעוניינים לטעון קובץ CSV, או שלישית במידה
+והקובץ שלכם הוא מפורמט xslx.</p>
+<p>לצורך תרגיל זה נתרגל טעינת קובץ מפורמט csv ולכן נבחר באפשרות השנייה
+(גם הראשונה אפשרית, אבל השנייה נוחה יותר) - “From Text (readr)…”</p>
+<p>כשנבחר באפשרות זו ייפתח לנו חלון שיאפשר לנו לבחור קובץ לייבוא, לשלוט
+בכמה אפשרויות בתהליך הייבוא ולצפות בתצוגה מקדימה של הטבלה שאנחנו
+מייבאים. תהליך הייבוא קורה בכמה שלבים:</p>
+<ol style="list-style-type: decimal">
+<li><p>בחירת הקובץ: נלחץ על כפתור ה”Browse…” שבפינה הימנית עליונה של
+החלון. ייפתח עבורנו חלון בו נוכל לחפש ולבחור את הקובץ שאנו מעוניינים
+לייבא.</p></li>
+<li><p>שינוי אפשרויות הייבוא בהתאם לקובץ שלנו: החלון מאפשר לנו להתאים את
+אופן הייבוא לאופן בו הנתונים שמורים בקובץ שלנו. למשל, הוא מאפשר לנו
+לדווח האם השורה הראשונה בקובץ שאנחנו מייבאים מכילה את הכותרות של העמודות
+או לא ולדלג על מספר שורות במידה והקובץ מכיל כמה שורות שאינן מכילות
+נתונים בתחילת הקובץ (באמצעות שדה ה”Skip”). בנוסף, החלון מאפשר לנו גם
+לקבוע מה יהיה שם האובייקט בו נרצה לשמור את הטבלה שאנחנו מייבאים, באמצעות
+השדה “Name”.</p></li>
+<li><p>ייבוא הקובץ. משערכנו את האפשרויות כך שהן תואמות לאופן בו נרצה
+לייבא את הנתונים מהקובץ נוכל לייבא אותו בפועל ב2 דרכים. הדרך הראשונה היא
+באמצעות לחיצה על כפתור “Import” שבתחתית החלון. כפתור זה יישם את הייבוא
+וייבא את הטבלה לסביבת העבודה שלנו.</p></li>
+</ol>
+<p>בפועל, מה שקורה כאן הוא שהחלון מייצר שורות קוד שמנהלות את הייבוא לפי
+ההעדפות שלנו והכפתור מבצע את אותן שורות קוד. ניתן לראות את שורות הקוד
+בחלונית בתחתית החלון.</p>
+<p>במקרים רבים לא נרצה רק לייבא את הטבלה לסביבת העבודה הנוכחית שלנו, אלא
+נרצה גם להעתיק את שורות הקוד האלו לקובץ הסקריפט, כך שבהרצה עתידית של
+הקובץ הקוד ייבצע את ייבוא הטבלה באופן אוטומטי. בשביל לדאוג לכך נוכל
+להעתיק את שורות הקוד מהחלונית ולהדביק אותן בקובץ הסקריפט שלנו.</p>
+<p>תרגיל: ייבאו את הקובץ “XXX*” שבאתר המודל של הקורס. ראשית, הוריד את
+הקובץ ושמרו אותו בתיקייה לבחירתכם, ואח”כ היעזרו בחלון הייבוא כדי לייצר
+את שורות הקוד שיאפשרו ייבוא תקין של הטבלה לסביבת העבודה שלכם.</p>
+<p>העתיקו את שורות הקוד האלו לחלונית הקוד הבאה והריצו אותה. שמרו את
+הטבלה בסביבת העבודה בשם “table1”</p>
+<div class="tutorial-exercise" data-label="e-import" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="5"
+data-pipe="|&gt;">
+<pre class="text"><code>print(head(table1))</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"ייבוא נתונים"}</script>
+</div>
+<p>באופן דומה, אך מעט פשוט יותר - ניתן גם לייצא טבלאות לקבצי CSV. הייצוא
+נעשה באמצעות הפקודה הבא:</p>
+<div class="tutorial-exercise" data-label="export" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<pre class="text"><code>write.csv(df1, &quot;export dataframe example.csv&quot;)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<p>בדוגמה זו ייצאנו את הטבלה df1 שנמצאת בסביבת העבודה שלנו מהתרגילים
+הקודמים ושמרנו אותה בתור קובץ CSV בשם “export dataframe
+example.csv”.</p>
+<p>הקובץ יישמר בכתובת העבודה המוגדרת אצלכם בR כרגע. ניתן לברר ולשנותאת
+כתובת זו באמצעות הפונקציות הבאות:</p>
+<div class="tutorial-exercise" data-label="getwd" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<pre class="text"><code>working_directory = getwd()
+print(working_directory)
+
+# שינוי כתובת העבודה
+# כרגע אנחנו מגדירים את הכתובת לפי הכתובת הנוכחית, ולכן היא לא תשתנה. החליפו את האובייקט 
+# &quot;working_directory&quot; 
+# בכתובת אחרת כדי לשנות את כתובת העבודה
+
+new_working_directory = working_directory
+setwd(new_working_directory)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<p>לחלופין, במקום ךשנות את כתובת העבודה ניתן גם לספק לפונקציית הייצוא את
+הכתובת השלמה בה תרצו לשמור את הקובץ. במקרה כזה, פונקציית הייצוא תראה
+דומה ל:</p>
+<pre class="r"><code>write.csv(df1, &quot;C:/Users/one/Desktop/R files/DRL experiment/V3/data files/export dataframe example.csv&quot;)</code></pre>
+<pre><code>## Warning in file(file, ifelse(append, &quot;a&quot;, &quot;w&quot;)): cannot open file
+## &#39;C:/Users/one/Desktop/R files/DRL experiment/V3/data files/export dataframe
+## example.csv&#39;: No such file or directory</code></pre>
+<pre><code>## Error in file(file, ifelse(append, &quot;a&quot;, &quot;w&quot;)): cannot open the connection</code></pre>
+<p>בהתאם למיקום בו אתם מעוניינים לשמור את הקובץ</p>
+</div>
+<div id="section-פונקציות-שימושיות" class="section level3">
+<h3>פונקציות שימושיות</h3>
+<p>ישנן מספר פונקציות בסיסיות בR שהינן ששימושיות מאוד לעיסוק בטבלאות.
+ברובן, הן מאפשרות לנו לגלות פרטים אודות הטבלה שלנו באופן פשוט ומיידי
+ולערוך אותה מכמה היבטים.</p>
+<p>בקטע הקוד הבא ישנן מספר פונקציות המאפשרות לנו לגלות את מספר השורות
+והעמודות בטבלה שלנו. פונקציות אלו שימושיות במיוחד כשאנחנו צריכים להתייחס
+למימדים אלו בקוד, כך שבמקום לבדוק בעצמנו את אורך הטבלה ולהקליד את המספר
+המתאים נוכל להשתמש בקוד שיעשה את הבדיקה הזו עבורנו.</p>
+<p>העתיקו לתחילת הקטע את השורות המייבאות את הקובץ</p>
+<div class="tutorial-exercise" data-label="dimensions"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code># מספר השורות והעמודות שבטבלה שייבאנו
+dim(table1)
+
+# מספר שורות
+nrow(table1)
+
+# מספר עמודות
+ncol(table1)
+
+
+# שימוש במספר השורות כדי לייצר עמודה חדשה  
+table1$subject_index = 1:nrow(table1)</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<p>בנוסף, ישנן מספר פונקציות שיאפשרו לנו לבצע הצצה ראשונית אל תוך התוכן
+של הטבלה. פונקציות אלו שימושיות במיוחד כשאנחנו טוענים נתונים שאנחנו לא
+בטוחים איך הם מסודרים ו/או מה כל עמודה מכילה.</p>
+<p>מתוכן, יש לנו פונקציות המאפשרות לבצע חיתוך מהיר של השורות הראשונות או
+האחרונות בטבלה (head ו tail), פונקציות שמסכמות לנו את הנתונים בכל עמודה
+ופונקציה ששולפת את שמות העמודות של הטבלה.</p>
+<p>הפונקציה האחרונה לא רק שולפת את שמות העמודות, אלא גם מאפשרת לערוך
+אותן. בהמשך הקורס נלמד דרך נוחה יותר לעריכת שמות העמודות, אך שיטה זו
+הינה פשוטה ונפוצה.</p>
+<div class="tutorial-exercise" data-label="summary_and_names"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code># שליפת השורות הראשונות. ברירת המחדל היא 6 שורות, אך ניתן גם לבקש מספר אחר של שורות
+head(table1)
+head(table1,4)
+
+# סוף הטבלה
+tail(table1)
+
+# סיכום של כל העמודות בטבלה, בהתאם לסוג העמודה
+summary(table1)
+
+
+# שליפת שמות העמודות 
+col_names = names(table1)
+print(colnames)
+
+
+# עריכת שמות העמודות
+#**?</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<p>nrow() names() head() tail()</p>
+<p>פונקציות שימושיות לוקטורים:</p>
+<p>mean() sd()</p>
+<p>range() summary()</p>
+<p>median() quantile()</p>
+<p>cor()</p>
+</div>
+</div>
+<div id="section-תרגיל-מסכם" class="section level2">
+<h2>תרגיל מסכם</h2>
+<p>טקסט והסבר</p>
+<p>אפשר לתת שאלות שמציגות פתרון</p>
+<ol style="list-style-type: decimal">
+<li>שאלה ראשונה</li>
+</ol>
+<div class="tutorial-exercise" data-label="ex1" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="ex1-solution"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code>    a -&gt; 1</code></pre>
+</div>
+<ol start="2" style="list-style-type: decimal">
+<li>שאלות שמציגות רמזים</li>
+</ol>
+<div class="tutorial-exercise" data-label="ex2" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="ex2-solution"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code>    b -&gt; 5
+    # the solution is here</code></pre>
+</div>
+<div id="section-ex2-hint">
+<p><strong>רמז:</strong> כשיש רמז הוא מחליף פתרון גם אם הוגדר.</p>
+</div>
+</div>
+<div id="section-הגשת-התרגיל" class="section level2">
+<h2>הגשת התרגיל</h2>
+<p>סיימת? מעולה! עכשיו הגיע הזמן להגיש את התרגיל.<br />
+יש ללחוץ על הכפתור: Generate<br />
+להעתיק את הטקסט שמופיע בחלון למטה ולהגישו במודל<br />
+בהצלחה!</p>
+<div class="encoder_ui">
+<div>
+If you have completed this tutorial and are happy with all of your
+solutions, please click the button below to generate your hash and
+submit it using the following link:
+<br/>
+<h3>
+<a href="http://google.com" target="_blank">http://google.com</a>
+</h3>
+<br/>
+</div>
+<div class="row" style="padding-bottom: 0.5em;">
+<div class="col-sm-3">
+<button id="hash_generate" type="button" class="btn btn-default action-button" title="Generate hash">Generate</button>
+</div>
+<div class="col-sm-7"></div>
+<div class="col-sm-2">
+<div class="btn-group btn-group-sm pull-right" role="group" aria-label="Clipboard buttons">
+<button id="hash_select" class="btn btn-default" type="button" title="Select hash"><svg
+      aria-hidden="true" focusable="false"
+      data-prefix="fas" data-icon="i-cursor"
+      class="svg-inline--fa fa-i-cursor fa-w-8"
+      role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 256 512" style="height: 16px;">
+      <path fill="currentColor" d="M256 52.048V12.065C256 5.496 250.726.148 244.158.066 211.621-.344 166.469.011 128 37.959 90.266.736 46.979-.114 11.913.114 5.318.157 0 5.519 0 12.114v39.645c0 6.687 5.458 12.078 12.145 11.998C38.111 63.447 96 67.243 96 112.182V224H60c-6.627 0-12 5.373-12 12v40c0 6.627 5.373 12 12 12h36v112c0 44.932-56.075 48.031-83.95 47.959C5.404 447.942 0 453.306 0 459.952v39.983c0 6.569 5.274 11.917 11.842 11.999 32.537.409 77.689.054 116.158-37.894 37.734 37.223 81.021 38.073 116.087 37.845 6.595-.043 11.913-5.405 11.913-12V460.24c0-6.687-5.458-12.078-12.145-11.998C217.889 448.553 160 444.939 160 400V288h36c6.627 0 12-5.373 12-12v-40c0-6.627-5.373-12-12-12h-36V112.182c0-44.932 56.075-48.213 83.95-48.142 6.646.018 12.05-5.346 12.05-11.992z">
+      </path>
+    </svg></button>
+<span class="btn-separator"></span>
+<button id="hash_copy" class="btn btn-default" type="button" title="Copy hash to clipboard"><svg
+      aria-hidden="true" focusable="false"
+      data-prefix="far" data-icon="clipboard"
+      class="svg-inline--fa fa-clipboard fa-w-12"
+      role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 384 512" style="height: 16px;">
+      <path fill="currentColor" d="M336 64h-80c0-35.3-28.7-64-64-64s-64 28.7-64 64H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48zM192 40c13.3 0 24 10.7 24 24s-10.7 24-24 24-24-10.7-24-24 10.7-24 24-24zm144 418c0 3.3-2.7 6-6 6H54c-3.3 0-6-2.7-6-6V118c0-3.3 2.7-6 6-6h42v36c0 6.6 5.4 12 12 12h168c6.6 0 12-5.4 12-12v-36h42c3.3 0 6 2.7 6 6z">
+      </path>
+    </svg></button>
+</div>
+</div>
+</div>
+<pre id="hash_output" class="shiny-text-output" style="white-space: pre-wrap;"></pre>
+<br/>
+<script>selectText = function(node) {
+        node = document.getElementById(node);
+
+        if (document.body.createTextRange) {
+          const range = document.body.createTextRange();
+          range.moveToElementText(node);
+          range.select();
+        } else if (window.getSelection) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        } else {
+          console.warn('Could not select text in node: Unsupported browser.');
+        }
+      }</script>
+<script>document.getElementById('hash_select').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        selectText('hash_output');
+      });</script>
+<script>document.getElementById('hash_copy').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        selectText('hash_output');
+        document.execCommand('copy');
+      });</script>
+</div>
+<p>
+<script type="application/shiny-prerendered" data-context="server-start">
+library(learnr)
+
+tutorial_options(
+  exercise.timelimit = 60,
+  # A simple checker function that just returns the message in the check chunk
+  exercise.checker = function(check_code, ...) {
+    list(
+      message = eval(parse(text = check_code)),
+      correct = logical(0),
+      type = "info",
+      location = "append"
+    )
+  }
+)
+
+
+knitr::opts_chunk$set(error = TRUE)
+#gradethis::gradethis_setup()
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::register_http_handlers(session, metadata = NULL)
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::prepare_tutorial_state(session)
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::i18n_observe_tutorial_language(input, session)
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+session$onSessionEnded(function() {
+        learnr:::event_trigger(session, "session_stop")
+      })
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-exercise1-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise1-code-editor`)), session)
+output$`tutorial-exercise-exercise1-output` <- renderUI({
+  `tutorial-exercise-exercise1-result`()
+})
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "exercise1", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "exercise1", code = "\nsubjects = 1:6\ncity_per_subject = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\")\nself_efficacy_per_subject =  c(2.3, 2.5, 2.1, 3, 2.2, 2.6)\n\ndf1 = data.frame(subject = subjects,\n                 city =  city_per_subject,\n                 self_efficacy_score = self_efficacy_per_subject)\n\nprint(df1)", 
+        opts = list(label = "\"exercise1\"", exercise = "TRUE", 
+            exercise.eval = "FALSE", exercise.cap = "\"יצירת טבלה\""), 
+        engine = "r")), code_check = NULL, error_check = NULL, 
+    check = structure(c("grade_result(", "  pass_if(~identical(names(.result), c(\"subject\",\"city\",\"self_efficacy_score\",\"gender\")))", 
+    ")"), chunk_opts = list(label = "exercise1-check")), solution = NULL, 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "L3---Dataframes_cache/html/", cache.vars = NULL, 
+        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
+        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
+        fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "exercise1", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.cap = "יצירת טבלה", code = c("", "subjects = 1:6", 
+        "city_per_subject = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\")", 
+        "self_efficacy_per_subject =  c(2.3, 2.5, 2.1, 3, 2.2, 2.6)", 
+        "", "df1 = data.frame(subject = subjects,", "                 city =  city_per_subject,", 
+        "                 self_efficacy_score = self_efficacy_per_subject)", 
+        "", "print(df1)"), out.width.px = 624, out.height.px = 384, 
+        params.src = "exercise1, exercise=TRUE, exercise.eval = FALSE, exercise.cap = \"יצירת טבלה\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-df3-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df3-code-editor`)), session)
+output$`tutorial-exercise-df3-output` <- renderUI({
+  `tutorial-exercise-df3-result`()
+})
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "df3", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "df3", code = "\nx = df1[3,2]\nprint(x)\n\ndf1[4,3] = 2\nprint(df1)", 
+            opts = list(label = "\"df3\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "df3", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "x = df1[3,2]", 
+        "print(x)", "", "df1[4,3] = 2", "print(df1)"), out.width.px = 624, 
+        out.height.px = 384, params.src = "df3, exercise=TRUE, exercise.eval = FALSE, exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "logicals", question = structure("מה קורה כשאתם משנים ערך אחד של עמודה מספרית לערך מסוג character ?", html = TRUE, class = c("html", 
+"character")), answers = list(structure(list(id = "lnr_ans_9017ff1", 
+    option = "מקבלים הודעת שגיאה", value = "מקבלים הודעת שגיאה", 
+    label = structure("מקבלים הודעת שגיאה", html = TRUE, class = c("html", 
+    "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_a79200a", 
+    option = "הערך הופך להיות מסוג numeric", 
+    value = "הערך הופך להיות מסוג numeric", 
+    label = structure("הערך הופך להיות מסוג numeric", html = TRUE, class = c("html", 
+    "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_698c705", 
+    option = "העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", 
+    value = "העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", 
+    label = structure("העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", html = TRUE, class = c("html", 
+    "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_c884548", 
+    option = "העמודה כולה הופכת להיות מסוג character", 
+    value = "העמודה כולה הופכת להיות מסוג character", 
+    label = structure("העמודה כולה הופכת להיות מסוג character", html = TRUE, class = c("html", 
+    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
+"character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
+"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
+"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), message = NULL, post_message = NULL), ids = list(
+    answer = "logicals-answer", question = "logicals"), loading = NULL, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1859653041.63403, 
+    options = list()), class = c("learnr_radio", "tutorial_question"
+)), session = session)
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-df4-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df4-code-editor`)), session)
+output$`tutorial-exercise-df4-output` <- renderUI({
+  `tutorial-exercise-df4-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "df4", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "df4", code = "\n# (1)\ndf2 = df1[c(2,4,6),1:2] # Rows 2,4 and 6 of columns 1 and 2\nprint(df2)\n\n# (2)\nrow1 = df1[1,] # All columns, row 1\nprint(row1)\n\ncolumns_2_and_3 = df[,c(2,3)] # All rows, columns 2 and 3\nprint(columns_2_and_3)\n\n\ncity_subj_3_and_1 = df1[c(3,1),\"city\"] # The cities of subjects 3 and 1\nprint(city_subj_3_and_1)\n\nsubj_and_self_efficacy = df1[,c(\"subject\",\"self_efficacy_score\")]\nprint(subj_and_self_efficacy)\n", 
+            opts = list(label = "\"df4\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "df4", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "# (1)", 
+        "df2 = df1[c(2,4,6),1:2] # Rows 2,4 and 6 of columns 1 and 2", 
+        "print(df2)", "", "# (2)", "row1 = df1[1,] # All columns, row 1", 
+        "print(row1)", "", "columns_2_and_3 = df[,c(2,3)] # All rows, columns 2 and 3", 
+        "print(columns_2_and_3)", "", "", "city_subj_3_and_1 = df1[c(3,1),\"city\"] # The cities of subjects 3 and 1", 
+        "print(city_subj_3_and_1)", "", "subj_and_self_efficacy = df1[,c(\"subject\",\"self_efficacy_score\")]", 
+        "print(subj_and_self_efficacy)", ""), out.width.px = 624, 
+        out.height.px = 384, params.src = "df4, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-df5-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df5-code-editor`)), session)
+output$`tutorial-exercise-df5-output` <- renderUI({
+  `tutorial-exercise-df5-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "df5", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "df5", code = "\n# חיתוך עמודת הערים מתוך הטבלה\nprint(df1$city)\n\n# יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים\ndf1$age = c(21,35,42,32,24,19)\n\n# דריסת עמודת הערים\ndf1$city = c(\"Haifa\",\"Be'er-Sheva\",\"Jerusalem\",\"Be'er-Sheva\",\"Jerusalem\",\"Acre\")\n\n\n# יצירת עמודות על סמך עמודות קיימות\ndf1$age_in_months = df1$age * 12\ndf1$age_over_25 = df1$age > 25\ndf1$age_relative_to_mean = df1$age  -  mean(df1$age )\n\n\nprint(df1)\n", 
+            opts = list(label = "\"df5\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "df5", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "# חיתוך עמודת הערים מתוך הטבלה", 
+        "print(df1$city)", "", "# יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים", 
+        "df1$age = c(21,35,42,32,24,19)", "", "# דריסת עמודת הערים", 
+        "df1$city = c(\"Haifa\",\"Be'er-Sheva\",\"Jerusalem\",\"Be'er-Sheva\",\"Jerusalem\",\"Acre\")", 
+        "", "", "# יצירת עמודות על סמך עמודות קיימות", 
+        "df1$age_in_months = df1$age * 12", "df1$age_over_25 = df1$age > 25", 
+        "df1$age_relative_to_mean = df1$age  -  mean(df1$age )", 
+        "", "", "print(df1)", ""), out.width.px = 624, out.height.px = 384, 
+        params.src = "df5, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-e-import-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-e-import-code-editor`)), session)
+output$`tutorial-exercise-e-import-output` <- renderUI({
+  `tutorial-exercise-e-import-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "e-import", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "e-import", code = "\n\nprint(head(table1))", 
+        opts = list(label = "\"e-import\"", exercise = "TRUE", 
+            exercise.eval = "FALSE", exercise.cap = "\"ייבוא נתונים\"", 
+            exercise.lines = "5"), engine = "r")), code_check = NULL, 
+    error_check = NULL, check = structure(c("#****", "grade_result(", 
+    "  pass_if(~identical(.result, c(\"subject\",\"city\",\"self_efficacy_score\",\"gender\")))", 
+    ")"), chunk_opts = list(label = "e-import-check")), solution = NULL, 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "L3---Dataframes_cache/html/", cache.vars = NULL, 
+        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
+        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
+        fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "e-import", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.cap = "ייבוא נתונים", exercise.lines = 5, 
+        code = c("", "", "print(head(table1))"), out.width.px = 624, 
+        out.height.px = 384, params.src = "e-import, exercise=TRUE, exercise.eval = FALSE, exercise.cap = \"ייבוא נתונים\",exercise.lines = 5", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-export-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-export-code-editor`)), session)
+output$`tutorial-exercise-export-output` <- renderUI({
+  `tutorial-exercise-export-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "export", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "export", code = "\nwrite.csv(df1, \"export dataframe example.csv\")\n", 
+            opts = list(label = "\"export\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "export", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "write.csv(df1, \"export dataframe example.csv\")", 
+        ""), out.width.px = 624, out.height.px = 384, params.src = "export, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-getwd-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-getwd-code-editor`)), session)
+output$`tutorial-exercise-getwd-output` <- renderUI({
+  `tutorial-exercise-getwd-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "getwd", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "getwd", code = "\nworking_directory = getwd()\nprint(working_directory)\n\n# שינוי כתובת העבודה\n# כרגע אנחנו מגדירים את הכתובת לפי הכתובת הנוכחית, ולכן היא לא תשתנה. החליפו את האובייקט \n# \"working_directory\" \n# בכתובת אחרת כדי לשנות את כתובת העבודה\n\nnew_working_directory = working_directory\nsetwd(new_working_directory)\n\n", 
+            opts = list(label = "\"getwd\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "getwd", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "working_directory = getwd()", 
+        "print(working_directory)", "", "# שינוי כתובת העבודה", 
+        "# כרגע אנחנו מגדירים את הכתובת לפי הכתובת הנוכחית, ולכן היא לא תשתנה. החליפו את האובייקט ", 
+        "# \"working_directory\" ", "# בכתובת אחרת כדי לשנות את כתובת העבודה", 
+        "", "new_working_directory = working_directory", "setwd(new_working_directory)", 
+        "", ""), out.width.px = 624, out.height.px = 384, params.src = "getwd, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-dimensions-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-dimensions-code-editor`)), session)
+output$`tutorial-exercise-dimensions-output` <- renderUI({
+  `tutorial-exercise-dimensions-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "dimensions", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "dimensions", code = "\n# מספר השורות והעמודות שבטבלה שייבאנו\ndim(table1)\n\n# מספר שורות\nnrow(table1)\n\n# מספר עמודות\nncol(table1)\n\n\n# שימוש במספר השורות כדי לייצר עמודה חדשה  \ntable1$subject_index = 1:nrow(table1)\n", 
+            opts = list(label = "\"dimensions\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "dimensions", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "# מספר השורות והעמודות שבטבלה שייבאנו", 
+        "dim(table1)", "", "# מספר שורות", "nrow(table1)", 
+        "", "# מספר עמודות", "ncol(table1)", "", "", 
+        "# שימוש במספר השורות כדי לייצר עמודה חדשה  ", 
+        "table1$subject_index = 1:nrow(table1)", ""), out.width.px = 624, 
+        out.height.px = 384, params.src = "dimensions, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-summary_and_names-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-summary_and_names-code-editor`)), session)
+output$`tutorial-exercise-summary_and_names-output` <- renderUI({
+  `tutorial-exercise-summary_and_names-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "summary_and_names", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "nycflights <- nycflights13::flights", 
+    chunks = list(list(label = "prepare-df1", code = "nycflights <- nycflights13::flights", 
+        opts = list(label = "\"prepare-df1\""), engine = "r"), 
+        list(label = "summary_and_names", code = "\n# שליפת השורות הראשונות. ברירת המחדל היא 6 שורות, אך ניתן גם לבקש מספר אחר של שורות\nhead(table1)\nhead(table1,4)\n\n# סוף הטבלה\ntail(table1)\n\n# סיכום של כל העמודות בטבלה, בהתאם לסוג העמודה\nsummary(table1)\n\n\n# שליפת שמות העמודות \ncol_names = names(table1)\nprint(colnames)\n\n\n# עריכת שמות העמודות\n#**?\n", 
+            opts = list(label = "\"summary_and_names\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = NULL, solution = NULL, tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "summary_and_names", exercise = TRUE, exercise.eval = FALSE, 
+        exercise.setup = "prepare-df1", code = c("", "# שליפת השורות הראשונות. ברירת המחדל היא 6 שורות, אך ניתן גם לבקש מספר אחר של שורות", 
+        "head(table1)", "head(table1,4)", "", "# סוף הטבלה", 
+        "tail(table1)", "", "# סיכום של כל העמודות בטבלה, בהתאם לסוג העמודה", 
+        "summary(table1)", "", "", "# שליפת שמות העמודות ", 
+        "col_names = names(table1)", "print(colnames)", "", "", 
+        "# עריכת שמות העמודות", "#**?", ""), 
+        out.width.px = 624, out.height.px = 384, params.src = "summary_and_names, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-ex1-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-ex1-code-editor`)), session)
+output$`tutorial-exercise-ex1-output` <- renderUI({
+  `tutorial-exercise-ex1-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "ex1", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "ex1", code = "", opts = list(
+        label = "\"ex1\"", exercise = "TRUE"), engine = "r")), 
+    code_check = NULL, error_check = NULL, check = NULL, solution = structure("    a -> 1", chunk_opts = list(
+        label = "ex1-solution")), tests = NULL, options = list(
+        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
+        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
+        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
+        strip.white = TRUE, cache = 0, cache.path = "L3---Dataframes_cache/html/", 
+        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
+        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
+        fig.show = "asis", fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "ex1", exercise = TRUE, code = "", out.width.px = 624, 
+        out.height.px = 384, params.src = "ex1, exercise = TRUE", 
+        fig.num = 0L, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-ex2-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-ex2-code-editor`)), session)
+output$`tutorial-exercise-ex2-output` <- renderUI({
+  `tutorial-exercise-ex2-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "ex2", global_setup = structure(c("library(learnr)", 
+"", "tutorial_options(", "  exercise.timelimit = 60,", "  # A simple checker function that just returns the message in the check chunk", 
+"  exercise.checker = function(check_code, ...) {", "    list(", 
+"      message = eval(parse(text = check_code)),", "      correct = logical(0),", 
+"      type = \"info\",", "      location = \"append\"", "    )", 
+"  }", ")", "", "", "knitr::opts_chunk$set(error = TRUE)", "#gradethis::gradethis_setup()"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "ex2", code = "", opts = list(
+        label = "\"ex2\"", exercise = "TRUE"), engine = "r")), 
+    code_check = NULL, error_check = NULL, check = NULL, solution = structure(c("    b -> 5", 
+    "    # the solution is here"), chunk_opts = list(label = "ex2-solution")), 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "L3---Dataframes_cache/html/", cache.vars = NULL, 
+        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
+        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
+        fig.align = "default", fig.path = "L3---Dataframes_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = TRUE, 
+        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (check_code, ...) \n{\n    list(message = eval(parse(text = check_code)), correct = logical(0), \n        type = \"info\", location = \"append\")\n}", 
+        label = "ex2", exercise = TRUE, code = "", out.width.px = 624, 
+        out.height.px = 384, params.src = "ex2, exercise = TRUE", 
+        fig.num = 0L, exercise.df_print = "paged"), engine = "r", 
+    version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+learnrhash::encoder_logic()
+</script>
+</p>
+<!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="dependencies">
+{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["header-attrs"]},{"type":"character","attributes":{},"value":["2.28"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/pandoc"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["header-attrs.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.28"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["3.6.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/3.6.0"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery-3.6.0.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquerylib"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.1.4"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootstrap"]},{"type":"character","attributes":{},"value":["3.3.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/bootstrap"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["viewport"]}},"value":[{"type":"character","attributes":{},"value":["width=device-width, initial-scale=1"]}]},{"type":"character","attributes":{},"value":["js/bootstrap.min.js","shim/html5shiv.min.js","shim/respond.min.js"]},{"type":"character","attributes":{},"value":["css/cerulean.min.css"]},{"type":"character","attributes":{},"value":["<style>h1 {font-size: 34px;}\n       h1.title {font-size: 38px;}\n       h2 {font-size: 30px;}\n       h3 {font-size: 24px;}\n       h4 {font-size: 18px;}\n       h5 {font-size: 16px;}\n       h6 {font-size: 12px;}\n       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}\n       pre:not([class]) { background-color: white }<\/style>"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.28"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["pagedtable"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/pagedtable-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/pagedtable.js"]},{"type":"character","attributes":{},"value":["css/pagedtable.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.28"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["9.12.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/highlightjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["textmate.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.28"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.11.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["i18n"]},{"type":"character","attributes":{},"value":["21.6.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/i18n"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["i18next.min.js","tutorial-i18n-init.js"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["<script id=\"i18n-cstm-trns\" type=\"application/json\">{\"language\":\"en\",\"resources\":{\"en\":{\"translation\":{\"button\":{\"runcode\":\"Run Code\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Hint\",\"hint_plural\":\"Hints\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Next Hint\",\"hintprev\":\"Previous Hint\",\"solution\":\"Solution\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Copy to Clipboard\",\"startover\":\"Start Over\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Continue\",\"submitanswer\":\"Submit Answer\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Previous Topic\",\"nexttopic\":\"Next Topic\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Try Again\"},\"text\":{\"startover\":\"Start Over\",\"areyousure\":\"Are you sure you want to start over? (all exercise progress will be reset)\",\"youmustcomplete\":\"You must complete the\",\"exercise\":\"exercise\",\"exercise_plural\":\"exercises\",\"inthissection\":\"in this section before continuing.\",\"code\":\"Code\",\"enginecap\":\"{{engine}} $t(text.code)\",\"quiz\":\"Quiz\",\"blank\":\"blank\",\"blank_plural\":\"blanks\",\"exercisecontainsblank\":\"This exercise contains {{count}} $t(text.blank).\",\"pleasereplaceblank\":\"Please replace {{blank}} with valid code.\",\"unparsable\":\"It looks like this might not be valid R code. R cannot determine how to turn your text into a complete command. You may have forgotten to fill in a blank, to remove an underscore, to include a comma between arguments, or to close an opening <code>&quot;<\\/code>, <code>'<\\/code>, <code>(<\\/code> or <code>{<\\/code> with a matching <code>&quot;<\\/code>, <code>'<\\/code>, <code>)<\\/code> or <code>}<\\/code>.\\n\",\"unparsablequotes\":\"<p>It looks like your R code contains specially formatted quotation marks or &quot;curly&quot; quotes (<code>{{character}}<\\/code>) around character strings, making your code invalid. R requires character values to be contained in straight quotation marks (<code>&quot;<\\/code> or <code>'<\\/code>).<\\/p> {{code}} <p>Don't worry, this is a common source of errors when you copy code from another app that applies its own formatting to text. You can try replacing the code on that line with the following. There may be other places that need to be fixed, too.<\\/p> {{suggestion}}\\n\",\"unparsableunicode\":\"<p>It looks like your R code contains an unexpected special character (<code>{{character}}<\\/code>) that makes your code invalid.<\\/p> {{code}} <p>Sometimes your code may contain a special character that looks like a regular character, especially if you copy and paste the code from another app. Try deleting the special character from your code and retyping it manually.<\\/p>\\n\",\"unparsableunicodesuggestion\":\"<p>It looks like your R code contains an unexpected special character (<code>{{character}}<\\/code>) that makes your code invalid.<\\/p> {{code}} <p>Sometimes your code may contain a special character that looks like a regular character, especially if you copy and paste the code from another app. You can try replacing the code on that line with the following. There may be other places that need to be fixed, too.<\\/p> {{suggestion}}\\n\",\"and\":\"and\",\"or\":\"or\",\"listcomma\":\", \",\"oxfordcomma\":\",\"}}},\"fr\":{\"translation\":{\"button\":{\"runcode\":\"Lancer le Code\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Indication\",\"hint_plural\":\"Indications\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Indication Suivante\",\"hintprev\":\"Indication Précédente\",\"solution\":\"Solution\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Copier dans le Presse-papier\",\"startover\":\"Recommencer\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Continuer\",\"submitanswer\":\"Soumettre\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Chapitre Précédent\",\"nexttopic\":\"Chapitre Suivant\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Réessayer\"},\"text\":{\"startover\":\"Recommencer\",\"areyousure\":\"Êtes-vous certains de vouloir recommencer? (La progression sera remise à zéro)\",\"youmustcomplete\":\"Vous devez d'abord compléter\",\"exercise\":\"l'exercice\",\"exercise_plural\":\"des exercices\",\"inthissection\":\"de cette section avec de continuer.\",\"code\":\"Code\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Quiz\",\"and\":\"et\",\"or\":\"ou\",\"oxfordcomma\":\"\"}}},\"es\":{\"translation\":{\"button\":{\"runcode\":\"Ejecutar código\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Pista\",\"hint_plural\":\"Pistas\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Siguiente pista\",\"hintprev\":\"Pista anterior\",\"solution\":\"Solución\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Copiar al portapapeles\",\"startover\":\"Reiniciar\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Continuar\",\"submitanswer\":\"Enviar respuesta\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Tema anterior\",\"nexttopic\":\"Tema siguiente\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Volver a intentar\"},\"text\":{\"startover\":\"Reiniciar\",\"areyousure\":\"¿De verdad quieres empezar de nuevo? (todo el progreso del ejercicio se perderá)\",\"youmustcomplete\":\"Debes completar\",\"exercise\":\"el ejercicio\",\"exercise_plural\":\"los ejercicios\",\"inthissection\":\"en esta sección antes de continuar.\",\"code\":\"Código\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Cuestionario\",\"and\":\"y\",\"or\":\"o\",\"oxfordcomma\":\"\"}}},\"pt\":{\"translation\":{\"button\":{\"runcode\":\"Executar código\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Dica\",\"hint_plural\":\"Dicas\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Próxima dica\",\"hintprev\":\"Dica anterior\",\"solution\":\"Solução\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Copiar para a área de transferência\",\"startover\":\"Reiniciar\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Continuar\",\"submitanswer\":\"Enviar resposta\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Tópico anterior\",\"nexttopic\":\"Próximo tópico\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Tentar novamente\"},\"text\":{\"startover\":\"Reiniciar\",\"areyousure\":\"Tem certeza que deseja começar novamente? (todo o progresso feito será perdido)\",\"youmustcomplete\":\"Você deve completar\",\"exercise\":\"o exercício\",\"exercise_plural\":\"os exercícios\",\"inthissection\":\"nesta seção antes de continuar.\",\"code\":\"Código\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Quiz\",\"and\":\"e\",\"or\":\"ou\",\"oxfordcomma\":\"\"}}},\"tr\":{\"translation\":{\"button\":{\"runcode\":\"Çalıştırma Kodu\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Ipucu\",\"hint_plural\":\"İpuçları\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Sonraki İpucu\",\"hintprev\":\"Önceki İpucu\",\"solution\":\"Çözüm\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Pano'ya Kopyala\",\"startover\":\"Baştan Başlamak\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Devam et\",\"submitanswer\":\"Cevabı onayla\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Önceki Konu\",\"nexttopic\":\"Sonraki Konu\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Tekrar Deneyin\"},\"text\":{\"startover\":\"Baştan Başlamak\",\"areyousure\":\"Baştan başlamak istediğinizden emin misiniz? (tüm egzersiz ilerlemesi kaybolacak)\",\"youmustcomplete\":\"Tamamlamalısın\",\"exercise\":\"egzersiz\",\"exercise_plural\":\"egzersizler\",\"inthissection\":\"devam etmeden önce bu bölümde\",\"code\":\"Kod\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Sınav\",\"oxfordcomma\":\"\"}}},\"emo\":{\"translation\":{\"button\":{\"runcode\":\"🏃\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"💡\",\"hint_plural\":\"$t(button.hint)\",\"hinttitle\":\"$t(button.hint)\",\"solution\":\"🎯\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"📋\",\"startover\":\"⏮\",\"startovertitle\":\"Start Over\",\"continue\":\"✅\",\"submitanswer\":\"🆗\",\"submitanswertitle\":\"Submit Answer\",\"previoustopic\":\"⬅\",\"nexttopic\":\"➡\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"🔁\"},\"text\":{\"startover\":\"⏮\",\"areyousure\":\"🤔\",\"youmustcomplete\":\"⚠️ 👉 🧑‍💻\",\"exercise\":\"\",\"exercise_plural\":\"\",\"inthissection\":\"\",\"code\":\"💻\",\"enginecap\":\"$t(text.code) {{engine}}\",\"oxfordcomma\":\"\"}}},\"eu\":{\"translation\":{\"button\":{\"runcode\":\"Kodea egikaritu\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Laguntza\",\"hint_plural\":\"Laguntza\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Aurreko laguntza\",\"hintprev\":\"Hurrengo laguntza\",\"solution\":\"Ebazpena\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Arbelean kopiatu\",\"startover\":\"Berrabiarazi\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Jarraitu\",\"submitanswer\":\"Erantzuna bidali\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Aurreko atala\",\"nexttopic\":\"Hurrengo atala\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Berriro saiatu\"},\"text\":{\"startover\":\"Berrabiarazi\",\"areyousure\":\"Berriro hasi nahi duzu? (egindako lana galdu egingo da)\",\"youmustcomplete\":\"Aurrera egin baino lehen atal honetako\",\"exercise\":\"ariketa egin behar duzu.\",\"exercise_plural\":\"ariketak egin behar dituzu.\",\"inthissection\":\"\",\"code\":\"Kodea\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Galdetegia\",\"oxfordcomma\":\"\"}}},\"de\":{\"translation\":{\"button\":{\"runcode\":\"Code ausführen\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Tipp\",\"hint_plural\":\"Tipps\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Nächster Tipp\",\"hintprev\":\"Vorheriger Tipp\",\"solution\":\"Lösung\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"In die Zwischenablage kopieren\",\"startover\":\"Neustart\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Weiter\",\"submitanswer\":\"Antwort einreichen\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Vorheriges Kapitel\",\"nexttopic\":\"Nächstes Kapitel\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Nochmal versuchen\"},\"text\":{\"startover\":\"Neustart\",\"areyousure\":\"Bist du sicher, dass du neustarten willst? (der gesamte Lernfortschritt wird gelöscht)\",\"youmustcomplete\":\"Vervollstädinge\",\"exercise\":\"die Übung\",\"exercise_plural\":\"die Übungen\",\"inthissection\":\"in diesem Kapitel, bevor du fortfährst.\",\"code\":\"Code\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Quiz\",\"blank\":\"Lücke\",\"blank_plural\":\"Lücken\",\"pleasereplaceblank\":\"Bitte ersetze {{blank}} mit gültigem Code.\",\"unparsable\":\"Dies scheint kein gültiger R Code zu sein. R kann deinen Text nicht in einen gültigen Befehl übersetzen. Du hast vielleicht vergessen, die Lücke zu füllen, einen Unterstrich zu entfernen, ein Komma zwischen Argumente zu setzen oder ein eröffnendes <code>&quot;<\\/code>, <code>'<\\/code>, <code>(<\\/code> oder <code>{<\\/code> mit einem zugehörigen <code>&quot;<\\/code>, <code>'<\\/code>, <code>)<\\/code> oder <code>}<\\/code> zu schließen.\\n\",\"and\":\"und\",\"or\":\"oder\",\"listcomma\":\", \",\"oxfordcomma\":\",\"}}},\"ko\":{\"translation\":{\"button\":{\"runcode\":\"코드 실행\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"힌트\",\"hint_plural\":\"힌트들\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"다음 힌트\",\"hintprev\":\"이전 힌트\",\"solution\":\"솔루션\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"클립보드에 복사\",\"startover\":\"재학습\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"다음 학습으로\",\"submitanswer\":\"정답 제출\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"이전 토픽\",\"nexttopic\":\"다음 토픽\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"재시도\"},\"text\":{\"startover\":\"재학습\",\"areyousure\":\"다시 시작 하시겠습니까? (모든 예제의 진행 정보가 재설정됩니다)\",\"youmustcomplete\":\"당신은 완료해야 합니다\",\"exercise\":\"연습문제\",\"exercise_plural\":\"연습문제들\",\"inthissection\":\"이 섹션을 실행하기 전에\",\"code\":\"코드\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"퀴즈\",\"blank\":\"공백\",\"blank_plural\":\"공백들\",\"exercisecontainsblank\":\"이 연습문제에는 {{count}}개의 $t(text.blank)이 포함되어 있습니다.\",\"pleasereplaceblank\":\"{{blank}}를 유효한 코드로 바꾸십시오.\",\"unparsable\":\"이것은 유효한 R 코드가 아닐 수 있습니다. R은 텍스트를 완전한 명령으로 변환하는 방법을 결정할 수 없습니다. 당신은 공백이나 밑줄을 대체하여 채우기, 인수를 컴마로 구분하기, 또는 <code>&quot;<\\/code>, <code>'<\\/code>, <code>(<\\/code> , <code>{<\\/code>로 시작하는 구문을 닫는 <code>&quot;<\\/code>, <code>'<\\/code>, <code>)<\\/code>, <code>}<\\/code>을 잊었을 수도 있습니다.\\n\",\"and\":\"그리고\",\"or\":\"혹은\",\"listcomma\":\", \",\"oxfordcomma\":\"\"}}},\"zh\":{\"translation\":{\"button\":{\"runcode\":\"运行代码\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"提示\",\"hint_plural\":\"提示\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"下一个提示\",\"hintprev\":\"上一个提示\",\"solution\":\"答案\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"复制到剪切板\",\"startover\":\"重新开始\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"继续\",\"submitanswer\":\"提交答案\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"上一专题\",\"nexttopic\":\"下一专题\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"再试一次\"},\"text\":{\"startover\":\"重置\",\"areyousure\":\"你确定要重新开始吗? (所有当前进度将被重置)\",\"youmustcomplete\":\"你必须完成\",\"exercise\":\"练习\",\"exercise_plural\":\"练习\",\"inthissection\":\"在进行本节之前\",\"code\":\"代码\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"测试\",\"blank\":\"空\",\"blank_plural\":\"空\",\"exercisecontainsblank\":\"本练习包含{{count}}个$t(text.blank)\",\"pleasereplaceblank\":\"请在{{blank}}内填写恰当的代码\",\"unparsable\":\"这似乎不是有效的R代码。 R不知道如何将您的文本转换为完整的命令。 您是否忘了填空，忘了删除下划线，忘了在参数之间包含逗号，或者是忘了用<code>&quot;<\\/code>, <code>'<\\/code>, <code>)<\\/code>,<code>}<\\/code>来封闭<code>&quot;<\\/code>, <code>'<\\/code>, <code>(<\\/code>。 or <code>{<\\/code>。\\n\",\"unparsablequotes\":\"<p>您的R代码中似乎含有特殊格式的引号，或者弯引号(<code>{{character}}<\\/code>) 在字符串前后，在R中字符串应该被直引号(<code>&quot;<\\/code> 或者 <code>'<\\/code>)包裹。<\\/p> {{code}} <p>别担心，该错误经常在复制粘贴包含格式的代码时遇到， 您可以尝试将该行中的代码替换为以下代码，也许还有其他地方需要修改。<\\/p> {{suggestion}}\\n\",\"unparsableunicode\":\"<p>您的代码中似乎包含有异常字符(<code>{{character}}<\\/code>),导致代码无效。<\\/p> {{code}} <p>有时候你的代码可能含有看似正常字符的特殊字符，特别是当你复制粘贴其他来源代码的时候。 请试着删除这些特殊字符,重新输入<\\/p>\\n\",\"unparsableunicodesuggestion\":\"<p>您的代码中似乎包含有异常字符(<code>{{character}}<\\/code>),导致代码无效。<\\/p> {{code}} <p>有时候你的代码可能含有看似正常字符的特殊字符，特别是当你复制粘贴其他来源代码的时候。 请试着删除这些特殊字符,重新输入<\\/p>\\n\",\"and\":\"且\",\"or\":\"或\",\"listcomma\":\",\",\"oxfordcomma\":\",\"}}},\"pl\":{\"translation\":{\"button\":{\"runcode\":\"Uruchom kod\",\"runcodetitle\":\"$t(button.runcode) ({{kbd}})\",\"hint\":\"Podpowiedź\",\"hint_plural\":\"Podpowiedzi\",\"hinttitle\":\"$t(button.hint)\",\"hintnext\":\"Następna podpowiedź\",\"hintprev\":\"Poprzednia podpowiedź\",\"solution\":\"Rozwiązanie\",\"solutiontitle\":\"$t(button.solution)\",\"copyclipboard\":\"Kopiuj do schowka\",\"startover\":\"Zacznij od początku\",\"startovertitle\":\"$t(button.startover)\",\"continue\":\"Kontynuuj\",\"submitanswer\":\"Wyślij\",\"submitanswertitle\":\"$t(button.submitanswer)\",\"previoustopic\":\"Poprzednia sekcja\",\"nexttopic\":\"Następna sekcja\",\"questionsubmit\":\"$t(button.submitanswer)\",\"questiontryagain\":\"Spróbuj ponownie\"},\"text\":{\"startover\":\"Zacznij od początku\",\"areyousure\":\"Czy na pewno chcesz zacząć od początku? (cały postęp w zadaniu zostanie utracony)\",\"youmustcomplete\":\"Musisz ukończyć\",\"exercise\":\"ćwiczenie\",\"exercise_plural\":\"ćwiczenia\",\"inthissection\":\"w tej sekcji przed kontynuowaniem\",\"code\":\"Kod\",\"enginecap\":\"$t(text.code) {{engine}}\",\"quiz\":\"Quiz\",\"blank\":\"luka\",\"blank_plural\":\"luk(i)\",\"exercisecontainsblank\":\"To ćwiczenie zawiera {{count}} $t(text.blank).\",\"pleasereplaceblank\":\"Proszę uzupełnić {{blank}} prawidłowym kodem.\",\"unparsable\":\"Wygląda na to, że może to nie być prawidłowy kod R. R nie jest w stanie przetworzyć Twojego tekstu na polecenie. Mogłeś(-aś) zapomnieć wypełnić luki, usunąć podkreślnik, umieścić przecinka między argumentami, lub zamknąć znak <code>&quot;<\\/code>, <code>'<\\/code>, <code>(<\\/code> lub <code>{<\\/code> odpowiadającym <code>&quot;<\\/code>, <code>'<\\/code>, <code>)<\\/code> lub <code>}<\\/code>.\\n\",\"unparsablequotes\":\"<p>Wygląda na to, że Twój kod zawiera szczególnie sformatowane cudzysłowy lub cudzysłowy typograficzne (<code>{{character}}<\\/code>) przy ciągach znaków, co sprawia, że kod jest niepoprawny. R wymaga cudzysłowów prostych (<code>&quot;<\\/code> albo <code>'<\\/code>).<\\/p> {{code}} <p>Nie martw się, to powszechne źródło błędów, gdy kopiuje się kod z innego programu, który sam formatuje teskt. Możesz spróbować zastąpić swój kod następującym kodem. Mogą być też inne miejsca, które wymagają poprawienia.<\\/p> {{suggestion}}\\n\",\"unparsableunicode\":\"<p>Wygląda na to, że Twój kod zawiera niespodziewany znak specjalny (<code>{{character}}<\\/code>), co sprawia, że kod jest niepoprawny.<\\/p> {{code}} <p>Czasami Twój kod może zawierać znak specjalny, który wygląda jak zwykły znak, zwłaszcza jeśli kopiujesz kod z innego programu. Spróbuj usunąć znak specjalny i wpisać do ponownie ręcznie.<\\/p>\\n\",\"unparsableunicodesuggestion\":\"<p>Wygląda na to, że Twój kod zawiera niespodziewany znak specjalny (<code>{{character}}<\\/code>), co sprawia, że kod jest niepoprawny.<\\/p> {{code}} <p>Czasami Twój kod może zawierać znak specjalny, który wygląda jak zwykły znak, zwłaszcza jeśli kopiujesz kod z innego programu. Możesz spróbować zastąpić swój kod następującym kodem. Mogą być też inne miejsca, które wymagają poprawienia.<\\/p> {{suggestion}}\\n\",\"and\":\"i\",\"or\":\"lub\",\"listcomma\":\", \",\"oxfordcomma\":\"\"}}}}}<\/script>"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-format"]},{"type":"character","attributes":{},"value":["0.11.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmarkdown/templates/tutorial/resources"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-format.js"]},{"type":"character","attributes":{},"value":["tutorial-format.css","rstudio-theme.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["3.6.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/3.6.0"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery-3.6.0.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquerylib"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.1.4"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["navigation"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/navigation-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tabsets.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.28"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["9.12.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/highlightjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["default.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.28"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["3.6.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/3.6.0"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery-3.6.0.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquerylib"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.1.4"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["font-awesome"]},{"type":"character","attributes":{},"value":["6.4.2"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["fontawesome"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/all.min.css","css/v4-shims.min.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["fontawesome"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.5.2"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootbox"]},{"type":"character","attributes":{},"value":["5.5.2"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/bootbox"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["bootbox.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["idb-keyvalue"]},{"type":"character","attributes":{},"value":["3.2.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/idb-keyval"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["idb-keyval-iife-compat.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.11.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["2.0.10"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.11.5"]}]}]}
+</script>
+<!--/html_preserve-->
+<!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="execution_dependencies">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46]}},"value":[{"type":"character","attributes":{},"value":["backports","base","bslib","cachem","checkmate","cli","commonmark","compiler","datasets","digest","ellipsis","evaluate","fastmap","fontawesome","graphics","grDevices","htmltools","htmlwidgets","httpuv","jquerylib","jsonlite","knitr","later","learnr","learnrhash","lifecycle","magrittr","markdown","methods","mime","promises","R6","Rcpp","rlang","rmarkdown","rprojroot","rstudioapi","sass","shiny","stats","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.5.0","4.3.1","0.8.0","1.1.0","2.3.2","3.6.1","1.9.1","4.3.1","4.3.1","0.6.33","0.3.2","0.24.0","1.2.0","0.5.2","4.3.1","4.3.1","0.5.8.1","1.6.4","1.6.15","0.1.4","1.8.8","1.48","1.3.2","0.11.5","0.2.0","1.0.4","2.0.3","1.13","4.3.1","0.12","1.3.0","2.5.1","1.0.13","1.1.1","2.28","2.0.4","0.16.0","0.4.9","1.9.1","4.3.1","4.3.1","4.3.1","3.0.1","0.47","1.8-4","2.3.10"]}]}]}
+</script>
+<!--/html_preserve-->
+</div>
+
+</article> <!-- topics -->
+
+<div class="topicsContainer">
+<div class="topicsPositioner">
+<div class="band">
+<div class="bandContent topicsListContainer">
+
+<!-- begin doc-metadata -->
+<div id="doc-metadata">
+<h1 class="title toc-ignore" style="display:none;">Lesson 3:
+Dataframes</h1>
+</div>
+<!-- end doc-metadata -->
+
+</div> <!-- bandContent.topicsListContainer -->
+</div> <!-- band -->
+</div> <!-- topicsPositioner -->
+</div> <!-- topicsContainer -->
+
+
+</main> <!-- bandContent page -->
+</div> <!-- pageContent band -->
+
+
+
+<!-- Build Tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<script>
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+
+</body>
+
+</html>
