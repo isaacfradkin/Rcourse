@@ -119,7 +119,7 @@ p {
   direction: rtl;
 }
 
-.custom-block {
+.text-block1 {
   direction: rtl;       /* Set text direction to right-to-left */
   text-align: right;
   background-color: #f0f0f0; /* Light grey background */
@@ -131,9 +131,9 @@ p {
 </style>
 <div id="section-טבלאות---היכרות" class="section level2">
 <h2>טבלאות - היכרות</h2>
-<p>בשיעור הנוכחי נלמד לעבוד עם סוג נוסף של אובייקטים, שנפוצים מאוד
-בעבודה שלנו בR: טבלאות, או באנגלית - Dataframes</p>
-<p>אובייקטים אלו מורכבים משורות ועמודות, כמו באקסל, עם ערכים בתוך כל אחת
+<p>בשיעור הנוכחי נלמד לעבוד עם סוג נוסף של אובייקטים שנפוצים מאוד בעבודה
+שלנו בR: טבלאות, או באנגלית - Dataframes</p>
+<p>הטבלאות מורכבות משורות ועמודות, כמו באקסל, עם ערכים בתוך כל אחת
 מהמשבצות של הטבלה. לכל עמודה יש כותרת, המתארת את המידע באותה עמודה.
 שורות שונות בדרך כלל יבטאו תצפיות שונות, למשל - נתונים של נבדקים שונים
 או סבבים שונים של מטלה מסוימת עבור אותו נבדק. לפניכם דוגמה של טבלה
@@ -169,11 +169,11 @@ numeric, character, boolean וכו’, אך עמודות שונות באותה �
 לנו לצרף יחד מספר וקטורים לכדי טבלה. זו לרוב לא תהיה הדרך בה נייצר את
 הטבלאות שאיתן נעבוד, אבל חושב להכיר גם אותה.</p>
 <p>ניתן לייצר את מסגרת הנתונים באמצעות וקטורים שאנחנו מגדירים בתוך
-הפונקציה, כפי שעשינו בדוגמה לעיל, אך אפשר גם להשתמש בוקטורים שהגדרנו
+הפונקציה, כפי שעשינו בדוגמה הקודמת, אך אפשר גם להשתמש בוקטורים שהוגדרו
 מראש. שימו לב: העמודות החדשות חייבות להיות באותו האורך של העמדות שכבר
 קיימות בטבלה. במידה ונגדיר עמודה חדשה באמצעות וקטור קצר או ארוך יותר,
 נקבל הודעת שגיאה</p>
-<div class="custom-div">
+<div class="text-block1">
 <p>המקרה החריג, בו לא נקבל הודעת שגיאה הוא כשנתשמש בוקטור בעל אורך שהוא
 בדיוק חצי, שליש, רבע וכו’ מאורך הטבלה. במקרים כאלו התכנה תשכפל את הוקטור
 לפי מספר הפעמים הנדרש כדי להגיע לאורך התואם את מספר השורות בטבלה.</p>
@@ -203,16 +203,17 @@ print(df1)</code></pre>
 <h3>חיתוך באמצעות סוגריים מרובעים [ , ]</h3>
 <div id="section-חיתוך-משבצות-בודדות" class="section level4">
 <h4>חיתוך משבצות בודדות</h4>
-<p>כשם שאנחנו יכולים לשלוף ערכים מתוך וקטור או לערוך ערך מסויים מתוכו,
-כך ניתן לעשות גם בטבלאות - אבל כיוון שלטבלאות יש 2 מימדים (שורות
-ועמודות) נצטרך להשתמש ב2 אינדקסים כדי להתייחס למשבצת ספציפית. במקרים
-כאלו האינדקס תמיד יתחיל בשורות (ערך ראשון משמאל) ואז יעבור לעמודות,
-כשבין שני האינדקסים מפריד פסיק. למשל: החיתוך df1[2,3] מתייחס לשורה 2,
-עמודה 3 של הטבלה שנקראת df1.</p>
+<p>חיתוך ושליפה של ערכים מתוך טבלה נעשית באופן דומה מאוד לשליפת ערכים
+מתוך וקטור - אבל כיוון שלטבלאות יש 2 מימדים (שורות ועמודות) נצטרך להשתמש
+ב2 אינדקסים כדי להתייחס למשבצת / משבצות שמעניינות אותנו. האינדקס הראשון
+יתייחס לשורות (ערך ראשון משמאל) והשני לעמודות, כשבין שני האינדקסים מפריד
+פסיק. למשל: החיתוך df1[2,3] מתייחס לשורה 2, עמודה 3 של הטבלה שנקראת
+df1.</p>
 <p>בשורות הקוד הבאות אנחנו שולפים את הערך של העיר (עמודה 2) בה גר הנבדק
-שבשורה השלישית ומדפיסים אותו ואז משנים את הערך של ציון תחושת המסוגלות
-העצמית (עמודה 3) של הנבדק בשורה הרביעית ל3.1 ומדפיסים את הטבלה
-הערוכה.</p>
+שבשורה השלישית ומדפיסים אותו.</p>
+<p>בהמשך, הקוד מבצע השמה מחדש לערך של שורה 4, עמודה 3: ציון תחושת
+המסוגלות העצמית של הנבדק בשורה הרביעית. הקוד משנה את ערך זה כך שיהיה
+שווה ל2 ומדפיס את הטבלה המעודכנת.</p>
 <div class="tutorial-exercise" data-label="df3" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0"
 data-pipe="|&gt;">
@@ -225,6 +226,14 @@ print(df1)</code></pre>
 </div>
 <p>נסו בעצמכם: בחרו משבצת מסוימת שאתם רוצים לשלוף ותערכו את האינדקסים כך
 שיפנו למשבצת הנכונה. נסו לערוך את הערכים במשבצות שונות.</p>
+<div class="panel panel-default tutorial-question-container">
+<div data-label="Q1" class="tutorial-question panel-body">
+<div id="Q1-answer_container" class="shiny-html-output"></div>
+<div id="Q1-message_container" class="shiny-html-output"></div>
+<div id="Q1-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 <div class="panel panel-default tutorial-question-container">
 <div data-label="logicals" class="tutorial-question panel-body">
 <div id="logicals-answer_container" class="shiny-html-output"></div>
@@ -271,13 +280,14 @@ print(subj_and_self_efficacy)</code></pre>
 </div>
 <div id="section-פקד-ה" class="section level3">
 <h3>פקד ה$</h3>
-<p>דרך נוספת לשלוף עמודה שלמה מתוך הנתונים נעזרת בפקד ה<span
-class="math inline">\(ת לדוגמה: df1\)</span>city ישלוף את עמודת הערים
-ויציג אותה כוקטור</p>
-<p>אם נבצע השמה לחיתוך שכזה נוכל לערוך עמודה קיימת או לייצר עמודה חדש -
-במידה ונשתמש בשם של עמודה קיימת הוקטור שנכניס ידרוס את העמודה ויחליף
+<p>דרך נוספת לשלוף עמודה שלמה מתוך הנתונים נעזרת בפקד ה$. לדוגמה:
+df1$city ישלוף את עמודת הערים</p>
+<p>אם נבצע השמה לחיתוך שכזה נוכל לערוך עמודה קיימת או לייצר עמודה
+חדשה:</p>
+<p>במידה ונשתמש בשם של עמודה קיימת הוקטור שנכניס ידרוס את העמודה ויחליף
 אותה. במידה ונשתמש בשם של עמודה שלא נמצאת בטבלה תיווצר עמודה חדשה בשם
-זה. בדרך זו ניתן גם לייצר עמודות חדשות על סמך עמודות קיימות, או לבצע
+זה.</p>
+<p>בדרך זו ניתן גם לייצר עמודות חדשות על סמך עמודות קיימות, או לבצע
 תיקונים בעמודות הקיימות.</p>
 <p>להלן מספר דוגמאות:</p>
 <div class="tutorial-exercise" data-label="df5" data-completion="1"
@@ -288,16 +298,16 @@ print(df1$city)
 
 # יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים
 df1$age = c(21,35,42,32,24,19)
+print(df1)
 
 # דריסת עמודת הערים
 df1$city = c(&quot;Haifa&quot;,&quot;Be&#39;er-Sheva&quot;,&quot;Jerusalem&quot;,&quot;Be&#39;er-Sheva&quot;,&quot;Jerusalem&quot;,&quot;Acre&quot;)
-
+print(df1)
 
 # יצירת עמודות על סמך עמודות קיימות
-df1$age_in_months = df1$age * 12
-df1$age_over_25 = df1$age &gt; 25
-df1$age_relative_to_mean = df1$age  -  mean(df1$age )
-
+df1$se_above_2.5 = df1$self_efficacy_score &gt; 2.5
+df1$se_sclae_1_to_100 = df1$self_efficacy_score * 20
+df1$se_relative_to_mean = df1$self_efficacy_score  -  mean(df1$self_efficacy_score)
 
 print(df1)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
@@ -312,26 +322,27 @@ print(df1)</code></pre>
 <p>ישנן מספר פונקציות בR אשר מאפשרות לנו לטעון קובצים מפורמט csv או xlsx
 (שני הפורמטים העיקריים לשמירת נתונים המיוצגים בטבלה), אך הדרך הידודותית
 ביותר למשתמש נעזרת בכלי של Rstudio שנועד להקל על ייבוא הקבצים.</p>
-<p>כדי לגשת לכלי הייבוא, פתחו את R Rstudio ובחרו בלשונית “file” שבסרגל
+<p>כדי לגשת לכלי הייבוא, פתחו את Rstudio ובחרו בלשונית “file” שבסרגל
 הכלים שבראש החלון של התוכנה. מכאן בחרו ב “Import Dataset” ובאחת מ2
-האפשרויות הראשונות במידה ואתם מעוניינים לטעון קובץ csv, או שלישית במידה
+האפשרויות הראשונות במידה ואתם מעוניינים לטעון קובץ csv, או בשלישית במידה
 והקובץ שלכם הוא מפורמט xslx.</p>
-<p>בשיעור זה נתרגל טעינת קובץ מפורמט csv ולכן נבחר באפשרות השנייה) -
-“From Text (readr)…” (גם הראשונה אפשרית, אבל השנייה נוחה יותר &lt;
+<p>בשיעור זה נתרגל טעינת קובץ מפורמט csv ולכן נבחר באפשרות השנייה -
+“From Text (readr)…”. גם האופצייה הראשונה אפשרית, אבל השנייה נוחה יותר.
 כשנבחר באפשרות זו ייפתח לנו חלון שיאפשר לנו לבחור קובץ לייבוא, לשלוט
 בכמה אפשרויות בתהליך הייבוא ולצפות בתצוגה מקדימה של הטבלה שאנחנו
-מייבאים. תהליך הייבוא קורה בכמה שלבים:</p>
+מייבאים.</p>
+<p>תהליך הייבוא קורה בכמה שלבים:</p>
 <div class="custom-block">
 <p><strong>1) בחירת הקובץ:</strong></p>
 <p>נלחץ על כפתור ה”Browse…” שבפינה הימנית עליונה של החלון. ייפתח עבורנו
 חלון בו נוכל לחפש ולבחור את הקובץ שאנו מעוניינים לייבא.</p>
 <p><strong>2) התאמת אפשרויות הייבוא:</strong></p>
-<p>החלון מאפשר לנו להתאים את אופן הייבוא לאופן בו הנתונים שמורים בקובץ
-שלנו. למשל, הוא מאפשר לנו לדווח האם השורה הראשונה בקובץ שאנחנו מייבאים
-מכילה את הכותרות של העמודות או לא ולדלג על מספר שורות במידה והקובץ מכיל
-כמה שורות שאינן מכילות נתונים בתחילת הקובץ (באמצעות שדה ה”Skip”). בנוסף,
-החלון מאפשר לנו גם לקבוע מה יהיה שם האובייקט בו נרצה לשמור את הטבלה
-שאנחנו מייבאים, באמצעות השדה “Name”.</p>
+<p>החלון מאפשר לנו להתאים את הייבוא לאופן בו הנתונים שמורים בקובץ שלנו.
+למשל, הוא מאפשר לנו לבחור האם השורה הראשונה בקובץ שאנחנו מייבאים מכילה
+את הכותרות של העמודות ולדלג על מספר שורות במידה והקובץ מכיל כמה שורות
+שאינן מכילות נתונים בתחילת הקובץ (באמצעות שדה ה”Skip”). בנוסף, החלון
+מאפשר לנו גם לקבוע מה יהיה שם האובייקט בו נרצה לשמור את הטבלה שאנחנו
+מייבאים, באמצעות השדה “Name” ולערוך את סוג הנתונים בכל עמודה.</p>
 <p><strong>3) ייבוא הקובץ:</strong></p>
 <p>את הייבוא עצמו אפשר לבצע ב2 דרכים שונות:</p>
 <p>הדרך הראשונה היא באמצעות לחיצה על כפתור “Import” שבתחתית החלון. כפתור
@@ -340,7 +351,8 @@ print(df1)</code></pre>
 <p>לרוב, לא נרצה רק לייבא את הטבלה לסביבת העבודה הנוכחית שלנו, אלא נרצה
 גם להעתיק את שורות הקוד שמייבאות את הקובץ לקובץ הסקריפט שלנו, כך שבהרצה
 עתידית של הקובץ הקוד ייבצע את ייבוא הטבלה באופן אוטומטי. כדי לעשות זאת
-נעתיק את שורות הקוד מחלונית הקוד ונדביק אותן בקובץ הסקריפט שלנו.</p>
+נעתיק את שורות הקוד מחלונית הקוד ונדביק אותן בקובץ הסקריפט שלנו - ואז
+נריץ אותן מתוך הקובץ.</p>
 <p>שורת הקוד הראשונה מייבאת את החבילה שנדרשת לצורך הייבוא, השנייה מבצעת
 את הייבוא בפועל והשלישית פותחת עבורנו את הטבלה שייבאנו לצפייה. כשאנו
 מעתיקים את הקוד לסקריפט בדרך כלל נעדיף להשמיט את השורה השלישית.</p>
@@ -353,11 +365,20 @@ print(df1)</code></pre>
 <p>קובץ נתונים זה מתאר את ציוניהם של 2466 משתתפים בשאלון המודד “need for
 cognition” - מידת הצורך . שאנשים מרגישים להבין את העולם סביבם. בפרק הבא
 נציץ אל תוך טבלה זו ונבין את המבנה שלה.</p>
+<div class="panel panel-default tutorial-question-container">
+<div data-label="Q2" class="tutorial-question panel-body">
+<div id="Q2-answer_container" class="shiny-html-output"></div>
+<div id="Q2-message_container" class="shiny-html-output"></div>
+<div id="Q2-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 <div id="section-ייצוא-טבלאות" class="section level3">
 <h3>ייצוא טבלאות</h3>
-<p>לפני שנעבור לפרק הבא נציין את האופן בו נוכל לייצא קבצים מתוך R. ישנם
-מספר דרכים לייצוא נתונים מתוך R, אך הפשוטה שבהם כוללת ייצוא של טבלאות
-לקבצי CSV.</p>
+<p>לפני שנעבור לפרק הבא נציין את האופן בו נוכל לייצא קבצים מתוך R. פעולה
+זו מתבקשת לאחר שייבאנו טבלה, ערכהו אותה - ואנחנו רוצים לשתף אץ הטבלה
+הערוכה עם אנשים אחרים. כדי לשתף אותה נשמור אותה חזרה לקובץ csv אותו נוכל
+לשלוח למי שנרצה.</p>
 <p>:הייצוא נעשה באמצעות הפקודה הבא:</p>
 <pre class="r"><code>write.csv(df1, &quot;export dataframe example.csv&quot;)</code></pre>
 <p>בדוגמה זו ייצאנו את הטבלה df1 שנמצאת בסביבת העבודה שלנו ושמרנו אותה
@@ -385,10 +406,11 @@ setwd(new_working_directory)</code></pre>
 </div>
 <div id="section-בחינה-ראשונית-של-טבלה-מיובאת" class="section level3">
 <h3>בחינה ראשונית של טבלה מיובאת</h3>
-<p>ישנן מספר פונקציות בסיסיות בR המאפשרות לנו להבין את המבנה והתוכן של
-טבלה מבלי לעבור על כולה. במידה ואנחנו מתעסקים בטבלה שייבאנו, אנחנו לרוב
-נצטרך להזכיר לעצמנו מה האורך של הטבלה, מה הן העמודות שבה, איך קוראים להם
-וכו’ לפני שנוכל להתחיל לעבוד איתה.</p>
+<p>ייבאנו טבלת נתונים - מה עכשיו?</p>
+<p>בדרך כלל אחרי שנייבא טבלת נתונים נצטרך קודם כל להזכיר לעצמנו את המבנה
+שלה - איך קוראים לעמודות? מה הם מכיליות? כמה תצפיות הטבלה מכילה ?
+וכו’</p>
+<p>יש כמה פונקציות בR שיכולות לעזור לנו בכך.</p>
 <div id="section-מימדי-הטבלה" class="section level4">
 <h4>מימדי הטבלה</h4>
 <p>בקטע הקוד הבא ישנן מספר פונקציות המאפשרות לנו לגלות את מספר השורות
@@ -400,7 +422,7 @@ data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
 <pre class="text"><code># ייבאנו מראש את הקובץ עם נתוני השאלון שטענתם בתרגיל הקודם
 # כעת נייצר עותק שלו ונבין את המבנה שלו
-table1 = need_for_cognition
+table1 = nfc
 
 
 # מספר השורות והעמודות שבטבלה שייבאנו
@@ -423,11 +445,11 @@ id="section-צפייה-בתמצית-הטבלה-שמות-העמודות-ובשו�
 class="section level4">
 <h4>צפייה בתמצית הטבלה, שמות העמודות ובשורות הראשונות / אחרונות</h4>
 <p>בנוסף, ישנן מספר פונקציות שיאפשרו לנו לבצע הצצה ראשונית אל תוך התוכן
-של הטבלה. פונקציות אלו שימושיות במיוחד כשאנחנו טוענים נתונים שאנחנו לא
-בטוחים איך הם מסודרים ו/או מה כל עמודה מכילה.</p>
-<p>מתוכן, יש לנו פונקציות המאפשרות לבצע חיתוך מהיר של השורות הראשונות או
-האחרונות בטבלה (head ו tail), פונקציות שמסכמות לנו את הנתונים בכל עמודה
-ופונקציה ששולפת את שמות העמודות של הטבלה.</p>
+של הטבלה. פונקציות אלו שימושיות במיוחד כשאנחנו טוענים טבלאות
+גדולות,שיהיה קשה לנו לעבור עליהן בשלמותן.</p>
+<p>שורות הקוד הבאות מדגימות פונקציות המאפשרות לבצע חיתוך מהיר של השורות
+הראשונות או האחרונות בטבלה (head ו tail), פונקצייה שמסכמת את הנתונים בכל
+עמודה ופונקציה ששולפת את שמות העמודות של הטבלה.</p>
 <div class="tutorial-exercise" data-label="summary_and_names"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
@@ -465,11 +487,11 @@ print(colnames)</code></pre>
 <h2>תרגיל</h2>
 <p>ייבאנו עבורכם את הנתונים מהקובץ need_for_cognition.csv ושמרנו אותם
 בטבלה הנקראת “table1”.</p>
-<p>השלימו את קטעי הקוד הבאים בהתאם להוראות שבהערות:</p>
+<p>השלימו את קטעי הקוד הבאים בהתאם להוראות שבהערות: *</p>
 <div class="tutorial-exercise" data-label="exercise" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0"
 data-pipe="|&gt;">
-<pre class="text"><code>table1 = need_for_cognition
+<pre class="text"><code>table1 = nfc
 
 # הדפיסו את שמות העמודות בטבלה
 column_names = ___________
@@ -646,22 +668,55 @@ learnr:::store_exercise_cache(structure(list(label = "df3", global_setup = struc
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "logicals", question = structure("מה קורה כשאתם משנים ערך אחד של עמודה מספרית לערך מסוג character?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_b370abf", 
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "Q1", question = structure("מה קורה כשאתם משנים ערך אחד של עמודה מספרית (למשל - ציון המסוגלות העצמית) לערך מסוג character?", html = TRUE, class = c("html", 
+"character")), answers = list(structure(list(id = "lnr_ans_c4ca02", 
     option = "מקבלים הודעת שגיאה", value = "מקבלים הודעת שגיאה", 
     label = structure("מקבלים הודעת שגיאה", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_db78486", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_f739095", 
     option = "הערך הופך להיות מסוג numeric", 
     value = "הערך הופך להיות מסוג numeric", 
     label = structure("הערך הופך להיות מסוג numeric", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_b395f04", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_5cf4477", 
     option = "העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", 
     value = "העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", 
     label = structure("העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_edc1376", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_42c2e3d", 
+    option = "העמודה כולה הופכת להיות מסוג character", 
+    value = "העמודה כולה הופכת להיות מסוג character", 
+    label = structure("העמודה כולה הופכת להיות מסוג character", html = TRUE, class = c("html", 
+    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
+"character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
+"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
+"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), message = NULL, post_message = NULL), ids = list(
+    answer = "Q1-answer", question = "Q1"), loading = NULL, random_answer_order = FALSE, 
+    allow_retry = TRUE, seed = 1923355360.10437, options = list()), class = c("learnr_radio", 
+"tutorial_question")), session = session)
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "logicals", question = structure("<div style='direction: rtl;'>מה קורה כשאתם משנים ערך אחד של עמודה מספרית (למשל - ציון המסוגלות העצמית) לערך מסוג character?<\u002fdiv>", html = TRUE, class = c("html", 
+"character")), answers = list(structure(list(id = "lnr_ans_436f390", 
+    option = "מקבלים הודעת שגיאה", value = "מקבלים הודעת שגיאה", 
+    label = structure("מקבלים הודעת שגיאה", html = TRUE, class = c("html", 
+    "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_ae470dc", 
+    option = "הערך הופך להיות מסוג numeric", 
+    value = "הערך הופך להיות מסוג numeric", 
+    label = structure("הערך הופך להיות מסוג numeric", html = TRUE, class = c("html", 
+    "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_6e99a39", 
+    option = "העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", 
+    value = "העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", 
+    label = structure("העמודה מכילה גם ערכים מסוג numeric וגם ערך אחד מסוג character", html = TRUE, class = c("html", 
+    "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_ec126de", 
     option = "העמודה כולה הופכת להיות מסוג character", 
     value = "העמודה כולה הופכת להיות מסוג character", 
     label = structure("העמודה כולה הופכת להיות מסוג character", html = TRUE, class = c("html", 
@@ -673,19 +728,19 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "logicals-answer", question = "logicals"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 397219008.31503, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 832185282.112484, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
-
-
+ 
 <script type="application/shiny-prerendered" data-context="server">
 `tutorial-exercise-df4-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df4-code-editor`)), session)
 output$`tutorial-exercise-df4-output` <- renderUI({
   `tutorial-exercise-df4-result`()
 })
 </script>
- 
+
+
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "df4", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "", "tutorial_options(", "  exercise.timelimit = 60,", 
@@ -731,15 +786,15 @@ learnr:::store_exercise_cache(structure(list(label = "df4", global_setup = struc
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
-
-
+ 
 <script type="application/shiny-prerendered" data-context="server">
 `tutorial-exercise-df5-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df5-code-editor`)), session)
 output$`tutorial-exercise-df5-output` <- renderUI({
   `tutorial-exercise-df5-result`()
 })
 </script>
- 
+
+
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "df5", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "", "tutorial_options(", "  exercise.timelimit = 60,", 
@@ -751,7 +806,7 @@ learnr:::store_exercise_cache(structure(list(label = "df5", global_setup = struc
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "df5", code = "\n# חיתוך עמודת הערים מתוך הטבלה\nprint(df1$city)\n\n# יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים\ndf1$age = c(21,35,42,32,24,19)\n\n# דריסת עמודת הערים\ndf1$city = c(\"Haifa\",\"Be'er-Sheva\",\"Jerusalem\",\"Be'er-Sheva\",\"Jerusalem\",\"Acre\")\n\n\n# יצירת עמודות על סמך עמודות קיימות\ndf1$age_in_months = df1$age * 12\ndf1$age_over_25 = df1$age > 25\ndf1$age_relative_to_mean = df1$age  -  mean(df1$age )\n\n\nprint(df1)\n", 
+        list(label = "df5", code = "\n# חיתוך עמודת הערים מתוך הטבלה\nprint(df1$city)\n\n# יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים\ndf1$age = c(21,35,42,32,24,19)\nprint(df1)\n\n# דריסת עמודת הערים\ndf1$city = c(\"Haifa\",\"Be'er-Sheva\",\"Jerusalem\",\"Be'er-Sheva\",\"Jerusalem\",\"Acre\")\nprint(df1)\n\n# יצירת עמודות על סמך עמודות קיימות\ndf1$se_above_2.5 = df1$self_efficacy_score > 2.5\ndf1$se_sclae_1_to_100 = df1$self_efficacy_score * 20\ndf1$se_relative_to_mean = df1$self_efficacy_score  -  mean(df1$self_efficacy_score)\n\nprint(df1)\n", 
             opts = list(label = "\"df5\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
@@ -776,15 +831,31 @@ learnr:::store_exercise_cache(structure(list(label = "df5", global_setup = struc
         label = "df5", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-df1", code = c("", "# חיתוך עמודת הערים מתוך הטבלה", 
         "print(df1$city)", "", "# יצירת עמודה חדשה המכילה נתוני גיל עבור הנבדקים", 
-        "df1$age = c(21,35,42,32,24,19)", "", "# דריסת עמודת הערים", 
+        "df1$age = c(21,35,42,32,24,19)", "print(df1)", "", "# דריסת עמודת הערים", 
         "df1$city = c(\"Haifa\",\"Be'er-Sheva\",\"Jerusalem\",\"Be'er-Sheva\",\"Jerusalem\",\"Acre\")", 
-        "", "", "# יצירת עמודות על סמך עמודות קיימות", 
-        "df1$age_in_months = df1$age * 12", "df1$age_over_25 = df1$age > 25", 
-        "df1$age_relative_to_mean = df1$age  -  mean(df1$age )", 
-        "", "", "print(df1)", ""), out.width.px = 624, out.height.px = 384, 
+        "print(df1)", "", "# יצירת עמודות על סמך עמודות קיימות", 
+        "df1$se_above_2.5 = df1$self_efficacy_score > 2.5", "df1$se_sclae_1_to_100 = df1$self_efficacy_score * 20", 
+        "df1$se_relative_to_mean = df1$self_efficacy_score  -  mean(df1$self_efficacy_score)", 
+        "", "print(df1)", ""), out.width.px = 624, out.height.px = 384, 
         params.src = "df5, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = \"prepare-df1\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "Q2", question = structure("מה הגיל של הנבדקת הראשונה בקובץ שייבאתם?", html = TRUE, class = c("html", 
+"character")), answers = list(structure(list(id = "lnr_ans_4217716", 
+    option = "19", value = "19", label = structure("19", html = TRUE, class = c("html", 
+    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
+"character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
+"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
+"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), message = NULL, post_message = NULL), ids = list(
+    answer = "Q2-answer", question = "Q2"), loading = NULL, random_answer_order = FALSE, 
+    allow_retry = TRUE, seed = 2033811035.55293, options = list()), class = c("learnr_text", 
+"tutorial_question")), session = session)
 </script>
 
 
@@ -858,7 +929,7 @@ learnr:::store_exercise_cache(structure(list(label = "dimensions", global_setup 
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "dimensions", code = "\n# ייבאנו מראש את הקובץ עם נתוני השאלון שטענתם בתרגיל הקודם\n# כעת נייצר עותק שלו ונבין את המבנה שלו\ntable1 = need_for_cognition\n\n\n# מספר השורות והעמודות שבטבלה שייבאנו\ndim(table1)\n\n# מספר השורות\nnrow(table1)\n\n# מספר העמודות\nncol(table1)\n\n\n# שימוש במספר השורות כדי לייצר עמודה חדשה  \ntable1$subject_index = 1:nrow(table1)\n", 
+        list(label = "dimensions", code = "\n# ייבאנו מראש את הקובץ עם נתוני השאלון שטענתם בתרגיל הקודם\n# כעת נייצר עותק שלו ונבין את המבנה שלו\ntable1 = nfc\n\n\n# מספר השורות והעמודות שבטבלה שייבאנו\ndim(table1)\n\n# מספר השורות\nnrow(table1)\n\n# מספר העמודות\nncol(table1)\n\n\n# שימוש במספר השורות כדי לייצר עמודה חדשה  \ntable1$subject_index = 1:nrow(table1)\n", 
             opts = list(label = "\"dimensions\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
@@ -883,7 +954,7 @@ learnr:::store_exercise_cache(structure(list(label = "dimensions", global_setup 
         label = "dimensions", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-df1", code = c("", "# ייבאנו מראש את הקובץ עם נתוני השאלון שטענתם בתרגיל הקודם", 
         "# כעת נייצר עותק שלו ונבין את המבנה שלו", 
-        "table1 = need_for_cognition", "", "", "# מספר השורות והעמודות שבטבלה שייבאנו", 
+        "table1 = nfc", "", "", "# מספר השורות והעמודות שבטבלה שייבאנו", 
         "dim(table1)", "", "# מספר השורות", "nrow(table1)", 
         "", "# מספר העמודות", "ncol(table1)", "", 
         "", "# שימוש במספר השורות כדי לייצר עמודה חדשה  ", 
@@ -965,7 +1036,7 @@ learnr:::store_exercise_cache(structure(list(label = "exercise", global_setup = 
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "exercise", code = "\ntable1 = need_for_cognition\n\n# הדפיסו את שמות העמודות בטבלה\ncolumn_names = ___________\nprint(column_names)\n\n# כעת, יצרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט העמודה הראשונה והעמודה הנקראה \"attention_check\"\ntable2 = _________\n\n# וודאו שלטבלה החדה יש את מספר השורות ומספר העמודות הנדרשות (100 שורות ו9 עמודות)\nnumber_of_columns =  ________\nnumber_of_rows = _________\n\nprint(paste(\"table2 has\",number_of_columns,\"columns and\",number_of_rows,\"rows\"))\n\n# בטבלה ישנן 2 עמודות המציגות ציונים עבור שאלות שהינן בכיוון ההפוך ביחס לשאר השאלון \n# לפני שנוכל לחשב את המדד המשוכלל עבור השאלון נצטרך להפוך אותן חזרה\n# ייצרו 3 עמודות חדשות עבור שאלות 02, 03 ו 06 שיכילו את הציון ההפוך לציון בעמודות המקוריות\n# מאחר וציוני השאלון נעים בין 1 ל5, על מנת להפוך את הציון עלינו להחסיר את הציון המקורי מ6\n# new column = 6 - old column\n# מומלץ להיעזר בפקד ה$ כדי להגדיר את העמודות החדשות ולשלוף את ערכיהן של העמודות הישנות\n# קראו לעמודות החדשות לפי שמות העמודות הישנות, אך ללא תוספת האות r\n  \n\n\n\n# כעת, ייצרו עמודה חדשה שתכיל את סכום ששת העמודות עבור כל נבדק\n\n# שלפו את עמודה זו ושמרו אותה באובייקט הבא:\nnfc_score_column = \n  ", 
+        list(label = "exercise", code = "\ntable1 = nfc\n\n# הדפיסו את שמות העמודות בטבלה\ncolumn_names = ___________\nprint(column_names)\n\n# כעת, יצרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט העמודה הראשונה והעמודה הנקראה \"attention_check\"\ntable2 = _________\n\n# וודאו שלטבלה החדה יש את מספר השורות ומספר העמודות הנדרשות (100 שורות ו9 עמודות)\nnumber_of_columns =  ________\nnumber_of_rows = _________\n\nprint(paste(\"table2 has\",number_of_columns,\"columns and\",number_of_rows,\"rows\"))\n\n# בטבלה ישנן 2 עמודות המציגות ציונים עבור שאלות שהינן בכיוון ההפוך ביחס לשאר השאלון \n# לפני שנוכל לחשב את המדד המשוכלל עבור השאלון נצטרך להפוך אותן חזרה\n# ייצרו 3 עמודות חדשות עבור שאלות 02, 03 ו 06 שיכילו את הציון ההפוך לציון בעמודות המקוריות\n# מאחר וציוני השאלון נעים בין 1 ל5, על מנת להפוך את הציון עלינו להחסיר את הציון המקורי מ6\n# new column = 6 - old column\n# מומלץ להיעזר בפקד ה$ כדי להגדיר את העמודות החדשות ולשלוף את ערכיהן של העמודות הישנות\n# קראו לעמודות החדשות לפי שמות העמודות הישנות, אך ללא תוספת האות r\n  \n\n\n\n# כעת, ייצרו עמודה חדשה שתכיל את סכום ששת העמודות עבור כל נבדק\n\n# שלפו את עמודה זו ושמרו אותה באובייקט הבא:\nnfc_score_column = \n  ", 
             opts = list(label = "\"exercise\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
@@ -988,7 +1059,7 @@ learnr:::store_exercise_cache(structure(list(label = "exercise", global_setup = 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
         label = "exercise", exercise = TRUE, exercise.eval = FALSE, 
-        exercise.setup = "prepare-df1", code = c("", "table1 = need_for_cognition", 
+        exercise.setup = "prepare-df1", code = c("", "table1 = nfc", 
         "", "# הדפיסו את שמות העמודות בטבלה", 
         "column_names = ___________", "print(column_names)", 
         "", "# כעת, יצרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט העמודה הראשונה והעמודה הנקראה \"attention_check\"", 
