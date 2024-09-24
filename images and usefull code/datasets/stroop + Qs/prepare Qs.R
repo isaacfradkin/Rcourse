@@ -14,10 +14,6 @@ stroop_summ = stroop_data %>% group_by(session_id) %>%
 
 
 
-
-
-
-
 Qs <- read_csv("inst/tutorials/datasets/stroop + Qs/Qs edited.csv")
 
 nfc = Qs %>% filter(!is.na(session_id)) %>%

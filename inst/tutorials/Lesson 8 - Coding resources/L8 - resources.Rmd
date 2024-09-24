@@ -1,5 +1,5 @@
 ---
-title: "Lesson 4: dplyr" 
+title: "Lesson 8: resources" 
 output:
   learnr::tutorial:
     progressive: true
@@ -228,3 +228,23 @@ df1_summary = df1 %>%
 צריך להיעשות בזהירות - חייבים להבין מה הוא עושה
 
 אחרת הוא הרבה פעמים ייעשה דברים שונים
+
+
+
+
+## הגשה
+
+  עברו על הקובץ וודאו שהגשתם את כל התרגילים ועניתם על כל השאלות
+  
+  במידה וכל התשובות שלכם תקינות יש ללחוץ על הכפתור:  Generate, להעתיק את הטקסט שמופיע בחלון למטה ולהגישו במודל  
+  בהצלחה!
+
+```{r context="server"}
+learnrhash::encoder_logic()
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui()
+```
+
+
