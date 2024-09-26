@@ -7,7 +7,9 @@ output:
 runtime: shiny_prerendered  
 
 description: >
+  <div style='direction: rtl;'>
  בשיעור זה נלמד לעבוד עם טבלאות בR. נלמד על חיתוכים, יצירת עמודות חדשות ועריכת עמודות קיימות. נלמד גם כיצד לייבא קבצים מסוג csv ולערוך אותם בR.
+ </div>
 
 editor_options: 
   markdown: 

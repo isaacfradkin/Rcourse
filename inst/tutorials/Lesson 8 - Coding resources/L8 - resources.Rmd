@@ -4,6 +4,11 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: false
+    
+description: >
+  <div style='direction: rtl;'>
+ השיעור נוגע בעזרים חיצוניים שניתן להשתמש בהם בעת ניתוח נתונים בR. נדבר על תיעוד נלווה, בלוגים ופורומים אינטרנטיים ושימוש בבינה מלאכותית.
+  </div>
      
 runtime: shiny_prerendered  
 editor_options: 

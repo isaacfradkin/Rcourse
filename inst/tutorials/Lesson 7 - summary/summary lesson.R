@@ -32,7 +32,6 @@ first_summary = stroop_data %>% group_by(session_id) %>%
 
 
 
-
 ### סינון תצפיות בעייתיות
 
 # היסטוגרמת זמני תגובה 
@@ -59,6 +58,14 @@ stroop_data_filtered = stroop_data_filtered %>% filter(correct)
 stroop_data_filtered$response_time %>% summary() # לא
 
 
+# סינון נבדקים עם אחוזי הצלחה נמוכים מדי
+rejected_subjects = first_summary  %>% filter(correct_percent<0.5) %>%
+  pull(session_id)
+
+stroop_data_filtered = stroop_data_filtered %>%
+  filter(!session_id %in% rejected_subjects)
+
+nrow(stroop_data_filtered)
 
 ### סיכום הנתונים
 
@@ -93,14 +100,29 @@ ggplot(stroop_subj_summary,aes(x = diff))+
   geom_histogram()+
   geom_vline(xintercept =0, linetype = 2)
 
-# חשבו את ממוצע ההפרשים עבור כל הנבדקים יחד ואת 
-# שימו לב לבטל את החלוקה לקבוצות
 
-stroop_mean_effect = stroop_subj_summary %>%
-  group_by() %>%
-  summarise(mean_diff = mean(diff),
-            CI_interval = t.test(diff)$conf.int %>% diff())
+# חשבו את ממוצע ההפרשים
 
+
+
+### סיכום המטלה
+
+#צרו טבלה אחת המסכמת את תוצאות המטלה עבור כל נבדק.
+# הטבלה צריכה לכלול את המספר המזהה של הנבדק, את אחוז הטעויות שלו ואת הפרש זמני התגובה שלו בין התנאים.
+
+stroop_subj_summary = stroop_subj_summary %>%
+  left_join(first_summary) %>%
+  select(session_id,correct_percent,diff)
+
+
+# צרו גרף המציג את הקשר בין אחוז הטעויות לבין ההפרש בזמני התגובה
+# האם נראה קשר בין המשתנים?
+
+ggplot(stroop_subj_summary, aes(x = correct_percent, y = diff))+
+  geom_point()+
+  geom_smooth(method  = "lm")
+
+cor(stroop_subj_summary$correct_percent, stroop_subj_summary$diff)
 
 
 ## חלק ראשון - חישוב ציוני השאלון
@@ -116,14 +138,24 @@ Qs <- read_csv("inst/tutorials/datasets/stroop + Qs/Qs edited.csv")
 # חשבו את הציון הממוצע עבור כל נבדק
 
 Qs = Qs %>% mutate(attention_check = ifelse(grepl("read",attentioncorrect),1,0) )
+nrow(Qs)
 
-intr = Qs %>% filter(attention_check == 1) %>%
-  select(contains("nfc"), session_id, age)
+intr = Qs %>% #filter(attention_check == 1) %>%
+  mutate( nfc = nfc_01 - nfc_02r - nfc_03r + nfc_04+ nfc_05- nfc_06r,
+          intr = intrinsic_01 + intrinsic_02 + intrinsic_03 + intrinsic_04 + intrinsic_05 - intrinsic_06r-
+            intrinsic_07r + intrinsic_08 + intrinsic_09 + intrinsic_10 + intrinsic_11 + intrinsic_12+
+            intrinsic_13 + intrinsic_14 +intrinsic_15,
+          age = as.numeric(age),
+          gender = ifelse(gender=="1","1",ifelse(gender=="2","2",NA))
+          ) %>%
+  mutate(age = ifelse(age<17,NA,
+                      ifelse(age>100,NA,age))) %>%
+  select(nfc,intr, session_id, age, gender)
 
-intr = intr %>% mutate(intr = nfc_01 - nfc_02r - nfc_03r + nfc_04+ nfc_05- nfc_06r) %>%
-  filter(intr<50)
+nrow(intr)
+
   
-int_subj = intr %>% select(session_id,intr, age) 
+int_subj = intr 
 
 ggplot(intr,aes(x = intr))+ geom_histogram()
 
@@ -132,11 +164,14 @@ names(Qs)
 
 dff = full_join(stroop_subj_summary,int_subj )
 dff = full_join(dff,first_summary) %>%
-  drop_na() %>% filter(as.numeric(age)<50)
+  drop_na()
 
-ggplot(dff, aes(x = correct_percent, y = summ))+
-  geom_point()+
-  geom_smooth(method  = "lm")
+
+dfff = gather(dff, key = "measure", value = "value", correct_percent,diff)
+ggplot(dfff , aes(x = intr, y = value))+
+  geom_point(alpha = 0.2)+
+  geom_smooth(method  = "lm")+
+  facet_wrap(~measure, scales = "free")
 
 
 cor(dff$intr, dff$diff)

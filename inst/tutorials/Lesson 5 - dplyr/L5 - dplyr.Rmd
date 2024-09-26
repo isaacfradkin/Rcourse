@@ -7,17 +7,16 @@ output:
     
     
 description: >
- השיעור נוגע בפונקציות המאוגדות תחת החבילה dplyr. נלמד להשתמש בפונקציות כמו select, filter ועוד.
-     
+  <div style='direction: rtl;'>
+  השיעור נוגע בפונקציות המאוגדות תחת החבילה dplyr נלמד לסנן, לערוך ולסדר טבלאות, ולצרף יחד נתונים ממספר מקורות שונים.
+  </div>
+       
 runtime: shiny_prerendered  
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
-<!-- the above should be in the beginning of each lesson -->
-
-<!-- code to format so all text appears rtl (Hebrew) -->
 
 ```{=html}
 <style>
@@ -347,6 +346,11 @@ filtered_table2 = need_for_cognition %>%
 filtered_table3 = need_for_cognition %>% 
   filter(gender == "male") 
 
+# שליפת הנתונים של 3 נבדקים ספציפיים, על פי מספר מזהה
+
+filtered_table4 = need_for_cognition %>% 
+  filter(session_id %in% c(7392233, 7392875 , 7397497))
+
 ```
 
 שימו לב שבשבאחד המקרים השתמשנו במספר תנאים לוגיים ששולבו יחד. כשנרצה לבצע סינונים מורכבים נוכל לצרף כמה וכמה תנאים לכדי פעולה לוגית שתשאיר רק את השורות שאנחנו מעוניינים בהן.
@@ -359,7 +363,6 @@ filtered_table3 = need_for_cognition %>%
 filtered_table = need_for_cognition %>% 
   filter(gender == "male" | (gender == "female" & attention_check ==1))
 ```
-
 
 
 `תרגיל` : סננו את הקובץ כך שיכיל רק תצפיות של נשים מעל גיל 30 וגברים מעל
@@ -378,8 +381,11 @@ female_or_male_by_age = need_for_cognition %>%
 ```
 
 ```{r filter_exercise-check}
-grade_this_code() #****
+grade_this_code() 
 ```
+
+
+
 #### ערכים חסרים
 
 בעבודה עם נתוניים אמיתיים, שנאספו בניסוי או בסקר, במקרים רבים אנחנו נתקל
@@ -725,7 +731,7 @@ full_df =  bind_rows(df_partial1, df_partial2)
 במידה וישנן עמודות שקיימות רק באחת מהטבלאות, הפונקצייה תמלא את עמודה זו בערכים חסרים עבור כל התצפיות של הטבלה השנייה
 
 
-```{r e115, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-rbind"}
+```{r e116, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-rbind"}
 
 df_partial1_with_a = df_partial1 %>% mutate(extra_col = "a")
 
