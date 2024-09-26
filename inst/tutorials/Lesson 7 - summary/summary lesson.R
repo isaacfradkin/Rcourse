@@ -1,38 +1,13 @@
 
+#### עיבוד נתוני מטלת הסטרופ ####
 
-## מבוא
-
-
-## חלק ראשון - חישוב ציוני השאלון
-
-### ייבוא הטבלה
-
-Qs <- read_csv("inst/tutorials/datasets/stroop + Qs/Qs edited.csv")
-
-### חישוב ממוצע השאלון
-
-# הפכו את ציוני העמודות ההפוכות
-
-# חשבו את הציון הממוצע עבור כל נבדק
-
-Qs = Qs %>% mutate()
-
-### סינון תצפיות חריגות ובעייתיות
-
-# סננו נבדקים בעלי 
-
-### סיכומים תיאוריים
-
-## חלק שני - עיבוד תוצאות המטלה
 
 ## ייבוא 
 
-stroop_data <- read_excel("inst/tutorials/datasets/stroop + Qs/stroop_data.xlsx")
+stroop_data <- read_csv("csv files/stroop_data.csv")
 
 
-### עריכת נתונים
-
-# ייצרו 2 עמודות חדשות
+# צרו 2 עמודות חדשות:
 
 # correct
 # עמודה זו תקודד האם הנבדק השיב נכונה, כלומר - האם תגובת הנבדק תואמת ל*צבע* הגירוי
@@ -44,7 +19,19 @@ stroop_data <- read_excel("inst/tutorials/datasets/stroop + Qs/stroop_data.xlsx"
 
 stroop_data = stroop_data %>% 
   mutate(condition = ifelse(text == color,
-                            "congruent","incogruent"))
+                            "congruent","incogruent"),
+         correct = response == color)
+
+
+# סיכום ראשוני
+
+first_summary = stroop_data %>% group_by(session_id) %>%
+  summarise(trials = n(),
+            מ_congruent = sum(ifelse(condition == "congruent",1,0)),
+            correct_percent = mean(ifelse(correct,1,0)))
+
+
+
 
 ### סינון תצפיות בעייתיות
 
@@ -55,28 +42,26 @@ ggplot(stroop_data, aes(x = response_time))+
   xlim(lims = c(0,5000))
 
 # מהו לדעתכם הרף העליון הסביר לזמני התגובה?
-# סננו את הטבלה כך שתכיל רק זמני תגובה סבירים
+# סננו את הטבלה כך שתכיל רק זמני תגובה הקטנים מ3000 מילי שניות
 # כמה תצפיות סיננתם?
 
-stroop_data_filtered = stroop_data %>% filter(response_time<5000)
+stroop_data_filtered = stroop_data %>% filter(response_time<3000)
 
 nrow(stroop_data) - nrow(stroop_data_filtered)
+
+# בנוסף, סננו מהטבלה גם את כל הסבבים בהם הנבדקים טעו
+
+stroop_data_filtered = stroop_data_filtered %>% filter(correct)
+
 
 # האם הקובץ מכיל ערכים חסרים?
 
 stroop_data_filtered$response_time %>% summary() # לא
 
 
+
 ### סיכום הנתונים
 
-# סכמו את הנתונים עבור כל נבדק
-# חשבו את אחוז הסבבים בהם הוא ענה נכונה, 
-# ואת מספר הסבבים בה הוצג לו גירוי בו הצבע תואם את הטקסט
-
-stroop_general_summary = stroop_data_filtered %>%
-  group_by(session_id) %>%
-  summarise(correct_percent = mean(correct),
-          n_congruent     = sum(condition == "congruent"))
 
 # כעת סכמו את הנתונים עבור כל תנאי, עבור כל נבדק
 # הסירו את הסבבים בהם הנבדק טעה
@@ -98,7 +83,8 @@ stroop_subj_summary = stroop_summary %>%
 # הוסיפו לטבלה עמודה ובה ההפרש בממוצע זמני התגובה בין תצפיות תואמות לבלתי תואמות
 
 stroop_subj_summary  = stroop_subj_summary  %>%
-  mutate(diff = congruent - incogruent)
+  mutate(diff = congruent - incogruent,
+         summ = mean(congruent ,incogruent))
 
 # צרו היסטוגרמה עבור ההפרשים והוסיפו קו אנכי בערך 0
 # מהתרשמותכם - האם זה נראה שנבדקים נוטים להגיב לאט יותר באחד התנאים?
@@ -115,11 +101,61 @@ stroop_mean_effect = stroop_subj_summary %>%
   summarise(mean_diff = mean(diff),
             CI_interval = t.test(diff)$conf.int %>% diff())
 
-# צרו תרשים עם עמודה + קוי טעות עבור הסיכום שיצרתם
 
-ggplot(stroop_mean_effect, aes(y = mean_diff))+
-  geom_col(x = "1")+
-  geom_errorbar(aes()) # ***
+
+## חלק ראשון - חישוב ציוני השאלון
+
+### ייבוא הטבלה
+
+Qs <- read_csv("inst/tutorials/datasets/stroop + Qs/Qs edited.csv")
+
+### חישוב ממוצע השאלון
+
+# הפכו את ציוני העמודות ההפוכות
+
+# חשבו את הציון הממוצע עבור כל נבדק
+
+Qs = Qs %>% mutate(attention_check = ifelse(grepl("read",attentioncorrect),1,0) )
+
+intr = Qs %>% filter(attention_check == 1) %>%
+  select(contains("nfc"), session_id, age)
+
+intr = intr %>% mutate(intr = nfc_01 - nfc_02r - nfc_03r + nfc_04+ nfc_05- nfc_06r) %>%
+  filter(intr<50)
+  
+int_subj = intr %>% select(session_id,intr, age) 
+
+ggplot(intr,aes(x = intr))+ geom_histogram()
+
+names(Qs)
+
+
+dff = full_join(stroop_subj_summary,int_subj )
+dff = full_join(dff,first_summary) %>%
+  drop_na() %>% filter(as.numeric(age)<50)
+
+ggplot(dff, aes(x = correct_percent, y = summ))+
+  geom_point()+
+  geom_smooth(method  = "lm")
+
+
+cor(dff$intr, dff$diff)
+
+
+psych::alpha (Qs %>% filter(attention_check == 1) %>%
+  select(contains("intr")),check.keys=TRUE )
+### סינון תצפיות חריגות ובעייתיות
+
+# סננו נבדקים בעלי 
+
+### סיכומים תיאוריים
+
+## חלק שני - עיבוד תוצאות המטלה
+
+
+
+### עריכת נתונים
+
 
 ## שילוב הנתונים
 

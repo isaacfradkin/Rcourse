@@ -6,6 +6,9 @@ output:
     allow_skip: false
 runtime: shiny_prerendered  
 
+description: >
+ בשיעור זה נלמד לעבוד עם טבלאות בR. נלמד על חיתוכים, יצירת עמודות חדשות ועריכת עמודות קיימות. נלמד גם כיצד לייבא קבצים מסוג csv ולערוך אותם בR.
+
 editor_options: 
   markdown: 
     wrap: 72
@@ -35,18 +38,10 @@ p {
 ```{r setup, include=FALSE}
 library(learnr)
 library(gradethis)
+library(Rcourse)
 
 tutorial_options(
-  exercise.timelimit = 60,
-  # A simple checker function that just returns the message in the check chunk
-  exercise.checker = function(check_code, ...) {
-    list(
-      message = eval(parse(text = check_code)),
-      correct = logical(0),
-      type = "info",
-      location = "append"
-    )
-  }
+  exercise.timelimit = 60
 )
 
 knitr::opts_chunk$set(error = TRUE)
@@ -500,21 +495,21 @@ need_for_cognition$subject_index = 1:nrow(need_for_cognition)
 הטבלה והעמודות שהיא מכילה. הן מאפשרות לנו להבין באופן גס מה כלול בכל עמודה ולהיזכר בכותרות של העמודות השונות.
 
 
-```{r summary_and_names, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = "prepare-df1"}
+```{r}
 
 # שליפת השורות הראשונות. ברירת המחדל היא 6 שורות, אך ניתן גם לבקש מספר אחר של שורות
 head(need_for_cognition)
 head(need_for_cognition,4)
 
 # סוף הטבלה
-tail( need_for_cognition) # גם בפונקציה זו אפשר לבקש מספר שורות שונה, אך ברירת המחדל היא 6
+tail(need_for_cognition) # גם בפונקציה זו אפשר לבקש מספר שורות שונה, אך ברירת המחדל היא 6
 
 # סיכום בסיסי של כל עמודה בטבלה, בהתאם לסוג העמודה
 summary(need_for_cognition)
 
 # שליפת שמות העמודות 
 col_names = names(need_for_cognition)
-print(colnames)
+print(col_names)
 
 ```
 
@@ -526,13 +521,12 @@ print(colnames)
 
 בסיום העבודה, העתיקו את הקוד שכתבתם חזרה לחלונית הקוד, למעט שורות הקוד העוסקות בייבוא הנתונים (הטבלה כבר טענה מראש, תחת השם "need_for_cognition").
 
-הגישו את תשובותיכם **
 
 ```{r summary_exercise, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = "prepare-df1"}
 library(readr)
 
 # הורידו את הקובץ מהמודל וייבוא אותו לסביבת העבודה שלכם
-need_for_cogition = ___________________    # מחקו שורה זו בהעתקה חזרה לחלונית הקוד
+need_for_cognition = ___________________    # מחקו שורה זו בהעתקה חזרה לחלונית הקוד
 
 
 # הדפיסו את שמות העמודות בטבלה
