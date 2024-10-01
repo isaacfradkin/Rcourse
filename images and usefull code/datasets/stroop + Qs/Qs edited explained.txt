@@ -1,0 +1,21 @@
+data from
+https://osf.io/ct89g/?view_only=
+
+
+
+Questionaire data. all quite self explanetory
+
+
+reveresed questions ahve an added r to their name
+
+Questionnaires:
+
+big 5: 	1-7 	big 5, some reversed		10 items
+elm  ?
+gender: 	1 - male	 2 - female
+intrinsic:	 1-4	intrinsic motivation at workplace	15 items
+major: 	text
+mood:	1-7	both reversed
+nfc:	1-5	need for cognition	
+selfesteem: 	1-7	 single item	"I have high self-esteem" 		not very true of me - very true of me
+stress:	1-5	higher scores = more stress

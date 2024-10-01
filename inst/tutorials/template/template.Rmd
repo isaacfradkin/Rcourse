@@ -1,0 +1,136 @@
+---
+title: "Your Tutorial Title"
+author: "Your Name"
+output:
+  learnr::tutorial:
+    theme: cosmo   # Choose a Bootstrap theme
+    highlight: tango  # Syntax highlighting theme
+    css: styles.css  # Custom CSS file for additional styling
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{html}
+<style>
+/* General Body Styling */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Code blocks */
+pre, code {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Buttons */
+.btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+.btn:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Quizzes and Exercises */
+.learnr-exercise, .learnr-quiz {
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+```
+
+## Topic 1
+
+### Exercise 
+
+*Here's a simple exercise with an empty code chunk provided for entering the answer.*
+
+Write the R code required to add two plus two:
+
+```{r two-plus-two, exercise=TRUE}
+
+```
+
+### Exercise with Code
+
+*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
+
+Now write a function that adds any two numbers and then call it:
+
+```{r add-function, exercise=TRUE, exercise.lines = 5}
+add <- function() {
+  
+}
+```
+
+## Topic 2
+
+### Exercise with Hint
+
+*Here's an exercise where the chunk is pre-evaluated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
+
+Modify the following code to limit the number of rows printed to 5:
+
+```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
+mtcars
+```
+
+```{r print-limit-hint}
+head(mtcars)
+```
+
+### Quiz
+
+*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
+
+Some questions to verify that you understand the purposes of various base and recommended R packages:
+
+```{r quiz}
+quiz(
+  question("Which package contains functions for installing other R packages?",
+    answer("base"),
+    answer("tools"),
+    answer("utils", correct = TRUE),
+    answer("codetools")
+  ),
+  question("Which of the R packages listed below are used to create plots?",
+    answer("lattice", correct = TRUE),
+    answer("tools"),
+    answer("stats"),
+    answer("grid", correct = TRUE)
+  )
+)
+```
+

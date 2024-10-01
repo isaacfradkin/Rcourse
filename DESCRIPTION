@@ -15,6 +15,9 @@ Suggests:
 Imports: 
     gradethis (>= 0.2.14),
     learnrhash (>= 0.2.0)
-Remotes:  
+Remotes: 
     rundel/learnrhash,
     rstudio-education/gradethis
+Depends: 
+    R (>= 2.10)
+LazyData: true
