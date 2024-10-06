@@ -4,17 +4,19 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: false
-runtime: shiny_prerendered  
-
+    
+    
 description: >
   <div style='direction: rtl;'>
- בשיעור זה נלמד לעבוד עם טבלאות בR. נלמד על חיתוכים, יצירת עמודות חדשות ועריכת עמודות קיימות. נלמד גם כיצד לייבא קבצים מסוג csv ולערוך אותם בR.
- </div>
-
+  בשיעור זה נלמד לעבוד עם טבלאות וקבצי נתונים. נלמד איך מייבאים קבצי נתונים ואיך משתמשים בהם
+  </div>
+       
+runtime: shiny_prerendered  
 editor_options: 
   markdown: 
     wrap: 72
 ---
+
 
 ```{=html}
 <style>
