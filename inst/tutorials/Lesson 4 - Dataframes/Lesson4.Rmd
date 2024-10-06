@@ -4,13 +4,14 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: false
-runtime: shiny_prerendered  
+
 
 description: >
-  <div style='direction: rtl;'>
+ <div style='direction: rtl;'>
  בשיעור זה נלמד לעבוד עם טבלאות בR. נלמד על חיתוכים, יצירת עמודות חדשות ועריכת עמודות קיימות. נלמד גם כיצד לייבא קבצים מסוג csv ולערוך אותם בR.
  </div>
-
+ 
+runtime: shiny_prerendered  
 editor_options: 
   markdown: 
     wrap: 72
@@ -28,13 +29,17 @@ p {
 .text-block1 {
   direction: rtl;       /* Set text direction to right-to-left */
   text-align: right;
-  background-color: #f0f0f0; /* Light grey background */
+  background-color: #e7f3fe; /* Light grey background */
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd; /* Light border */
   margin: 10px 0; /* Space around the block */
+}
   
+
 </style>
+
+
 ```
 
 ```{r setup, include=FALSE}

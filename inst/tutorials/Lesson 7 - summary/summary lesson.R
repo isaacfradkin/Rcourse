@@ -1,3 +1,8 @@
+# יבוא חבילות
+library(tidyverse)
+library(ggplot2)
+
+
 
 #### עיבוד נתוני מטלת הסטרופ ####
 
@@ -5,6 +10,11 @@
 ## ייבוא 
 
 stroop_data <- read_csv("csv files/stroop_data.csv")
+
+
+# תחילה -הדפיסו את צפו בשורות הראשונות בטבלה כדי להבין אילו עמודות קיימות בטבלה ואילו ערכים נמצאים בהן.
+
+head(stroop_data)
 
 
 # צרו 2 עמודות חדשות:
@@ -38,7 +48,7 @@ first_summary = stroop_data %>% group_by(session_id) %>%
 
 ggplot(stroop_data, aes(x = response_time))+
   geom_histogram()+
-  xlim(lims = c(0,5000))
+  xlim(lims = c(0,5000)) # תוספת לצמצום הטווח בציר האיקס
 
 # מהו לדעתכם הרף העליון הסביר לזמני התגובה?
 # סננו את הטבלה כך שתכיל רק זמני תגובה הקטנים מ3000 מילי שניות
@@ -70,9 +80,7 @@ nrow(stroop_data_filtered)
 ### סיכום הנתונים
 
 
-# כעת סכמו את הנתונים עבור כל תנאי, עבור כל נבדק
-# הסירו את הסבבים בהם הנבדק טעה
-# ואז סכמו את ממוצע זמן התגובה
+# כעת סכמו את ממוצע זמן התגובה עבור כל תנאי, עבור כל נבדק
 
 stroop_summary = stroop_data_filtered%>%
   filter( correct == 1) %>%
@@ -120,12 +128,25 @@ stroop_subj_summary = stroop_subj_summary %>%
 
 ggplot(stroop_subj_summary, aes(x = correct_percent, y = diff))+
   geom_point()+
-  geom_smooth(method  = "lm")
+  geom_smooth(method  = "lm")+
+  xlim(c(0.8,1))
 
-cor(stroop_subj_summary$correct_percent, stroop_subj_summary$diff)
 
 
-## חלק ראשון - חישוב ציוני השאלון
+# צרו גם תרשים עמודות המציג עמודה אחת עבור זמן התגובה בתנאי התואם ועמודה נוספת עבור 
+# זמן התגובה בתנאי חוסר ההתאמה. הוסיפו לכל עמודה קווי טעות
+# המייצגים את *טעות* התקן
+
+sum_by_condition = stroop_summary  %>% group_by(condition) %>%
+  summarise(mean = mean(mean_RT),
+            se = sd(mean_RT)/sqrt(n()))
+
+ggplot(sum_by_condition)+
+  geom_point(aes(x = condition, y = mean, fill = condition))+
+  geom_errorbar(aes(x = condition, ymin = mean - se, ymax = mean + se), width = 0.2)
+  # ***
+
+## חלק שני - חישוב ציוני השאלון
 
 ### ייבוא הטבלה
 
@@ -176,6 +197,10 @@ ggplot(dfff , aes(x = intr, y = value))+
 
 cor(dff$intr, dff$diff)
 
+
+ggplot(dff,aes(x= gender, y = diff))+
+#  geom_violin()+
+  stat_summary()
 
 psych::alpha (Qs %>% filter(attention_check == 1) %>%
   select(contains("intr")),check.keys=TRUE )
