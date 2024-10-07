@@ -4,23 +4,13 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: false
-<<<<<<< HEAD:inst/tutorials/Lesson 4 - Dataframes/Lesson4.Rmd
 
 
 description: >
  <div style='direction: rtl;'>
  בשיעור זה נלמד לעבוד עם טבלאות בR. נלמד על חיתוכים, יצירת עמודות חדשות ועריכת עמודות קיימות. נלמד גם כיצד לייבא קבצים מסוג csv ולערוך אותם בR.
  </div>
- 
-=======
-    
-    
-description: >
-  <div style='direction: rtl;'>
-  בשיעור זה נלמד לעבוד עם טבלאות וקבצי נתונים. נלמד איך מייבאים קבצי נתונים ואיך משתמשים בהם
-  </div>
        
->>>>>>> 68a8d289f4e976b0a221ea24420ada84dee1cffb:inst/tutorials/Lesson 4 - Dataframes/L4 - Dataframes.Rmd
 runtime: shiny_prerendered  
 editor_options: 
   markdown: 
@@ -104,7 +94,7 @@ character, boolean וכו', אך עמודות שונות באותה טבלה י�
 העצמית. לעומת זאת נבדק 2 גר בחיפה והוא בעל ציון של 2.5 במדד המסוגלות
 העצמית.
 
-```{r text_Q, echo = FALSE}
+```{r question1_5 , echo = FALSE}
 
 question_text(
   "מהו ציון המסוגלות העצמית של הנבדק הגר באילת?",
@@ -140,7 +130,7 @@ question_text(
 לבחירתכם.
 
 
-```{r exercise1, exercise=TRUE, exercise.eval = FALSE, exercise.cap = "יצירת טבלה", }
+```{r exercise1_3, exercise=TRUE, exercise.eval = FALSE }
 
 subjects = 1:6
 city_per_subject = c("Jerusalem","Haifa","Tel-Aviv","Eilat","Jerusalem","Tel-Aviv")
@@ -153,7 +143,7 @@ df1 = data.frame(subject = subjects,
 print(df1)
 ```
 
-```{r exercise1-check}
+```{r exercise1_3-check}
 grade_result(
   pass_if(~identical(names(.result), c("subject","city","self_efficacy_score","gender")))
 )
@@ -172,16 +162,16 @@ grade_result(
 חיתוך ושליפה של ערכים מתוך טבלה נעשית באופן דומה מאוד לשליפת ערכים מתוך
 וקטור - אבל כיוון שלטבלאות יש 2 מימדים (שורות ועמודות) נצטרך להשתמש ב2
 אינדקסים כדי להתייחס למשבצת / משבצות שמעניינות אותנו. האינדקס הראשון (בצד השמאלי של הסוגריים) יתייחס לשורות והשני (בצד הימני) יתייחס לעמודות, כשבין שני האינדקסים מפריד
-פסיק. למשל: החיתוך `df1[2,3]` מתייחס לשורה 2, עמודה 3 של הטבלה שנקראת `df1`.
+פסיק. למשל: החיתוך `df1[4,3]` מתייחס לשורה 4, עמודה 3 של הטבלה שנקראת `df1`.
 
 בשורות הקוד הבאות אנחנו שולפים את הערך של העיר (עמודה 2) בה גר הנבדק
 שבשורה השלישית ומדפיסים אותו.
 
 ```{r df3, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
+print(df1)
 
 x = df1[3,2]
 print(x)
-
 ```
 
 נסו בעצמכם: בחרו משבצת מסוימת שאתם רוצים לשלוף וערכו את האינדקסים כך
@@ -209,7 +199,7 @@ print(df1)
 `שאלה:`
 
 
-```{r Q1, echo = FALSE}
+```{r question2_5, echo = FALSE}
 question(HTML("<div style='direction: rtl;'>מה קורה כשאתם משנים ערך אחד של עמודה מספרית (למשל - ציון המסוגלות העצמית) לערך מסוג character?</div>"),
          answer("<div style='direction: rtl;'>מקבלים הודעת שגיאה </div>"),
          answer("<div style='direction: rtl;'>הערך הופך להיות מסוג numeric</div>"),
@@ -267,14 +257,15 @@ print(subj_and_self_efficacy)
 `תרגיל` חתכו מתוך הטבלה `df1` טבלה המכילה את מספר הנבדק וציון המסוגלות העצמית של נבדקים 1 ו5.
 
 
-```{r exercise2, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = "prepare-df1"}
+```{r exercise2_3, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = "prepare-df1"}
+print(df1)
 
 df2 =  # חיתוך מתוך df1
 
 print(df2)
 ```
 
-```{r exercise2-check}
+```{r exercise2_3-check}
 grade_result(
   pass_if(~identical(.result, df1[c(1,5),c(1,3)]))
 )
@@ -288,18 +279,18 @@ grade_result(
 
 לדוגמה: `df1$city` ישלוף את עמודת הערים.
 
-כמו בחיתוכים הקודמים, גם כאן נוכל להשתמש בחיתוך גם כדי 
-אם נבצע השמה לחיתוך כזה נוכל לערוך עמודה קיימת או לייצר עמודה חדשה:
+כמו בחיתוכים הקודמים, גם כאן נוכל להשתמש בחיתוך גם כדי לערוך את הערכים הקיימים בטבלה:
 
-  <במידה ונשתמש בשם של עמודה קיימת הוקטור שנכניס ידרוס את העמודה ויחליף
-אותה. 
-  <במידה ונשתמש בשם של עמודה שלא נמצאת בטבלה תיווצר עמודה חדשה בשם
-זה.
+       במידה ונשתמש בפקד כשהוא מלווה בשם של עמודה הקיימת בטבלה - הוקטור שנכניס ידרוס את העמודה ויחליף אותה.
+
+       במידה ונשתמש בשם של עמודה שלא נמצאת בטבלה תיווצר עמודה חדשה בשם זה.
+
 
 בדרך זו ניתן לייצר עמודות חדשות, בין היתר גם על סמך עמודות קיימות, או לבצע תיקונים
 בעמודות הקיימות.
 
-להלן מספר דוגמאות:
+
+לפניכם מספר דוגמאות:
 
 ```{r df5, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = "prepare-df1"}
 
@@ -316,9 +307,6 @@ print(df1)
 
 # יצירת עמודות על סמך עמודות קיימות
 
-df1$se_above_2.5 = df1$self_efficacy_score > 2.5         # עמודה בוליאנית הבודקת 
-print(df1)                                 #האם ציון המסוגלות העצמית של הנבדק הינו מעל 2.5
-
 # העברה של ציוני המסוגלות העצמית לסולם 1-100 במקום 1-5
 df1$se_scaled_1_to_100 = (df1$self_efficacy_score-1) * 25 
 print(df1)
@@ -328,6 +316,29 @@ df1$se_relative_to_mean = df1$self_efficacy_score  -  mean(df1$self_efficacy_sco
 print(df1)
 
 ```
+
+`תרגיל:` הוסיפו לטבלה עמודה בשם `high_self_efficacy` המכילה את הערך `TRUE` אם ציון תחושת המסוגלות העצמית של הנבדק גבוה מ2.5 ו`FALSE` אם הוא נמוך או שווה ל2.5.
+
+
+```{r exercise3_3, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = "prepare-df1"}
+
+# הוספת עמודה
+        
+# הדפסת הטבלה לאחר הוספת העמודה
+print(df1)                                 
+
+```
+
+```{r exercise3_3-check}
+library(dplyr)
+
+grade_result(
+  pass_if(~identical(.result,
+                     df1 %>% mutate(high_self_efficacy = self_efficacy_score > 2.5)))
+)
+```
+
+
 
 ## טעינת טבלאות
 
@@ -397,7 +408,7 @@ Text (readr)...". גם האופצייה הראשונה אפשרית, אבל הש
 cognition" - מידת הצורך שאנשים מרגישים להבין את העולם סביבם. בהמשך השיעור
 נציץ אל תוך טבלה זו ונבין את המבנה שלה.
 
-```{r Q2, echo = FALSE}
+```{r question3_5, echo = FALSE}
 question("מה הגיל של הנבדקת הראשונה בקובץ שייבאתם?",
          type = "learnr_text",
          answer("19", correct = TRUE),
@@ -473,7 +484,7 @@ setwd(new_working_directory)
 
 המאפיינים הכי בסייסים שיעניינו אותנו נוגעים לגודל הטבלה - כמה שורות ועמודות היא מכילה.
 
-שורות הקוד הבאות מבררים את מימדי הטבלה, בין אם ביחד (הפלט יכלול את מספר השורות כאיבר ראשון משמאל ואחריו את מספר העמודות) או בנפרד - באנמעוצ פונקצייה יעודית לספירת מספר השורות או העמודות. 
+שורות הקוד הבאות מבררות את מימדי הטבלה, בין אם ביחד (הפלט יכלול את מספר השורות כאיבר ראשון משמאל ואחריו את מספר העמודות) או בנפרד - באמצעות פונקצייה יעודית לספירת מספר השורות או העמודות. 
 
 
 ```{r}
@@ -481,7 +492,7 @@ setwd(new_working_directory)
 # need_for_cognition
 
 # מספר השורות והעמודות שבטבלה שייבאנו
-dim(need_for_cognition)  # הטבלה מכילה 2466 שורות ו10 עמודות
+dim(need_for_cognition)  
 
 # מספר השורות
 nrow(need_for_cognition)
@@ -490,18 +501,24 @@ nrow(need_for_cognition)
 ncol(need_for_cognition)
 ```
 
+התוצאות יספקו לנו מידע כללי לגבי כמות התצפיות ומספר המדדים השונים שהטבלה מכילה.
 
-התוצאות יספקו לנו מידע כללי לגבי כמות התצפיות ומספר המדדים השונים שהטבלה הזו מכילה.
+```{r question4_5, echo = FALSE}
 
+question_text(
+  "כמה תצפיות מכילה הטבלה שייבאתם?",
+  answer("2466", correct = TRUE),
+  answer("10", message = ".התשובה אינה נכונה. הזנתם את מספר העמודות בטבלה, במקום את מספר השורות"),
+  allow_retry = TRUE
+)
 
-פונקציות אלו שימושיות במיוחד כשאנחנו צריכים להתייחס
-למימדים אלו בקוד, כך שבמקום לבדוק בעצמנו את אורך הטבלה ולהקליד את המספר
-המתאים נוכל להשתמש בקוד שיעשה את הבדיקה הזו עבורנו.
+```
+
+פונקציות אלו שימושיות במיוחד כשאנחנו צריכים להתייחס למימדים אלו בקוד, כך שבמקום לבדוק בעצמנו את אורך הטבלה ולהקליד את המספר המתאים נוכל להשתמש בקוד שיעשה את הבדיקה הזו עבורנו.
 
 למשל, בקטע הבא אנחנו נעזרים בפונקציה `nrow` כדי לייצר וקטור עם המספרים בין 1 למספר השורות שקיים בטבלה שלנו ומשתמשים בו כדי להוסיף לטבלה עמודה עם מספר סידורי עבור כל תצפית.
 
 ```{r}
- 
 need_for_cognition$subject_index = 1:nrow(need_for_cognition)
 ```
 
@@ -530,7 +547,18 @@ col_names = names(need_for_cognition)
 print(col_names)
 
 ```
+```{r question5_5, echo = FALSE}
 
+question(
+  "<div style='direction: rtl;'> מה מכילה העמודה attention_check?</div>",
+  answer("<div style='direction: rtl;'>את ציון הנבדק במטלת קשב (ציון רציף 1 עד 100)</div>"),
+  answer("<div style='direction: rtl;'>את סוג מבחן הקשב שהנבחן עבר (רגיל / קל / קשה)</div>"),
+  answer("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב (1 = עבר, 0 = לא עבר)</div>", correct = TRUE),
+  answer("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE = עבר, FALSE = לא עבר)</div>"),
+  allow_retry = TRUE
+)
+
+```
 
 ## תרגיל
 
@@ -544,8 +572,9 @@ print(col_names)
 library(readr)
 
 # הורידו את הקובץ מהמודל וייבוא אותו לסביבת העבודה שלכם
-need_for_cognition = ___________________    # מחקו שורה זו בהעתקה חזרה לחלונית הקוד
+need_for_cognition = ___________________    
 
+# ~~~ מחקו את כל השורות  מעל נקודה זו בהעתקה חזרה לחלונית הקוד   ~~~ 
 
 # הדפיסו את שמות העמודות בטבלה
 column_names = ___________________________
@@ -554,7 +583,7 @@ print(column_names)
 # כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)
 table1 = _____________________________
 
-# וודאו שלטבהל החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות ו9 עמודות)
+# וודאו שלטבלה החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות 7 עמודות)
 number_of_columns = _____________
 number_of_rows = ______________
 
@@ -592,7 +621,7 @@ print(column_names)
 # כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)
 table1 = need_for_cognition[1:100,c(1,5:10)]
 
-# וודאו שלטבל החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות ו9 עמודות)
+# וודאו שלטבל החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות ו7 עמודות)
 number_of_columns =  ncol(table1)
 number_of_rows = nrow(table1)
 
