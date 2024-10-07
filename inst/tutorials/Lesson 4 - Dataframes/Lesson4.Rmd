@@ -4,6 +4,7 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: false
+<<<<<<< HEAD:inst/tutorials/Lesson 4 - Dataframes/Lesson4.Rmd
 
 
 description: >
@@ -11,11 +12,21 @@ description: >
  בשיעור זה נלמד לעבוד עם טבלאות בR. נלמד על חיתוכים, יצירת עמודות חדשות ועריכת עמודות קיימות. נלמד גם כיצד לייבא קבצים מסוג csv ולערוך אותם בR.
  </div>
  
+=======
+    
+    
+description: >
+  <div style='direction: rtl;'>
+  בשיעור זה נלמד לעבוד עם טבלאות וקבצי נתונים. נלמד איך מייבאים קבצי נתונים ואיך משתמשים בהם
+  </div>
+       
+>>>>>>> 68a8d289f4e976b0a221ea24420ada84dee1cffb:inst/tutorials/Lesson 4 - Dataframes/L4 - Dataframes.Rmd
 runtime: shiny_prerendered  
 editor_options: 
   markdown: 
     wrap: 72
 ---
+
 
 ```{=html}
 <style>
