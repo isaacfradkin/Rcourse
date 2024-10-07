@@ -1,5 +1,5 @@
 ---
-title: "Lesson 5: dplyr" 
+title: "Lesson 5: dplyr + tidyr" 
 output:
   learnr::tutorial:
     progressive: true
@@ -8,7 +8,7 @@ output:
     
 description: >
   <div style='direction: rtl;'>
-  השיעור נוגע בפונקציות המאוגדות תחת החבילה dplyr נלמד לסנן, לערוך ולסדר טבלאות, ולצרף יחד נתונים ממספר מקורות שונים.
+  השיעור נוגע בפונקציות המאוגדות תחת החבילות dplyr וtidyr נלמד לסנן, לערוך ולסדר טבלאות, ולצרף יחד נתונים ממספר מקורות שונים.
   </div>
        
 runtime: shiny_prerendered  
