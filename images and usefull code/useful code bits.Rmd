@@ -1,18 +1,70 @@
 ---
-title: "Tutorial"
-output: learnr::tutorial
-runtime: shiny_prerendered
+title: "Lesson title" 
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: false
+runtime: shiny_prerendered  
+
+description: >
+  <div style='direction: rtl;'>
+תיאור
+ </div>
+
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
+
+<style>
+/* General style adjustments */
+h1, h2, h3, h4, h5, h6, p {
+  direction: rtl;
+}
+
+/* Colored text block */
+.text-block1 {
+  direction: rtl;
+  text-align: right;
+  background-color: #e7f3fe; /* Light blue background */
+  color: #0b5394;            /* Darker blue text */
+  padding: 15px;
+  border-left: 6px solid #2c7cb8; /* Blue border on the left */
+  margin: 15px 0;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* Custom styling for code blocks */
+pre code {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 4px;
+  direction: ltr; /* Keep code in LTR direction */
+}
+</style>
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = FALSE)
+library(gradethis)
+library(Rcourse)
+
+tutorial_options(
+  exercise.timelimit = 60
+)
+
+knitr::opts_chunk$set(error = TRUE)
+gradethis::gradethis_setup()
 ```
 
 # Rstudio image - make sure to have a copy inside a folder named "images" in the lesson's folder
-![](images/Rstudio logo.png){width="100"}
 
+![](images/Rstudio%20logo.png){width="100"}
 
+::: text-block1
+<strong>הסבר:</strong> תיאור של השימוש בנתונים והדרך שבה הם עוזרים לנו לבחון את הנושא הנלמד.
+:::
 
 ```{r Q2, echo = FALSE}
 question("מה הגיל של הנבדקת הראשונה בקובץ שייבאתם?",
@@ -22,17 +74,15 @@ question("מה הגיל של הנבדקת הראשונה בקובץ שייבאת
 )
 ```
 
-
 ```{r exercise1-check}
 grade_result(
   pass_if(~identical(names(.result), c("subject","city","self_efficacy_score","gender")))
 )
 ```
 
-
 ## Topic 1
 
-### Exercise 
+### Exercise
 
 *Here's a simple exercise with an empty code chunk provided for entering the answer.*
 
@@ -72,7 +122,6 @@ head(mtcars)
 
 ### Quiz
 
-
 ```{r quiz}
 quiz(
   question("Which package contains functions for installing other R packages?",
@@ -90,3 +139,107 @@ quiz(
 )
 ```
 
+
+
+
+### תקלה נפוצה - כפילויות
+
+```{r}
+
+# מחיקת כפילויות על בסיס עמודות מסוימות בלבד
+# הפונקציה תשמור את השורה הראשונה מתוך השורות הכפולות
+table3 = table1 %>%
+  distinct(session_id, .keep_all = TRUE) # ללא התוספת בסוף הפונקציה התוכנה תחזיר טבלה המכילה רק את העמודות שצוינו
+
+```
+
+`תרגיל` :
+הטבלה table_with_duplicates מכילה נתונים מניסוי בו בטעות כמה מהנבדקים ביצעו חלק מהמטלות פעמיים. מאחר ובחזרה השנייה הם מנוסים יותר ומכירים את המטלה טוב יותר - התוצאות מחזרה זו אינן שימושיות עבור ההשוואה שאתם מעוניינים לערוך, ולכם הוחלט להסיר אותם.
+
+הסירו את התוצאות מהחזרה השנייה של הנבדקים בכל מטלה באמעצות הפונקציה `distinct`. שימו לב: ייתכן והתוצאות היו שונות בין 2 החזרות.
+
+
+```{r exercise4_6_duplicates, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-duplicate" }
+print(duplicate_task_df)
+
+table_without_duplicates = duplicate_task_df %>%
+  distinct(_________________)
+
+```
+
+```{r exercise4_6_duplicates-check}
+grade_result(
+  pass_if(~identical(.result, 
+                     table_without_duplicates = duplicate_task_df %>%
+  distinct(session_id, task, .keep_all = TRUE)))
+)
+```
+
+
+
+
+אחת התקלות הנפוצות בצירוף טבלאות נוגעת למצבים בהם אנחנו מנסים לצרף נתונים המכילים כפילויות בעמודות שעל בסיסן אנחנו מבקשים לחבר את הטבלאות. כל עוד **רק באחת הטבלאות** יש כפילות שכזו - התכנה תשכפל את התצפיות מהטבלה השנייה ותבצע את הצירוף בהצלחה.
+
+למשל:
+
+```{r}
+
+# נייצר נתונים פיקטיביים
+
+df1 =data.frame(subject_id = c(1,1,1,2,2),
+                day        = c(1,2,3,1,2),
+                task_score = c(120,87,113,94,250)) 
+
+df2 = data.frame(subject_id = c(1,2,3),
+                 age = c(22,25,20),
+                 gender = c("M","F","F"))
+
+print(df1)
+print(df2)
+
+
+# הוספת הנתונים הדמוגרפיים מהטבלה השנייה לתצפיות בטבלה הראשונה
+
+df1_2 = left_join(df1, df2, by = "subject_id")
+print(df1_2)
+
+# שילוב מלא של שתי הטבלאות
+
+df_full = full_join(df1, df2, by = "subject_id")
+print(df_full)
+```
+
+שימו לב שהנתונים הדמוגרפים שנוספו לטבלה (גיל ומגדר) הינם זהים בין השורות השונות של אותו הנבדק.
+
+
+
+
+מנגד - כשבשתי הטבלאות יש כפילות, **אין לתכנה מספיק מידע כדי להצמיד בין התצפיות** ולכן היא תעלה הודעת שגיאה.
+
+
+```{r}
+
+# נייצר נתונים פיקטיביים
+
+df1 =data.frame(subject_id = c(1,1,1,2,2),
+                day        = c(1,2,3,1,2),
+                happiness  = c(100,65,80,95,90)) 
+
+df2 = data.frame(subject_id = c(1,1,2,3),
+                 task       = c(1,2,1,1),
+                 task_score = c(80,85,90,93))
+                 
+# הוספת תוצאות המטלה מהטבלה השנייה לתצפיות בטבלה הראשונה
+
+df1_2 = left_join(df1, df2, by = "subject_id")
+
+```
+
+
+
+
+```{r prepare-duplicate}
+duplicate_task_df = data.frame(subject_id = c(1,1,1,2,2,3,3,3,4,4,4,4),
+                               task       = c("Stroop","Go/No-go","Go/No-go","Stroop","Go/No-go","Stroop","Stroop","Go/No-go","Stroop","Stroop","Go/No-go","Go/No-go" ),
+                               score      = rnorm(12,50,10) %>% round())
+```

@@ -138,9 +138,9 @@ p {
 <p>הטבלאות מורכבות משורות ועמודות, כמו באקסל, עם ערכים בתוך כל אחת
 מהמשבצות של הטבלה. לכל עמודה יש כותרת, המתארת את המידע באותה עמודה.
 שורות שונות בדרך כלל יבטאו תצפיות שונות, למשל - נתונים של נבדקים שונים
-או סבבים שונים של מטלה מסוימת עבור אותו נבדק. לפניכם דוגמה של טבלה
-המתארת את הנתונים הדמוגרפיים והציונים במדד תחושת מסוגלות עצמית עבור שישה
-נבדקים פיקטיביים.</p>
+או סבבים שונים של מטלה. לפניכם דוגמה של טבלה המתארת את הנתונים
+הדמוגרפיים והציונים במדד תחושת מסוגלות עצמית עבור שישה נבדקים
+פיקטיביים.</p>
 <pre class="r"><code>df1 = data.frame(subject = 1:6,
                 city = c(&quot;Jerusalem&quot;,&quot;Haifa&quot;,&quot;Tel-Aviv&quot;,&quot;Eilat&quot;,&quot;Jerusalem&quot;,&quot;Tel-Aviv&quot;),
                 self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))
@@ -165,35 +165,35 @@ print(df1)</code></pre>
 <p>מעיון בטבלה אפשר לראות כי נבדק 1 גר בירושלים והוא בעל ציון 2.3 במדד
 תחושת המסוגלות העצמית. לעומת זאת נבדק 2 גר בחיפה והוא בעל ציון של 2.5
 במדד המסוגלות העצמית.</p>
-<pre><code>## Error: Code chunks labels for exercises or quiz questions must only be labeled using:
-##  lower case letters: a-z
-##  upper case letters: A-Z
-##  numbers case letters: 0-9
-##  underscore: _
-##  dash: -
-## 
-## Current label: &quot;question1_5 &quot;
-## 
-## Try using: &quot;question1_5_&quot;</code></pre>
+<div class="panel panel-default tutorial-question-container">
+<div data-label="question1_5" class="tutorial-question panel-body">
+<div id="question1_5-answer_container" class="shiny-html-output"></div>
+<div id="question1_5-message_container" class="shiny-html-output"></div>
+<div id="question1_5-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 <div id="section-יצירת-טבלאות" class="section level3">
 <h3>יצירת טבלאות</h3>
 <p>הדרך הכי פשוטה לייצר טבלה היא באמצעות הפקודה <code>data.frame</code>,
-שמאפשרת לנו לצרף יחד מספר וקטורים לכדי טבלה. זו לרוב לא תהיה הדרך בה
-נייצר את הטבלאות שאיתן נעבוד, אבל חשוב להכיר גם אותה.</p>
+שמאפשרת לנו לצרף יחד מספר וקטורים לכדי טבלה, כפי שעשינו בדוגמה הקודמת.
+זו לרוב לא תהיה הדרך בה נייצר את הטבלאות שאיתן נעבוד, אבל חשוב להכיר גם
+אותה.</p>
 <p>ניתן לייצר את מסגרת הנתונים באמצעות וקטורים שאנחנו מגדירים בתוך
-הפונקציה, כפי שעשינו בדוגמה הקודמת, אך אפשר גם להשתמש בוקטורים שהוגדרו
-מראש. שימו לב: העמודות החדשות חייבות להיות באותו האורך של העמדות שכבר
-קיימות בטבלה. במידה ונגדיר עמודה חדשה באמצעות וקטור קצר או ארוך יותר,
-נקבל הודעת שגיאה</p>
+הפונקציה או להשתמש בוקטורים שהוגדרו מראש. שימו לב: העמודות חייבות להיות
+כולן באותו האורך. במידה ונגדיר עמודה חדשה באמצעות וקטור קצר או ארוך
+יותר, נקבל הודעת שגיאה</p>
 <div class="text-block1">
 <p>המקרה החריג, בו לא נקבל הודעת שגיאה הוא כשנתשמש בוקטור בעל אורך שהוא
-בדיוק חצי, שליש, רבע וכו’ מאורך הטבלה. במקרים כאלו התכנה תשכפל את הוקטור
-לפי מספר הפעמים הנדרש כדי להגיע לאורך התואם את מספר השורות בטבלה.</p>
+בדיוק חצי, שליש, רבע וכו’ מאורך שאר העמודות בטבלה. במקרים כאלו התכנה
+תשכפל את הוקטור לפי מספר הפעמים הנדרש כדי להגיע לאורך התואם את מספר
+השורות הנדרש.</p>
 </div>
-<p>שורות הקוד הבאות מייצרות טבלה זהה לטבלה הקודמת.</p>
+<p>שורות הקוד הבאות מייצרות טבלה זהה לטבלה הקודמת, אבל מגדירה את כל אחד
+מהוקטורים בנפרד ורק אח”כ מצרפת אותם לכדי טבלה.</p>
 <p><code>תרגיל</code> ערכו את הפונקציה המייצרת את הטבלה כך שתתווסף עמודה
 רביעית בשם <code>gender</code> ומלאו אותה בערכים לבחירתכם.</p>
-<div class="tutorial-exercise" data-label="exercise1_3"
+<div class="tutorial-exercise" data-label="exercise1_5"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
 <pre class="text"><code>subjects = 1:6
@@ -205,7 +205,7 @@ df1 = data.frame(subject = subjects,
                  self_efficacy_score = self_efficacy_per_subject)
 
 print(df1)</code></pre>
-<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"יצירת טבלה"}</script>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 </div>
 </div>
@@ -223,39 +223,29 @@ print(df1)</code></pre>
 מתייחס לשורה 4, עמודה 3 של הטבלה שנקראת <code>df1</code>.</p>
 <p>בשורות הקוד הבאות אנחנו שולפים את הערך של העיר (עמודה 2) בה גר הנבדק
 שבשורה השלישית ומדפיסים אותו.</p>
-<div class="tutorial-exercise" data-label="df3" data-completion="1"
-data-diagnostics="1" data-startover="1" data-lines="0"
-data-pipe="|&gt;">
+<p><code>תרגיל:</code> ערכו את הקוד כך שישלוף וידפיס את ציון תחושת
+המסוגלות של הנבדק שבשורה ה5.</p>
+<div class="tutorial-exercise" data-label="exercise2_5"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="0" data-pipe="|&gt;">
 <pre class="text"><code>print(df1)
 
 x = df1[3,2]
 print(x)</code></pre>
-<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
-<p>נסו בעצמכם: בחרו משבצת מסוימת שאתם רוצים לשלוף וערכו את האינדקסים כך
-שיפנו למשבצת הנכונה. למשל - נסו לשלוף את ציון תחושת המסוגלות של הנבדק
-שבשורה ה5.</p>
 <p>שורות הקוד הבאות מבצעות השמה מחדש לערך של שורה 4, עמודה 3: ציון תחושת
 המסוגלות העצמית של הנבדק בשורה הרביעית.</p>
 <p>הקוד משנה את ערך זה כך שיהיה שווה ל2 ומדפיס את הטבלה המעודכנת. שימו
 לב שהציון של הנבדק אכן השתנה ל2.</p>
-<div class="tutorial-exercise" data-label="df3_part_2"
+<p><code>תרגיל:</code> שנו את עיר מגוריו של הנבדק בשורה השנייה
+ל”Dimona”.</p>
+<div class="tutorial-exercise" data-label="exercise3_5"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
 <pre class="text"><code>df1[4,3] = 2
 print(df1)</code></pre>
-<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
-</div>
-<p>נסו לערוך את הערכים במשבצות שונות. שנו את עיר מגוריו של הנבדק בשורה
-השנייה ל”Dimona”.</p>
-<p><code>שאלה:</code></p>
-<div class="panel panel-default tutorial-question-container">
-<div data-label="question2_5" class="tutorial-question panel-body">
-<div id="question2_5-answer_container" class="shiny-html-output"></div>
-<div id="question2_5-message_container" class="shiny-html-output"></div>
-<div id="question2_5-action_button_container" class="shiny-html-output"></div>
-<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
-</div>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 </div>
 <div id="section-חיתוך-וקטורים-ותת-טבלאות" class="section level4">
@@ -263,15 +253,15 @@ print(df1)</code></pre>
 <p>ניתן להשתמש בסוגריים מרובעים גם כדי לחתוך תת-טבלה מתוך הטבלה המקורית.
 בחיתוך כזה במקום לתת מספר בודד כאינדקס עבור השורות / העמודות נשתמש
 בוקטור המציין את מספרי השורות / עמודות שאנחנו רוצים לחתוך.</p>
-<p>בנוסף, אנחנו יכולים גם לחתוך מתוך הטבלה שורה או עמודה שלמה באמצעות
-השארת האינדקס המתאים ריק.</p>
-<p>כשמדובר בעמודות, ניתן לציין את העמודות שברצוננו לחתוך באמצעות שמות
+<p>כשמדובר בעמודות, אפשר לציין את העמודות שברצוננו לחתוך גם באמצעות שמות
 העמודות. במקום לשים באינדקס העמודות מספר, נספק את שם העמודה או וקטור של
 שמות העמודות אותן נרצה לחתוך.</p>
+<p>צורה נוספת, ואחרונה לשיעור זה, בה אפשר לבצע חיתוך נעזרת בהשארת אחד
+האינדקסים ריק. במקרה כזה נקבל את כל השורות / עמודות של הטבלה.</p>
 <p>לפניכם מספר דוגמאות:</p>
-<div class="tutorial-exercise" data-label="slicing_exercise"
-data-completion="1" data-diagnostics="1" data-startover="1"
-data-lines="0" data-pipe="|&gt;">
+<div class="tutorial-exercise" data-label="slicing" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
 <pre class="text"><code># שורות 2,4 ו 6 מעמודות 1 ו 2
 df2 = df1[c(2,4,6),1:2] 
 print(df2)
@@ -301,9 +291,10 @@ print(subj_and_self_efficacy)</code></pre>
 <h3>תרגול</h3>
 <p><code>תרגיל</code> חתכו מתוך הטבלה <code>df1</code> טבלה המכילה את
 מספר הנבדק וציון המסוגלות העצמית של נבדקים 1 ו5.</p>
-<div class="tutorial-exercise" data-label="exercise2_3"
-data-completion="1" data-diagnostics="1" data-startover="1"
-data-lines="0" data-pipe="|&gt;">
+<div class="tutorial-exercise"
+data-label="exercise4_5_slicing_multi_index" data-completion="1"
+data-diagnostics="1" data-startover="1" data-lines="0"
+data-pipe="|&gt;">
 <pre class="text"><code>print(df1)
 
 df2 =  # חיתוך מתוך df1
@@ -314,13 +305,13 @@ print(df2)</code></pre>
 </div>
 <div id="section-פקד-ה" class="section level3">
 <h3>פקד ה$</h3>
-<p>ניתן לשלוף עמודות גם באמצעות בפקד ה<code>$</code>.</p>
-<p>לדוגמה: <code>df1$city</code> ישלוף את עמודת הערים.</p>
+<p>ניתן לשלוף עמודות גם באמצעות פקד ה<code>$</code>.</p>
+<p>למשל: <code>df1$city</code> ישלוף את עמודת הערים.</p>
 <p>כמו בחיתוכים הקודמים, גם כאן נוכל להשתמש בחיתוך גם כדי לערוך את
 הערכים הקיימים בטבלה:</p>
-<pre><code>   במידה ונשתמש בפקד כשהוא מלווה בשם של עמודה הקיימת בטבלה - הוקטור שנכניס ידרוס את העמודה ויחליף אותה.
-
-   במידה ונשתמש בשם של עמודה שלא נמצאת בטבלה תיווצר עמודה חדשה בשם זה.</code></pre>
+<p>במידה ונשתמש בפקד כשהוא מלווה בשם של עמודה הקיימת בטבלה - הוקטור
+שנכניס ידרוס את העמודה ויחליף אותה. במידה ונשתמש בשם של עמודה שלא נמצאת
+בטבלה - תיווצר עמודה חדשה בשם זה.</p>
 <p>בדרך זו ניתן לייצר עמודות חדשות, בין היתר גם על סמך עמודות קיימות, או
 לבצע תיקונים בעמודות הקיימות.</p>
 <p>לפניכם מספר דוגמאות:</p>
@@ -353,7 +344,7 @@ print(df1)</code></pre>
 <code>high_self_efficacy</code> המכילה את הערך <code>TRUE</code> אם ציון
 תחושת המסוגלות העצמית של הנבדק גבוה מ2.5 ו<code>FALSE</code> אם הוא נמוך
 או שווה ל2.5.</p>
-<div class="tutorial-exercise" data-label="exercise3_3"
+<div class="tutorial-exercise" data-label="exercise5_5_dolar"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
 <pre class="text"><code># הוספת עמודה
@@ -369,7 +360,7 @@ print(df1)                                 </code></pre>
 <p>עד עכשיו הגדרנו את הטבלאות שלנו בעצמנו. בפועל - רוב הטבלאות איתן
 נעבוד בR יכילו נתונים שנאספו על ידי תוכנות אחרות. כדי לנתח אותן בR נצטרך
 קודם כל לייבא את הנתונים לסביבת העבודה שלנו.</p>
-<p>ישנן מספר פונקציות בR אשר מאפשרות לנו לטעון קובצים מפורמט csv או xlsx
+<p>ישנן מספר פונקציות בR אשר מאפשרות לנו לטעון קבצים מפורמט csv או xlsx
 (שני הפורמטים העיקריים לשמירת נתונים המיוצגים בטבלה), אך הדרך הידודותית
 ביותר למשתמש נעזרת בכלי של Rstudio שנועד להקל על ייבוא הקבצים.</p>
 <p>כדי לגשת לכלי הייבוא, פתחו את Rstudio ובחרו בלשונית “file” שבסרגל
@@ -454,7 +445,7 @@ new_working_directory = working_directory
 setwd(new_working_directory)</code></pre>
 <p><img src="images/Rstudio%20logo.png" width="100" />
 <code>תרגיל:</code> ייבאו את הטבלה עם תשובות הנבדקים בשאלון “need for
-cognition”אל סביבת העבודה של כם בRstudio, חתכו ממנו תת טבלה המכילה את
+cognition”אל סביבת העבודה שלכם בRstudio, חתכו ממנו תת טבלה המכילה את
 התצפיות ב10 השורות הראשונות עבור העמודות “session_id” ו”age” וייצאו את
 הטבלה החדשה כקובץ csv.</p>
 <p>פתחו את הקובץ שנוצר וודאו שהוא מכיל את הנתונים הנכונים.</p>
@@ -473,13 +464,8 @@ cognition”אל סביבת העבודה של כם בRstudio, חתכו ממנו 
 <h3>מימדי הטבלה</h3>
 <p>המאפיינים הכי בסייסים שיעניינו אותנו נוגעים לגודל הטבלה - כמה שורות
 ועמודות היא מכילה.</p>
-<p>שורות הקוד הבאות מבררות את מימדי הטבלה, בין אם ביחד (הפלט יכלול את
-מספר השורות כאיבר ראשון משמאל ואחריו את מספר העמודות) או בנפרד - באמצעות
-פונקצייה יעודית לספירת מספר השורות או העמודות.</p>
-<pre class="r"><code># ייבאנו מראש את הטבלה 
-# need_for_cognition
-
-# מספר השורות והעמודות שבטבלה שייבאנו
+<p>שורות הקוד הבאות מבררות את מימדי הטבלה.</p>
+<pre class="r"><code># מספר השורות והעמודות שבטבלה שייבאנו
 dim(need_for_cognition)  </code></pre>
 <pre><code>## [1] 2466   10</code></pre>
 <pre class="r"><code># מספר השורות
@@ -513,8 +499,8 @@ class="section level3">
 <p>בנוסף, ישנן מספר פונקציות שיאפשרו לנו לבצע הצצה ראשונית אל תוך
 <strong>התוכן</strong> של הטבלה והעמודות שהיא מכילה. הן מאפשרות לנו
 להבין באופן גס מה כלול בכל עמודה ולהיזכר בכותרות של העמודות השונות.</p>
-<pre class="r"><code># שליפת השורות הראשונות. ברירת המחדל היא 6 שורות, אך ניתן גם לבקש מספר אחר של שורות
-head(need_for_cognition)</code></pre>
+<pre class="r"><code># שליפת השורות הראשונות בטבלה 
+head(need_for_cognition)# ברירת המחדל היא 6 שורות, אך ניתן גם לבקש מספר אחר של שורות</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["session_id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[3],"type":["chr"],"align":["left"]},{"label":["attention_check"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["nfc_01"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["nfc_02r"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["nfc_03r"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["nfc_04"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["nfc_05"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["nfc_06r"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["subject_index"],"name":[11],"type":["int"],"align":["right"]}],"data":[{"1":"7385046","2":"19","3":"female","4":"1","5":"3","6":"4","7":"4","8":"3","9":"2","10":"3","11":"1","_rn_":"1"},{"1":"7385155","2":"18","3":"female","4":"1","5":"1","6":"2","7":"5","8":"1","9":"3","10":"2","11":"2","_rn_":"2"},{"1":"7391990","2":"18","3":"female","4":"1","5":"5","6":"5","7":"1","8":"5","9":"5","10":"5","11":"3","_rn_":"3"},{"1":"7392153","2":"18","3":"female","4":"0","5":"4","6":"4","7":"4","8":"1","9":"1","10":"1","11":"4","_rn_":"4"},{"1":"7392233","2":"18","3":"female","4":"1","5":"2","6":"2","7":"2","8":"3","9":"4","10":"2","11":"5","_rn_":"5"},{"1":"7392698","2":"24","3":"male","4":"0","5":"4","6":"3","7":"4","8":"2","9":"3","10":"2","11":"6","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -526,8 +512,8 @@ head(need_for_cognition)</code></pre>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["session_id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[3],"type":["chr"],"align":["left"]},{"label":["attention_check"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["nfc_01"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["nfc_02r"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["nfc_03r"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["nfc_04"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["nfc_05"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["nfc_06r"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["subject_index"],"name":[11],"type":["int"],"align":["right"]}],"data":[{"1":"7385046","2":"19","3":"female","4":"1","5":"3","6":"4","7":"4","8":"3","9":"2","10":"3","11":"1","_rn_":"1"},{"1":"7385155","2":"18","3":"female","4":"1","5":"1","6":"2","7":"5","8":"1","9":"3","10":"2","11":"2","_rn_":"2"},{"1":"7391990","2":"18","3":"female","4":"1","5":"5","6":"5","7":"1","8":"5","9":"5","10":"5","11":"3","_rn_":"3"},{"1":"7392153","2":"18","3":"female","4":"0","5":"4","6":"4","7":"4","8":"1","9":"1","10":"1","11":"4","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<pre class="r"><code># סוף הטבלה
-tail(need_for_cognition) # גם בפונקציה זו אפשר לבקש מספר שורות שונה, אך ברירת המחדל היא 6</code></pre>
+<pre class="r"><code># שליפת השורות האחרונות בטבלה
+tail(need_for_cognition) </code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["session_id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[3],"type":["chr"],"align":["left"]},{"label":["attention_check"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["nfc_01"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["nfc_02r"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["nfc_03r"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["nfc_04"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["nfc_05"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["nfc_06r"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["subject_index"],"name":[11],"type":["int"],"align":["right"]}],"data":[{"1":"7572843","2":"18","3":"female","4":"1","5":"4","6":"2","7":"3","8":"4","9":"5","10":"2","11":"2461","_rn_":"2461"},{"1":"7530275","2":"19","3":"female","4":"1","5":"4","6":"2","7":"4","8":"1","9":"4","10":"3","11":"2462","_rn_":"2462"},{"1":"7413230","2":"18","3":"female","4":"0","5":"4","6":"1","7":"3","8":"3","9":"5","10":"3","11":"2463","_rn_":"2463"},{"1":"7425759","2":"18","3":"female","4":"0","5":"3","6":"4","7":"4","8":"3","9":"3","10":"4","11":"2464","_rn_":"2464"},{"1":"7474593","2":"18","3":"female","4":"1","5":"4","6":"4","7":"5","8":"2","9":"3","10":"3","11":"2465","_rn_":"2465"},{"1":"7572752","2":"149","3":"female","4":"1","5":"3","6":"2","7":"4","8":"3","9":"4","10":"3","11":"2466","_rn_":"2466"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -596,7 +582,9 @@ need_for_cognition = ___________________
 column_names = ___________________________
 print(column_names)
 
-# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)
+
+# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של 
+# מספרי הנבדקים והתשובות שלהם לשאלון (עמודות 1 ו5 עד 10)
 table1 = _____________________________
 
 # וודאו שלטבלה החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות 7 עמודות)
@@ -635,7 +623,8 @@ data-pipe="|&gt;">
 column_names = names(need_for_cognition)
 print(column_names)
 
-# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)
+# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של 
+# מספרי הנבדקים והתשובות שלהם לשאלון (עמודות 1 ו5 עד 10)
 table1 = need_for_cognition[1:100,c(1,5:10)]
 
 # וודאו שלטבל החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות ו7 עמודות)
@@ -778,25 +767,46 @@ session$onSessionEnded(function() {
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-exercise1_3-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise1_3-code-editor`)), session)
-output$`tutorial-exercise-exercise1_3-output` <- renderUI({
-  `tutorial-exercise-exercise1_3-result`()
-})
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "question1_5", question = structure("מהו ציון המסוגלות העצמית של הנבדק הגר באילת?", html = TRUE, class = c("html", 
+"character")), answers = list(structure(list(id = "lnr_ans_e8b184e", 
+    option = "3", value = "3", label = structure("3", html = TRUE, class = c("html", 
+    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_7d1bcfe", 
+    option = "3.0", value = "3.0", label = structure("3.0", html = TRUE, class = c("html", 
+    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+"tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
+"character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
+"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
+"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+"character")), message = NULL, post_message = NULL), ids = list(
+    answer = "question1_5-answer", question = "question1_5"), 
+    loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
+    seed = 934186434.564986, options = list(placeholder = "Enter answer here...", 
+        trim = TRUE)), class = c("learnr_text", "tutorial_question"
+)), session = session)
 </script>
 
 
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "exercise1_3", global_setup = structure(c("library(learnr)", 
+`tutorial-exercise-exercise1_5-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise1_5-code-editor`)), session)
+output$`tutorial-exercise-exercise1_5-output` <- renderUI({
+  `tutorial-exercise-exercise1_5-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "exercise1_5", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "", "tutorial_options(", 
 "  exercise.timelimit = 60", ")", "", "knitr::opts_chunk$set(error = TRUE)", 
 "gradethis::gradethis_setup()"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = NULL, chunks = list(list(label = "exercise1_3", 
+    include = FALSE)), setup = NULL, chunks = list(list(label = "exercise1_5", 
     code = "\nsubjects = 1:6\ncity_per_subject = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\")\nself_efficacy_per_subject =  c(2.3, 2.5, 2.1, 3, 2.2, 2.6)\n\ndf1 = data.frame(subject = subjects,\n                 city =  city_per_subject,\n                 self_efficacy_score = self_efficacy_per_subject)\n\nprint(df1)", 
-    opts = list(label = "\"exercise1_3\"", exercise = "TRUE", 
-        exercise.eval = "FALSE", exercise.cap = "\"יצירת טבלה\""), 
-    engine = "r")), code_check = NULL, error_check = NULL, check = structure(c("grade_result(", 
-"  pass_if(~identical(names(.result), c(\"subject\",\"city\",\"self_efficacy_score\",\"gender\")))", 
-")"), chunk_opts = list(label = "exercise1_3-check")), solution = NULL, 
+    opts = list(label = "\"exercise1_5\"", exercise = "TRUE", 
+        exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
+    error_check = NULL, check = structure(c("grade_result(", 
+    "  pass_if(~identical(names(.result), c(\"subject\",\"city\",\"self_efficacy_score\",\"gender\")))", 
+    ")"), chunk_opts = list(label = "exercise1_5-check")), solution = NULL, 
     tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
         tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
         comment = NA, highlight = FALSE, size = "normalsize", 
@@ -815,46 +825,47 @@ learnr:::store_exercise_cache(structure(list(label = "exercise1_3", global_setup
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "exercise1_3", exercise = TRUE, exercise.eval = FALSE, 
-        exercise.cap = "יצירת טבלה", code = c("", "subjects = 1:6", 
-        "city_per_subject = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\")", 
+        label = "exercise1_5", exercise = TRUE, exercise.eval = FALSE, 
+        code = c("", "subjects = 1:6", "city_per_subject = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\")", 
         "self_efficacy_per_subject =  c(2.3, 2.5, 2.1, 3, 2.2, 2.6)", 
         "", "df1 = data.frame(subject = subjects,", "                 city =  city_per_subject,", 
         "                 self_efficacy_score = self_efficacy_per_subject)", 
         "", "print(df1)"), out.width.px = 624, out.height.px = 384, 
-        params.src = "exercise1_3, exercise=TRUE, exercise.eval = FALSE, exercise.cap = \"יצירת טבלה\"", 
+        params.src = "exercise1_5, exercise=TRUE, exercise.eval = FALSE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
- 
+
+
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-df3-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df3-code-editor`)), session)
-output$`tutorial-exercise-df3-output` <- renderUI({
-  `tutorial-exercise-df3-result`()
+`tutorial-exercise-exercise2_5-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise2_5-code-editor`)), session)
+output$`tutorial-exercise-exercise2_5-output` <- renderUI({
+  `tutorial-exercise-exercise2_5-result`()
 })
 </script>
-
-
+ 
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "df3", global_setup = structure(c("library(learnr)", 
+learnr:::store_exercise_cache(structure(list(label = "exercise2_5", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "", "tutorial_options(", 
 "  exercise.timelimit = 60", ")", "", "knitr::opts_chunk$set(error = TRUE)", 
 "gradethis::gradethis_setup()"), chunk_opts = list(label = "setup", 
     include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "df3", code = "print(df1)\n\nx = df1[3,2]\nprint(x)", 
-            opts = list(label = "\"df3\"", exercise = "TRUE", 
+        list(label = "exercise2_5", code = "print(df1)\n\nx = df1[3,2]\nprint(x)", 
+            opts = list(label = "\"exercise2_5\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
-    check = NULL, solution = NULL, tests = NULL, options = list(
-        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
-        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
-        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
-        strip.white = TRUE, cache = 0, cache.path = "Lesson4_cache/html/", 
-        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
-        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
-        fig.show = "asis", fig.align = "default", fig.path = "Lesson4_files/figure-html/", 
+    check = structure(c("grade_result(", "  pass_if(~identical(.result, df1[5,3] ))", 
+    ")"), chunk_opts = list(label = "exercise2_5-check")), solution = NULL, 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "Lesson4_cache/html/", cache.vars = NULL, 
+        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
+        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
+        fig.align = "default", fig.path = "Lesson4_files/figure-html/", 
         dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
         fig.width = 6.5, fig.height = 4, fig.env = "figure", 
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
@@ -865,42 +876,47 @@ learnr:::store_exercise_cache(structure(list(label = "df3", global_setup = struc
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "df3", exercise = TRUE, exercise.eval = FALSE, 
+        label = "exercise2_5", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-df1", code = c("print(df1)", 
         "", "x = df1[3,2]", "print(x)"), out.width.px = 624, 
-        out.height.px = 384, params.src = "df3, exercise=TRUE, exercise.eval = FALSE, exercise.setup = \"prepare-df1\"", 
+        out.height.px = 384, params.src = "exercise2_5, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = \"prepare-df1\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
- 
+
+
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-df3_part_2-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-df3_part_2-code-editor`)), session)
-output$`tutorial-exercise-df3_part_2-output` <- renderUI({
-  `tutorial-exercise-df3_part_2-result`()
+`tutorial-exercise-exercise3_5-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise3_5-code-editor`)), session)
+output$`tutorial-exercise-exercise3_5-output` <- renderUI({
+  `tutorial-exercise-exercise3_5-result`()
 })
 </script>
-
-
+ 
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "df3_part_2", global_setup = structure(c("library(learnr)", 
+learnr:::store_exercise_cache(structure(list(label = "exercise3_5", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "", "tutorial_options(", 
 "  exercise.timelimit = 60", ")", "", "knitr::opts_chunk$set(error = TRUE)", 
 "gradethis::gradethis_setup()"), chunk_opts = list(label = "setup", 
     include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "df3_part_2", code = "\ndf1[4,3] = 2\nprint(df1)\n", 
-            opts = list(label = "\"df3_part_2\"", exercise = "TRUE", 
+        list(label = "exercise3_5", code = "\ndf1[4,3] = 2\nprint(df1)", 
+            opts = list(label = "\"exercise3_5\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
-    check = NULL, solution = NULL, tests = NULL, options = list(
-        eval = FALSE, echo = TRUE, results = "markup", tidy = FALSE, 
-        tidy.opts = NULL, collapse = FALSE, prompt = FALSE, comment = NA, 
-        highlight = FALSE, size = "normalsize", background = "#F7F7F7", 
-        strip.white = TRUE, cache = 0, cache.path = "Lesson4_cache/html/", 
-        cache.vars = NULL, cache.lazy = TRUE, dependson = NULL, 
-        autodep = FALSE, cache.rebuild = FALSE, fig.keep = "high", 
-        fig.show = "asis", fig.align = "default", fig.path = "Lesson4_files/figure-html/", 
+    check = structure(c("library(dplyr)", "grade_result(", "  pass_if(~identical(.result, df1 %>%", 
+    "                       mutate(city= ifelse(subject == 2,", 
+    "                                           \"Dimona\",", 
+    "                                           city))))", ")"
+    ), chunk_opts = list(label = "exercise3_5-check")), solution = NULL, 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "Lesson4_cache/html/", cache.vars = NULL, 
+        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
+        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
+        fig.align = "default", fig.path = "Lesson4_files/figure-html/", 
         dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
         fig.width = 6.5, fig.height = 4, fig.env = "figure", 
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
@@ -911,67 +927,32 @@ learnr:::store_exercise_cache(structure(list(label = "df3_part_2", global_setup 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "df3_part_2", exercise = TRUE, exercise.eval = FALSE, 
+        label = "exercise3_5", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-df1", code = c("", "df1[4,3] = 2", 
-        "print(df1)", ""), out.width.px = 624, out.height.px = 384, 
-        params.src = "df3_part_2, exercise=TRUE, exercise.eval = FALSE, exercise.setup = \"prepare-df1\"", 
+        "print(df1)"), out.width.px = 624, out.height.px = 384, 
+        params.src = "exercise3_5, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = \"prepare-df1\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
- 
-<script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "question2_5", 
-    question = structure("<div style='direction: rtl;'>מה קורה כשאתם משנים ערך אחד של עמודה מספרית (למשל - ציון המסוגלות העצמית) לערך מסוג character?<\u002fdiv>", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_3aa9d6e", 
-        option = "<div style='direction: rtl;'>מקבלים הודעת שגיאה <\u002fdiv>", 
-        value = "<div style='direction: rtl;'>מקבלים הודעת שגיאה <\u002fdiv>", 
-        label = structure("<div style='direction: rtl;'>מקבלים הודעת שגיאה <\u002fdiv>\n", html = TRUE, class = c("html", 
-        "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_963ae28", 
-        option = "<div style='direction: rtl;'>הערך הופך להיות מסוג numeric<\u002fdiv>", 
-        value = "<div style='direction: rtl;'>הערך הופך להיות מסוג numeric<\u002fdiv>", 
-        label = structure("<div style='direction: rtl;'>הערך הופך להיות מסוג numeric<\u002fdiv>\n", html = TRUE, class = c("html", 
-        "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7de2ec7", 
-        option = "<div style='direction: rtl;'> העמודה תכיל גם ערכים מסוג numeric וגם ערך אחד מסוג character <\u002fdiv>", 
-        value = "<div style='direction: rtl;'> העמודה תכיל גם ערכים מסוג numeric וגם ערך אחד מסוג character <\u002fdiv>", 
-        label = structure("<div style='direction: rtl;'> העמודה תכיל גם ערכים מסוג numeric וגם ערך אחד מסוג character <\u002fdiv>\n", html = TRUE, class = c("html", 
-        "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_adfc435", 
-        option = "<div style='direction: rtl;'>העמודה כולה הופכת להיות מסוג character<\u002fdiv>", 
-        value = "<div style='direction: rtl;'>העמודה כולה הופכת להיות מסוג character<\u002fdiv>", 
-        label = structure("<div style='direction: rtl;'>העמודה כולה הופכת להיות מסוג character<\u002fdiv>\n", html = TRUE, class = c("html", 
-        "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
-    "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), message = NULL, post_message = NULL), ids = list(
-        answer = "question2_5-answer", question = "question2_5"), 
-    loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 27197035.9873354, options = list()), class = c("learnr_radio", 
-"tutorial_question")), session = session)
-</script>
 
 
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-slicing_exercise-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-slicing_exercise-code-editor`)), session)
-output$`tutorial-exercise-slicing_exercise-output` <- renderUI({
-  `tutorial-exercise-slicing_exercise-result`()
+`tutorial-exercise-slicing-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-slicing-code-editor`)), session)
+output$`tutorial-exercise-slicing-output` <- renderUI({
+  `tutorial-exercise-slicing-result`()
 })
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "slicing_exercise", global_setup = structure(c("library(learnr)", 
+learnr:::store_exercise_cache(structure(list(label = "slicing", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "", "tutorial_options(", 
 "  exercise.timelimit = 60", ")", "", "knitr::opts_chunk$set(error = TRUE)", 
 "gradethis::gradethis_setup()"), chunk_opts = list(label = "setup", 
     include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "slicing_exercise", code = "\n# שורות 2,4 ו 6 מעמודות 1 ו 2\ndf2 = df1[c(2,4,6),1:2] \nprint(df2)\n\n# שורה 1, כל העמודות\nrow1 = df1[1,] \nprint(row1)\n\n# כל השורות, עמודה 2 ו3\ncolumns_2_and_3 = df1[,c(2,3)] \nprint(columns_2_and_3)\n\n\n # עיר המגורים של הנבדקים בשורות 3 ו1\ncity_subj_3_and_1 = df1[c(3,1),\"city\"]\nprint(city_subj_3_and_1)\n\n\n# כל השורות - אבל רק את העמודות של מספר ההרצה וציון תחושת המסוגלות העצמית\nsubj_and_self_efficacy = df1[,c(\"subject\",\"self_efficacy_score\")]  \nprint(subj_and_self_efficacy)\n", 
-            opts = list(label = "\"slicing_exercise\"", exercise = "TRUE", 
+        list(label = "slicing", code = "\n# שורות 2,4 ו 6 מעמודות 1 ו 2\ndf2 = df1[c(2,4,6),1:2] \nprint(df2)\n\n# שורה 1, כל העמודות\nrow1 = df1[1,] \nprint(row1)\n\n# כל השורות, עמודה 2 ו3\ncolumns_2_and_3 = df1[,c(2,3)] \nprint(columns_2_and_3)\n\n\n # עיר המגורים של הנבדקים בשורות 3 ו1\ncity_subj_3_and_1 = df1[c(3,1),\"city\"]\nprint(city_subj_3_and_1)\n\n\n# כל השורות - אבל רק את העמודות של מספר ההרצה וציון תחושת המסוגלות העצמית\nsubj_and_self_efficacy = df1[,c(\"subject\",\"self_efficacy_score\")]  \nprint(subj_and_self_efficacy)\n", 
+            opts = list(label = "\"slicing\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
     check = NULL, solution = NULL, tests = NULL, options = list(
@@ -992,7 +973,7 @@ learnr:::store_exercise_cache(structure(list(label = "slicing_exercise", global_
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "slicing_exercise", exercise = TRUE, exercise.eval = FALSE, 
+        label = "slicing", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-df1", code = c("", "# שורות 2,4 ו 6 מעמודות 1 ו 2", 
         "df2 = df1[c(2,4,6),1:2] ", "print(df2)", "", "# שורה 1, כל העמודות", 
         "row1 = df1[1,] ", "print(row1)", "", "# כל השורות, עמודה 2 ו3", 
@@ -1002,38 +983,38 @@ learnr:::store_exercise_cache(structure(list(label = "slicing_exercise", global_
         "", "", "# כל השורות - אבל רק את העמודות של מספר ההרצה וציון תחושת המסוגלות העצמית", 
         "subj_and_self_efficacy = df1[,c(\"subject\",\"self_efficacy_score\")]  ", 
         "print(subj_and_self_efficacy)", ""), out.width.px = 624, 
-        out.height.px = 384, params.src = "slicing_exercise,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = \"prepare-df1\"", 
+        out.height.px = 384, params.src = "slicing,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = \"prepare-df1\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
 
 
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-exercise2_3-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise2_3-code-editor`)), session)
-output$`tutorial-exercise-exercise2_3-output` <- renderUI({
-  `tutorial-exercise-exercise2_3-result`()
+`tutorial-exercise-exercise4_5_slicing_multi_index-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise4_5_slicing_multi_index-code-editor`)), session)
+output$`tutorial-exercise-exercise4_5_slicing_multi_index-output` <- renderUI({
+  `tutorial-exercise-exercise4_5_slicing_multi_index-result`()
 })
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "exercise2_3", global_setup = structure(c("library(learnr)", 
+learnr:::store_exercise_cache(structure(list(label = "exercise4_5_slicing_multi_index", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "", "tutorial_options(", 
 "  exercise.timelimit = 60", ")", "", "knitr::opts_chunk$set(error = TRUE)", 
 "gradethis::gradethis_setup()"), chunk_opts = list(label = "setup", 
     include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "exercise2_3", code = "print(df1)\n\ndf2 =  # חיתוך מתוך df1\n\nprint(df2)", 
-            opts = list(label = "\"exercise2_3\"", exercise = "TRUE", 
-                exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
+        list(label = "exercise4_5_slicing_multi_index", code = "print(df1)\n\ndf2 =  # חיתוך מתוך df1\n\nprint(df2)", 
+            opts = list(label = "\"exercise4_5_slicing_multi_index\"", 
+                exercise = "TRUE", exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
     check = structure(c("grade_result(", "  pass_if(~identical(.result, df1[c(1,5),c(1,3)]))", 
-    ")"), chunk_opts = list(label = "exercise2_3-check")), solution = NULL, 
-    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
-        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
-        comment = NA, highlight = FALSE, size = "normalsize", 
-        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
-        cache.path = "Lesson4_cache/html/", cache.vars = NULL, 
+    ")"), chunk_opts = list(label = "exercise4_5_slicing_multi_index-check")), 
+    solution = NULL, tests = NULL, options = list(eval = FALSE, 
+        echo = TRUE, results = "markup", tidy = FALSE, tidy.opts = NULL, 
+        collapse = FALSE, prompt = FALSE, comment = NA, highlight = FALSE, 
+        size = "normalsize", background = "#F7F7F7", strip.white = TRUE, 
+        cache = 0, cache.path = "Lesson4_cache/html/", cache.vars = NULL, 
         cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
         cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
         fig.align = "default", fig.path = "Lesson4_files/figure-html/", 
@@ -1047,10 +1028,11 @@ learnr:::store_exercise_cache(structure(list(label = "exercise2_3", global_setup
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "exercise2_3", exercise = TRUE, exercise.eval = FALSE, 
-        exercise.setup = "prepare-df1", code = c("print(df1)", 
-        "", "df2 =  # חיתוך מתוך df1", "", "print(df2)"
-        ), out.width.px = 624, out.height.px = 384, params.src = "exercise2_3, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = \"prepare-df1\"", 
+        label = "exercise4_5_slicing_multi_index", exercise = TRUE, 
+        exercise.eval = FALSE, exercise.setup = "prepare-df1", 
+        code = c("print(df1)", "", "df2 =  # חיתוך מתוך df1", 
+        "", "print(df2)"), out.width.px = 624, out.height.px = 384, 
+        params.src = "exercise4_5_slicing_multi_index, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = \"prepare-df1\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
@@ -1111,32 +1093,32 @@ learnr:::store_exercise_cache(structure(list(label = "df5", global_setup = struc
 
 
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-exercise3_3-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise3_3-code-editor`)), session)
-output$`tutorial-exercise-exercise3_3-output` <- renderUI({
-  `tutorial-exercise-exercise3_3-result`()
+`tutorial-exercise-exercise5_5_dolar-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-exercise5_5_dolar-code-editor`)), session)
+output$`tutorial-exercise-exercise5_5_dolar-output` <- renderUI({
+  `tutorial-exercise-exercise5_5_dolar-result`()
 })
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "exercise3_3", global_setup = structure(c("library(learnr)", 
+learnr:::store_exercise_cache(structure(list(label = "exercise5_5_dolar", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "", "tutorial_options(", 
 "  exercise.timelimit = 60", ")", "", "knitr::opts_chunk$set(error = TRUE)", 
 "gradethis::gradethis_setup()"), chunk_opts = list(label = "setup", 
     include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "exercise3_3", code = "\n# הוספת עמודה\n        \n# הדפסת הטבלה לאחר הוספת העמודה\nprint(df1)                                 \n", 
-            opts = list(label = "\"exercise3_3\"", exercise = "TRUE", 
+        list(label = "exercise5_5_dolar", code = "\n# הוספת עמודה\n        \n# הדפסת הטבלה לאחר הוספת העמודה\nprint(df1)                                 \n", 
+            opts = list(label = "\"exercise5_5_dolar\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
     check = structure(c("library(dplyr)", "", "grade_result(", 
     "  pass_if(~identical(.result,", "                     df1 %>% mutate(high_self_efficacy = self_efficacy_score > 2.5)))", 
-    ")"), chunk_opts = list(label = "exercise3_3-check")), solution = NULL, 
-    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
-        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
-        comment = NA, highlight = FALSE, size = "normalsize", 
-        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
-        cache.path = "Lesson4_cache/html/", cache.vars = NULL, 
+    ")"), chunk_opts = list(label = "exercise5_5_dolar-check")), 
+    solution = NULL, tests = NULL, options = list(eval = FALSE, 
+        echo = TRUE, results = "markup", tidy = FALSE, tidy.opts = NULL, 
+        collapse = FALSE, prompt = FALSE, comment = NA, highlight = FALSE, 
+        size = "normalsize", background = "#F7F7F7", strip.white = TRUE, 
+        cache = 0, cache.path = "Lesson4_cache/html/", cache.vars = NULL, 
         cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
         cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
         fig.align = "default", fig.path = "Lesson4_files/figure-html/", 
@@ -1150,11 +1132,11 @@ learnr:::store_exercise_cache(structure(list(label = "exercise3_3", global_setup
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "exercise3_3", exercise = TRUE, exercise.eval = FALSE, 
+        label = "exercise5_5_dolar", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-df1", code = c("", "# הוספת עמודה", 
         "        ", "# הדפסת הטבלה לאחר הוספת העמודה", 
         "print(df1)                                 ", ""), out.width.px = 624, 
-        out.height.px = 384, params.src = "exercise3_3, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = \"prepare-df1\"", 
+        out.height.px = 384, params.src = "exercise5_5_dolar, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = \"prepare-df1\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
@@ -1162,7 +1144,7 @@ learnr:::store_exercise_cache(structure(list(label = "exercise3_3", global_setup
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "question3_5", question = structure("מה הגיל של הנבדקת הראשונה בקובץ שייבאתם?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_6e793dc", 
+"character")), answers = list(structure(list(id = "lnr_ans_9821b", 
     option = "19", value = "19", label = structure("19", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1173,16 +1155,16 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "question3_5-answer", question = "question3_5"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 430368111.299594, options = list()), class = c("learnr_text", 
+    seed = 1699760835.20849, options = list()), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "question4_5", question = structure("כמה תצפיות מכילה הטבלה שייבאתם?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_8f92b22", 
+"character")), answers = list(structure(list(id = "lnr_ans_73eace4", 
     option = "2466", value = "2466", label = structure("2466", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_197c8e4", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_1be2d67", 
     option = "10", value = "10", label = structure("10", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure(".התשובה אינה נכונה. הזנתם את מספר העמודות בטבלה, במקום את מספר השורות", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
@@ -1194,7 +1176,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "question4_5-answer", question = "question4_5"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1390452885.85252, options = list(placeholder = "Enter answer here...", 
+    seed = 1820113710.15244, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
@@ -1203,25 +1185,25 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "question5_5", 
     question = structure("<div style='direction: rtl;'> מה מכילה העמודה attention_check?<\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_6d6154d", 
+    "character")), answers = list(structure(list(id = "lnr_ans_5c99691", 
         option = "<div style='direction: rtl;'>את ציון הנבדק במטלת קשב (ציון רציף 1 עד 100)<\u002fdiv>", 
         value = "<div style='direction: rtl;'>את ציון הנבדק במטלת קשב (ציון רציף 1 עד 100)<\u002fdiv>", 
         label = structure("<div style='direction: rtl;'>את ציון הנבדק במטלת קשב (ציון רציף 1 עד 100)<\u002fdiv>\n", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_5b331f4", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d2e2b13", 
         option = "<div style='direction: rtl;'>את סוג מבחן הקשב שהנבחן עבר (רגיל / קל / קשה)<\u002fdiv>", 
         value = "<div style='direction: rtl;'>את סוג מבחן הקשב שהנבחן עבר (רגיל / קל / קשה)<\u002fdiv>", 
         label = structure("<div style='direction: rtl;'>את סוג מבחן הקשב שהנבחן עבר (רגיל / קל / קשה)<\u002fdiv>\n", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_e13d331", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_42bcdf7", 
         option = "<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב (1 = עבר, 0 = לא עבר)<\u002fdiv>", 
         value = "<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב (1 = עבר, 0 = לא עבר)<\u002fdiv>", 
         label = structure("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב (1 = עבר, 0 = לא עבר)<\u002fdiv>\n", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_b5fe772", 
-        option = "<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE1 = עבר, FALSE = לא עבר)<\u002fdiv>", 
-        value = "<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE1 = עבר, FALSE = לא עבר)<\u002fdiv>", 
-        label = structure("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE1 = עבר, FALSE = לא עבר)<\u002fdiv>\n", html = TRUE, class = c("html", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_43b01a4", 
+        option = "<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE = עבר, FALSE = לא עבר)<\u002fdiv>", 
+        value = "<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE = עבר, FALSE = לא עבר)<\u002fdiv>", 
+        label = structure("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE = עבר, FALSE = לא עבר)<\u002fdiv>\n", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
@@ -1231,7 +1213,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "question5_5-answer", question = "question5_5"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1294877751.89703, options = list()), class = c("learnr_radio", 
+    seed = 212102542.901232, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
  
@@ -1251,14 +1233,15 @@ learnr:::store_exercise_cache(structure(list(label = "summary_exercise", global_
     include = FALSE)), setup = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
     chunks = list(list(label = "prepare-df1", code = "df1 = data.frame(subject = 1:6,\n                city = c(\"Jerusalem\",\"Haifa\",\"Tel-Aviv\",\"Eilat\",\"Jerusalem\",\"Tel-Aviv\"),\n                self_efficacy_score = c(2.3, 2.5, 2.1, 3, 2.2, 2.6))", 
         opts = list(label = "\"prepare-df1\""), engine = "r"), 
-        list(label = "summary_exercise", code = "library(readr)\n\n# הורידו את הקובץ מהמודל וייבוא אותו לסביבת העבודה שלכם\nneed_for_cognition = ___________________    \n\n# ~~~ מחקו את כל השורות  מעל נקודה זו בהעתקה חזרה לחלונית הקוד   ~~~ \n\n# הדפיסו את שמות העמודות בטבלה\ncolumn_names = ___________________________\nprint(column_names)\n\n# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)\ntable1 = _____________________________\n\n# וודאו שלטבלה החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות 7 עמודות)\nnumber_of_columns = _____________\nnumber_of_rows = ______________\n\nprint(paste(\"table1 has\",number_of_columns,\"columns and\",number_of_rows,\"rows\"))\n\n# בטבלה ישנן 2 עמודות המציגות ציונים עבור שאלות שהינן בכיוון ההפוך ביחס לשאר השאלון \n# לפני שנוכל לחשב את המדד המשוכלל עבור השאלון נצטרך להפוך אותן חזרה\n\n# צרו 3 עמודות חדשות עבור שאלות 02, 03 ו 06 שיכילו את הציון ההפוך לציון בעמודות המקוריות\n# מאחר וציוני השאלון נעים בין 1 ל5, על מנת להפוך את הציון עלינו להחסיר את הציון המקורי מ6, כלומר\n# new column = 6 - old column\n\n# מומלץ להיעזר בפקד ה$ כדי להגדיר את העמודות החדשות ולשלוף את ערכיהן של העמודות הישנות\n# קראו לעמודות החדשות לפי שמות העמודות הישנות ללא האות r \n  \ntable1$nfc_02 = ____________________\ntable1$nfc_03 = ____________________\ntable1$nfc_06 = ____________________\n\n\n# כעת, צרו עמודה חדשה שתכיל את סכום ששת העמודות עבור כל נבדק\ntable1$nfc = ___________________________________________________________________\n\n# שלפו את עמודה זו ושמרו אותה באובייקט הבא:\nnfc_score_column =  ____________\n  ", 
+        list(label = "summary_exercise", code = "library(readr)\n\n# הורידו את הקובץ מהמודל וייבוא אותו לסביבת העבודה שלכם\nneed_for_cognition = ___________________    \n\n# ~~~ מחקו את כל השורות  מעל נקודה זו בהעתקה חזרה לחלונית הקוד   ~~~ \n\n# הדפיסו את שמות העמודות בטבלה\ncolumn_names = ___________________________\nprint(column_names)\n\n\n# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של \n# מספרי הנבדקים והתשובות שלהם לשאלון (עמודות 1 ו5 עד 10)\ntable1 = _____________________________\n\n# וודאו שלטבלה החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות 7 עמודות)\nnumber_of_columns = _____________\nnumber_of_rows = ______________\n\nprint(paste(\"table1 has\",number_of_columns,\"columns and\",number_of_rows,\"rows\"))\n\n# בטבלה ישנן 2 עמודות המציגות ציונים עבור שאלות שהינן בכיוון ההפוך ביחס לשאר השאלון \n# לפני שנוכל לחשב את המדד המשוכלל עבור השאלון נצטרך להפוך אותן חזרה\n\n# צרו 3 עמודות חדשות עבור שאלות 02, 03 ו 06 שיכילו את הציון ההפוך לציון בעמודות המקוריות\n# מאחר וציוני השאלון נעים בין 1 ל5, על מנת להפוך את הציון עלינו להחסיר את הציון המקורי מ6, כלומר\n# new column = 6 - old column\n\n# מומלץ להיעזר בפקד ה$ כדי להגדיר את העמודות החדשות ולשלוף את ערכיהן של העמודות הישנות\n# קראו לעמודות החדשות לפי שמות העמודות הישנות ללא האות r \n  \ntable1$nfc_02 = ____________________\ntable1$nfc_03 = ____________________\ntable1$nfc_06 = ____________________\n\n\n# כעת, צרו עמודה חדשה שתכיל את סכום ששת העמודות עבור כל נבדק\ntable1$nfc = ___________________________________________________________________\n\n# שלפו את עמודה זו ושמרו אותה באובייקט הבא:\nnfc_score_column =  ____________\n  ", 
             opts = list(label = "\"summary_exercise\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-df1\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
     check = structure("grade_this_code()", chunk_opts = list(
         label = "summary_exercise-check")), solution = structure(c("# הדפיסו את שמות העמודות בטבלה", 
     "column_names = names(need_for_cognition)", "print(column_names)", 
-    "", "# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)", 
+    "", "# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של ", 
+    "# מספרי הנבדקים והתשובות שלהם לשאלון (עמודות 1 ו5 עד 10)", 
     "table1 = need_for_cognition[1:100,c(1,5:10)]", "", "# וודאו שלטבל החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות ו7 עמודות)", 
     "number_of_columns =  ncol(table1)", "number_of_rows = nrow(table1)", 
     "", "print(paste(\"table1 has\",number_of_columns,\"columns and\",number_of_rows,\"rows\"))", 
@@ -1297,7 +1280,8 @@ learnr:::store_exercise_cache(structure(list(label = "summary_exercise", global_
         "need_for_cognition = ___________________    ", "", "# ~~~ מחקו את כל השורות  מעל נקודה זו בהעתקה חזרה לחלונית הקוד   ~~~ ", 
         "", "# הדפיסו את שמות העמודות בטבלה", 
         "column_names = ___________________________", "print(column_names)", 
-        "", "# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של כל העמודות למעט עמודות 2, 3 ו4 (עמודות 1 ו5 עד 10)", 
+        "", "", "# כעת, צרו טבלה נוספת המכילה את 100 השורות הראשונות של ", 
+        "# מספרי הנבדקים והתשובות שלהם לשאלון (עמודות 1 ו5 עד 10)", 
         "table1 = _____________________________", "", "# וודאו שלטבלה החדשה יש את מספר השורות והעמודות הנדרשות (100 שורות 7 עמודות)", 
         "number_of_columns = _____________", "number_of_rows = ______________", 
         "", "print(paste(\"table1 has\",number_of_columns,\"columns and\",number_of_rows,\"rows\"))", 

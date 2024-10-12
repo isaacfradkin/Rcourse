@@ -15,7 +15,7 @@ long_df2 = data.frame(family_id = c(1,1,1,2,2,2,3,3),
 
 mood_scores = rep(runif(20,2,8), each = 3) + rnorm(60,0,2) + rep(c(-0.5,0,0.5),20)
 mood = data.frame(subject = rep(1:20, each = 3),
-                                 measurement_time = rep(c("morning","noon","evening"),20),
+                                 measurement_time = rep(c("T1","T2","T3"),20),
                                  mood_score = ifelse(mood_scores>10,10,
                                                       ifelse(mood_scores<0,0,mood_scores)) %>% round() )
 
