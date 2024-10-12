@@ -127,41 +127,49 @@ p {
   margin: 10px 0; /* Space around the block */
   
 </style>
-<div id="section-תרגיל-מסכם-סמסטר-א" class="section level2">
-<h2>תרגיל מסכם סמסטר א’</h2>
+<div id="section-תרגיל---סינון-וניתוח-נתונים" class="section level2">
+<h2>תרגיל - סינון וניתוח נתונים</h2>
 <p>השיעור שלפניכם כולל תרגיל המסכם את החומר שנלמד בסמסטר א’. קובץ השיעור
 ילווה אתכם בניתוח, בו נעבד נתונים אמיתיים ממטלה קוגנטיבית שנערכה במספר
 מעבדות. הניתוח יכלול את כל השלבים בניתוח נתונים אמיתיים, מהסינון ובקרת
 איכות הנתונים ועד להקפת תרשימים עבור התוצאות ובמהלכו ניישם את מרבית
 החומר שנלמד במהלך הסמסטר.</p>
-<p>את התרגיל עצמו מומלץ לפתור בסביבת העבודה בRstudio, במקביל לקריאת קובץ
-זה.</p>
+<p><img src="images/Rstudio%20logo.png" width="100" /> את התרגיל עצמו
+מומלץ לפתור בסביבת העבודה בRstudio, במקביל לקריאת קובץ זה.</p>
+<p>בהצלחה!</p>
 <div id="section-תיאור-הנתונים" class="section level3">
 <h3>תיאור הנתונים</h3>
-<p>הנתונים איתם נעבוד כוללים 2 טבלאות - טבלה אחת המכילה את תשובותיהם של
-הנבדקים בשאלון *** וטבלה נוספת המכילה פירוט של תגובות הנבדקים וזמני
-התגובה שלהם במטלת “סטרופ”. במטלה זו נבדקים מתבקשים לציין את הצבע של
-מילים שונות המופיעות על המסך, תוך התעלמות מהתוכן שלהן. כשהמילה שמופיעה
-תואמת לצבע בו היא כתובה המטלה הינה קלה - ולכן מצופה מנבדקים להגיב באופן
-תקין ובמהירות רבה יותר, אך כשיש חוסר תאימות בין הצבע לטקסט המטלה קשה
-יותר וזמן התגובה צפוי להתארך.</p>
-<p>ניתן להתנסות בגרסה אינטרנטית של המטלה בקישור זה.*</p>
-<p><a href="https://faculty.washington.edu/chudler/java/ready.html"
-class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
-<p>##שלב ראשון - ניתוח נתוני מטלת הסטרופ</p>
+<p>בתרגיל ננתח נתונים ממטלת “סטרופ”. במטלה זו נבדקים מתבקשים לציין את
+הצבע של מילים שונות המופיעות על המסך, תוך התעלמות מהתוכן שלהן. כשהמילה
+שמופיעה תואמת לצבע בו היא כתובה המטלה הינה קלה - ולכן מצופה מנבדקים
+להגיב באופן תקין ובמהירות רבה יותר, אך כשיש חוסר תאימות בין הצבע לטקסט
+המטלה קשה יותר וזמן התגובה צפוי להתארך.</p>
+<p>ניתן להתנסות בגרסה אינטרנטית של המטלה <a
+href="https://www.psytoolkit.org/experiment-library/experiment_stroop.html">בקישור
+זה</a>.</p>
+<p>הנתונים איתם נעבוד נאספו במסגרת פרוייקט שכלל מספר מעבדות
+באוניברסיטאות שונות, במסגרתו אותו הניסוי בוצע במספר מקומות שונים על מנת
+להבטיח את אמינות הנתונים שנאספו. <a
+href="https://osf.io/ct89g/?view_only=">הנתונים פורסמו</a> על מנת לאפשר
+לחוקרים אחרים לבצע ניתוחים נוספים ולבדוק את הממצאים שנקבעו במסגרת המחקר
+והם כוללים גם מטלות קוגנטיביות נוספות ותגובות למספר שאלונים (ביניהם גם
+שאלון הneed_for_cognition שפגשנו במהלך הסמסטר).</p>
+<p>לטובת התרגיל נשתמש בתוצאות מטלת הסטרופ ו2 קבצים מידע אודות הנבדקים
+(הכוללים פירוט על גילאי הנבדקים והמוסד והתאריך בו כל נבדק ביצוע את
+הניסוי). כל הקבצים נמצאים בתיקייה הרלוונטית באתר המודל.</p>
+</div>
+</div>
+<div id="section-יבוא" class="section level2">
+<h2>יבוא</h2>
 <p>הורידו מהמודל את הטבלה “stroop_data.csv” וייבאו אותה לסביבת העבודה
 שלכם.</p>
-<p>הטבלה מכילה פרטים אודות כל סבב במטלה - איזה גירוי הוצג, מה היתה
-התגובה של הנבדק ומה היה אורך זמן התגובה שלו (במילישניות).</p>
-<p>האפקט שמעניין אותנו בנתונים אלו הוא ההפרש בין זמן התגובה עבור סבבים
-בהם הייתה תאימות בין הצבע והטקסט של הגירוי לבין שלבים בהם אלו היו שונים
-זה מזה.</p>
-<p>בנוסף לכך, נחשב גם את כמות הסבבים בהם כל נבדק טעה.</p>
-<p>תחילה -הדפיסו את צפו בשורות הראשונות בטבלה כדי להבין אילו עמודות
-קיימות בטבלה ואילו ערכים נמצאים בהן.</p>
-<p>העמודות מתארות את מספר ההרצה (מקביל מספר נבדק), את מספר הסבב לאותו
-נבדק, את הגירוי שהותצג (כיתוב וצבע) ואת תגובת הנבדק (צבע שנבחר וזמן
-תגובה).</p>
+<p>הטבלה מכילה פרטים אודות כל סבב במטלה - על איזה נבדק מדובר
+(session_id), מה היה מספר הסבב (trial), איזה גירוי הוצג (המילה שהוצגה +
+צבע הטקסט), מה היתה התגובה של הנבדק ומה היה אורך זמן התגובה שלו
+(במילישניות).</p>
+<p>האפקט שמעניין אותנו הוא ההפרש בין זמן התגובה עבור סבבים בהם הייתה
+תאימות בין הצבע והטקסט של הגירוי לבין שלבים בהם הצבע והגירוי לא תאמו זה
+לזה.</p>
 <p>כדי שנוכל לבצע את הניתוחים שלנו נצטרך לייצר שתי עמודות נוספות מתוך
 הנתונים הקיימים בטבלה:</p>
 <p><strong>1)</strong> עמודת המתארת האם הנבדק צדק או טעה. עמודה זו תבחן
@@ -170,13 +178,11 @@ class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
 <p><strong>2)</strong> עמודה שתקודד האם יש התאמה בין צבע הגירוי לטקסט
 שמופיע בו. לעמודה זו נקראה “condition”.</p>
 </div>
-<div id="section-סיכום-ראשוני" class="section level3">
-<h3>סיכום ראשוני</h3>
-<p>לאחר שיצרתם את שתי העמודות הנ”ל, נוכל לבצע סיכום ראשוני של תוצאות
-המטלה.</p>
-<p>עבור כל נבדק חשבו את: כמות הסבבים שהוא ביצע את מספר הסבבים מתוכם בהם
-הצבע של הגירוי תאם לטקסט ואת אחוז הסבבים בהם הנבדק הגיב נכונה (אחוז
-הדיוק)</p>
+<div id="section-סיכום-ראשוני" class="section level2">
+<h2>סיכום ראשוני</h2>
+<p>לאחר שיצרתם את שתי העמודות הנ”ל, צרו סיכום ראשוני של הנתונים. עבור כל
+נבדק, בדקו כמה סבבים הוא ביצע, כמה מתוכם היו מתנאי חוסר התאימות (בין
+הצבע לטקסט) ומה אחוז הסבבים בהם הוא השיב תשובה נכונה.</p>
 <div class="panel panel-default tutorial-question-container">
 <div data-label="text_Q1" class="tutorial-question panel-body">
 <div id="text_Q1-answer_container" class="shiny-html-output"></div>
@@ -186,15 +192,10 @@ class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
 </div>
 </div>
 </div>
-<div id="section-סינון-נתונים" class="section level3">
-<h3>סינון נתונים</h3>
-<p>כעת נעבור לחישוב זמן התגובה הממוצע עבור כל תנאי, עבור כל נבדק - אך
-לפני כן, נצטרך לסנן את הנתונים כך שלא יכללו תוצאות קיצוניות ובלתי
-סבירות.</p>
-<p>תוצאות כאלו יכולות לנבוע מכך שנבדק איבד ריכוז במטלה או לקח הפסקה קצרה
-ואינן משקפות את זמן התגובה האמיתי של הנבדק. במידה ונשאיר את תצפיות אלו
-הן עלולות להטות את התוצאות שלנו באופן משמעותי - ולכן חשוב שנסנן אותן
-לפני חישוב הממוצעים.</p>
+<div id="section-סינון-נתונים" class="section level2">
+<h2>סינון נתונים</h2>
+<div id="section-ערכים-קיצוניים" class="section level3">
+<h3>ערכים קיצוניים</h3>
 <p>כדי להבין האם יש בנתונים שלנו תצפיות קיצוניות ניעזר בהצגת זמני התגובה
 בהיסטוגרמה. צרו היסטוגרמה שכזהו באמצעות <code>ggplot</code>.</p>
 <p>משהו נראה קצת מוזר?</p>
@@ -205,9 +206,14 @@ class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
 ל5000.</p>
 <p>על פי התוצאות המוצגות בטבלה, מהו לדעתכם הרף העליון הסביר לזמני
 התגובה?</p>
+<p>סננו את הנתונים כך שלא יכללו תוצאות קיצוניות ובלתי סבירות. תוצאות
+כאלו יכולות לנבוע מכך שנבדק איבד ריכוז במטלה או לקח הפסקה קצרה ואינן
+משקפות את זמן התגובה האמיתי של הנבדק. במידה ונשאיר את תצפיות אלו הן
+עלולות להטות את התוצאות שלנו באופן משמעותי - ולכן חשוב שנסנן אותן לפני
+חישוב הממוצעים.</p>
 <p>סננו את הטבלה כך שתכיל רק זמני תגובה הקטנים מ3000 מילי שניות. נקודת
-חתך זו הינה קצת שרירותית. ישנן מספר דרכים לקבוע את נקודת החתך, אך כרגע
-נסתפק בחתך אחיד זה כדי להקל על שיחזור והשוואת תוצאות הניתוח.</p>
+חתך זו הינה קצת שרירותית שכן ישנן מספר דרכים לקבוע את נקודת החתך, אך
+כרגע נסתפק בחתך אחיד זה כדי להקל על שיחזור והשוואת תוצאות הניתוח.</p>
 <div class="panel panel-default tutorial-question-container">
 <div data-label="n_filtered" class="tutorial-question panel-body">
 <div id="n_filtered-answer_container" class="shiny-html-output"></div>
@@ -216,6 +222,9 @@ class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
 <script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
 </div>
 </div>
+</div>
+<div id="section-סינון-סבבים-עם-תגובות-שגויות" class="section level3">
+<h3>סינון סבבים עם תגובות שגויות</h3>
 <p>בנוסף, סננו מהטבלה גם את כל הסבבים בהם הנבדקים טעו בתגובותיהם. סבבים
 כאלו מעידים על כך שהמטלה לא נעשתה כשורה ולכן לא נרצה לכלול את זמני
 התגובה של סבבים אלו בממוצעים שנחשב.</p>
@@ -227,14 +236,16 @@ class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
 <script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
 </div>
 </div>
+</div>
+</div>
+<div id="section-סינון-נבדקים-בעייתיים" class="section level2">
+<h2>סינון נבדקים בעייתיים</h2>
 <p>הסינון האחרון שנערוך יכלול הסרה של כל הנתונים של נבדקים שצדקו בפחות
 מ50% מהסבבים. אמנם הסיכוי לצדוק בניחוש אקראי הינו נמוך יותר במקרה זה
 (33%), אך נוסיף לרף הדחייה שלנו מרווח נוסף עבור נבדקים שאמנם לאו דווקא
 ניחשו בכל סבב וסבב אך בהחלט נראה שלא ענו על המטלה בצורה טובה מספיק.</p>
-<p>כדי לבצע את הסינון, צרו וקטור המכיל את המספר המזהה (session_id) של
-הנבדקים שקיבלו ציון נמוך מדי והשתמשו בו כדי לסנן את הטבלה. ניתן להפיק את
-הוקטור על ידי סינון הטבלה הכוללת את אחוזי המענה הנכונים עבור כל נבדק.
-ולשלוף את עמודת המספרים המזהים שנותרו בקובץ.</p>
+<p>צרו רשימה של נבדקים עם אחוזי דיוק נמוכים והסירו את כל התצפיות שלהם
+מהקובץ.</p>
 <div class="panel panel-default tutorial-question-container">
 <div data-label="n_filtered_total" class="tutorial-question panel-body">
 <div id="n_filtered_total-answer_container" class="shiny-html-output"></div>
@@ -244,40 +255,36 @@ class="uri">https://faculty.washington.edu/chudler/java/ready.html</a></p>
 </div>
 </div>
 </div>
-<div id="section-חישוב-ממוצעי-זמני-התגובה" class="section level3">
-<h3>חישוב ממוצעי זמני התגובה</h3>
+<div id="section-חישוב-ממוצעי-זמני-התגובה" class="section level2">
+<h2>חישוב ממוצעי זמני התגובה</h2>
 <p>עכשיו שסיננו את זמני התגובה ווידאנו שהנתונים תקינים - נוכל לחשב את
-זמן התגובה הממוצע עבור כל נבדק בכל אחד מהתנאים.</p>
-<p>אחרי שחישבתם את הממוצעים חשבו עבור כל נבדק את ההפרש בין ממוצע זמן
-התגובה בתנאי של חוסר התאמה בין המבע לטקסט - לממוצע זמן התגובה בתנאי
-התואם.</p>
-<p>צרו תרשים הממחיש את פיזור ההפרשים שקיבלתם ביחס ל0.</p>
-<pre><code>## Error in learnr::question(text = text, ..., type = &quot;learnr_text&quot;, correct = correct, : At least one correct answer must be supplied</code></pre>
-<p>חשבו את ממוצע ההפרשים ואת ******* טעות תקן??</p>
-<div class="panel panel-default tutorial-question-container">
-<div data-label="diff_mean" class="tutorial-question panel-body">
-<div id="diff_mean-answer_container" class="shiny-html-output"></div>
-<div id="diff_mean-message_container" class="shiny-html-output"></div>
-<div id="diff_mean-action_button_container" class="shiny-html-output"></div>
-<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+זמן התגובה הממוצע עבור כל נבדק בכל אחד מהתנאים - ולחשב את ההפרש בין זמני
+התגובה הממוצעים של כל נבדק בתנאים השונים. בסוף התהליך נקבל מדד עבור כל
+נבדק שמתאר את ההפרש בזמני התגובה שלו בין התנאים.</p>
+<p>צרו תרשים הממחיש את פיזור ההפרשים שקיבלתם. הדגישו את מיקומו של ערך
+האפס בתרשים שלכם כדי להבליט את מיקומם של רוב התצפיות ביחס אליו.</p>
+<p>מהתרשמותכם - האם זה נראה שנבדקים נוטים להגיב לאט יותר באחד
+התנאים?</p>
+<p>חשבו את ההפרש הממוצע על פני כל הנבדקים ואת סטיית התקן של ההפרשים</p>
 </div>
-</div>
-</div>
-<div id="section-סיכום-המטלה" class="section level3">
-<h3>סיכום המטלה</h3>
+<div id="section-סיכום-המטלה" class="section level2">
+<h2>סיכום המטלה</h2>
 <p>צרו טבלה אחת המסכמת את תוצאות המטלה עבור כל נבדק וכוללת גם את ההפרש
-בזמני התגובה וגם את אחוז הטעויות. צרפו לטבלה גם את הנתונים הדמוגרפים של
-כל נבדק מתוך הקובץ “demographics.csv”.</p>
-<p>צרו גרף המציג את הקשר בין אחוז הטעויות לבין ההפרש בזמני התגובה.</p>
-<p>צרו גם תרשים עמודות המציג עמודה אחת עבור זמן התגובה בתנאי התואם
-ועמודה נוספת עבור זמן התגובה בתנאי חוסר ההתאמה. הוסיפו לכל עמודה קווי
-טעות (errorbars) המייצגים את טעות התקן (SE). להזכירכם, טעות התקן מחושבת
-באמצעות הנוסחה הבאה:</p>
-<p><span class="math display">\[ SE = \frac{SD}{\sqrt{n}} \]</span></p>
-<p>לצורך הפקת התרשים תצטרכו לסכום את ממוצע זמן התגובה של הנבדקים השונים
-בכל תנאי (לא את זמני התגובה הגולמיים) ולחשב גם את הממוצע וגם את טעות
-התקן עבור זמן התגובה בכל תנאי.</p>
-</div>
+בזמני התגובה וגם את אחוז הטעויות.</p>
+<p>צרו תרשימים שימחישו:</p>
+<p><strong>1)</strong> את הקשר בין אחוז הטעויות לבין ההפרש בזמני התגובה
+בין התנאים.</p>
+<p><strong>2)</strong> את זמני הגובה הממוצעים בכל תנאי ואת סטיית התקן
+שלהם.</p>
+<p>לצורך חישוב הממוצע וסטיית התקן לטובת התרשים תצטרכו להשתמש
+ב<strong>ממוצעי</strong> זמני התגובה של כל נבדק בתנאים השונים (ולא בזמני
+התגובה הגולמיים - מה שהיה נותן משקל עודף לנבדקים עם מספר גבוה יותר של
+תצפיות).</p>
+<p><strong>3)</strong> את ממוצע הפרשי זמני התגובה בין התנאים בכל אחת
+מהאוניברסטאות / מוסדות בה המחקר נעשה.</p>
+<p>המידע שתצטרכו לצורך ניתוח זה נמצא בקבצים “stroop_subj_data_part_1”
+ו”stroop_subj_data_part_2”.</p>
+<p>בהצלחה!</p>
 </div>
 <div id="section-הגשה" class="section level2">
 <h2>הגשה</h2>
@@ -401,10 +408,10 @@ session$onSessionEnded(function() {
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "text_Q1", question = structure("<div style='direction: rtl;'>\nמה היה אחוז הדיוק של הנבדק השני (session_id = 668587)? \n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_3d385c2", 
+"character")), answers = list(structure(list(id = "lnr_ans_4b7333b", 
     option = "0.889", value = "0.889", label = structure("0.889", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_318b0ae", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_2b91de9", 
     option = "0.89", value = "0.89", label = structure("0.89", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -414,7 +421,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "text_Q1-answer", question = "text_Q1"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 806432330.124476, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1578634857.26489, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -422,7 +429,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "n_filtered", question = structure("<div style='direction: rtl;'>\nכמה תצפיות סיננתם?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_53c9a4d", 
+"character")), answers = list(structure(list(id = "lnr_ans_cc1f6db", 
     option = "629", value = "629", label = structure("629", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -432,7 +439,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "n_filtered-answer", question = "n_filtered"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1947783.49909299, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1795882870.66373, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -440,10 +447,10 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "are_there_NAs", 
     question = structure("<div style='direction: rtl;'>\nבדקו - האם הקובץ מכיל ערכים חסרים?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_7ada0a", 
+    "character")), answers = list(structure(list(id = "lnr_ans_f83013a", 
         option = "כן", value = "כן", label = structure("כן", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4f5f4ba", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_3912b99", 
         option = "לא", value = "לא", label = structure("לא", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -454,7 +461,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "are_there_NAs-answer", question = "are_there_NAs"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 30533223.4857819, options = list()), class = c("learnr_radio", 
+    seed = 350743400.336672, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
 
@@ -462,7 +469,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "n_filtered_total", 
     question = structure("<div style='direction: rtl;'>\nלאחר כל הסינונים, כמה תצפיות נותרו בקובץ?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_e04f794", 
+    "character")), answers = list(structure(list(id = "lnr_ans_6114dae", 
         option = "201511", value = "201511", label = structure("201511", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -473,38 +480,11 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "n_filtered_total-answer", question = "n_filtered_total"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 721137086.664194, options = list(placeholder = "Enter answer here...", 
+    seed = 671219259.687439, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
  
-<script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "diff_mean", question = structure("<div style='direction: rtl;'>\nמה הערך שקיבלתם?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_a5f1614", 
-    option = "-56", value = "-56", label = structure("-56", html = TRUE, class = c("html", 
-    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_5eff708", 
-    option = "56", value = "56", label = structure("56", html = TRUE, class = c("html", 
-    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_7954e4d", 
-    option = "-56.0", value = "-56.0", label = structure("-56.0", html = TRUE, class = c("html", 
-    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_617a32d", 
-    option = "56.0", value = "56.0", label = structure("56.0", html = TRUE, class = c("html", 
-    "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
-"character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
-"character")), message = NULL, post_message = NULL), ids = list(
-    answer = "diff_mean-answer", question = "diff_mean"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 2042631430.54883, 
-    options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
-"tutorial_question")), session = session)
-</script>
-
-
 <script type="application/shiny-prerendered" data-context="server">
 learnrhash::encoder_logic()
 </script>

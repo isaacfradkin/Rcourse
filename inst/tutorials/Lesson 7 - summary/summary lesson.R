@@ -88,6 +88,12 @@ stroop_summary = stroop_data_filtered%>%
   summarise(mean_RT = mean(response_time))
 
 
+stroop_summary_all = stroop_data_filtered%>%
+  filter( correct == 1) %>%
+  group_by(session_id) %>%
+  summarise(mean_RT = mean(response_time))
+
+
 # פרסו את הטבלה כך שעבור כל נבדק תוקדש שורה אחת
 # הטבלה צריכה להכיל עמודה אחת עבור זמן התגובה הממוצע בתצפיות תואמות
 # ועמודה נוספת עבור זמן התגובה הממוצע בתצפיות שאינן תואמות
@@ -127,9 +133,10 @@ stroop_subj_summary = stroop_subj_summary %>%
 # האם נראה קשר בין המשתנים?
 
 ggplot(stroop_subj_summary, aes(x = correct_percent, y = diff))+
-  geom_point()+
+  geom_point(alpha = 0.1) +
   geom_smooth(method  = "lm")+
   xlim(c(0.8,1))
+
 
 
 
@@ -139,11 +146,11 @@ ggplot(stroop_subj_summary, aes(x = correct_percent, y = diff))+
 
 sum_by_condition = stroop_summary  %>% group_by(condition) %>%
   summarise(mean = mean(mean_RT),
-            se = sd(mean_RT)/sqrt(n()))
+            sd = sd(mean_RT))
 
-ggplot(sum_by_condition)+
-  geom_point(aes(x = condition, y = mean, fill = condition))+
-  geom_errorbar(aes(x = condition, ymin = mean - se, ymax = mean + se), width = 0.2)
+ggplot(sum_by_condition, aes(x = condition, y = mean, col = gender))+
+  geom_point()+
+  geom_errorbar(aes(x = condition, ymin = mean - sd, ymax = mean + sd), width = 0.2)
   # ***
 
 ## חלק שני - חישוב ציוני השאלון
@@ -175,7 +182,7 @@ intr = Qs %>% #filter(attention_check == 1) %>%
 
 nrow(intr)
 
-  
+
 int_subj = intr 
 
 ggplot(intr,aes(x = intr))+ geom_histogram()
@@ -189,7 +196,7 @@ dff = full_join(dff,first_summary) %>%
 
 
 dfff = gather(dff, key = "measure", value = "value", correct_percent,diff)
-ggplot(dfff , aes(x = intr, y = value))+
+ggplot(dfff , aes(x = gender, y = value))+
   geom_point(alpha = 0.2)+
   geom_smooth(method  = "lm")+
   facet_wrap(~measure, scales = "free")
@@ -198,12 +205,12 @@ ggplot(dfff , aes(x = intr, y = value))+
 cor(dff$intr, dff$diff)
 
 
-ggplot(dff,aes(x= gender, y = diff))+
-#  geom_violin()+
-  stat_summary()
+ggplot(dff,aes(x= gender, y = correct_percent))+
+  #  geom_violin()+
+  geom_point(alpha = 0.1)
 
 psych::alpha (Qs %>% filter(attention_check == 1) %>%
-  select(contains("intr")),check.keys=TRUE )
+                select(contains("intr")),check.keys=TRUE )
 ### סינון תצפיות חריגות ובעייתיות
 
 # סננו נבדקים בעלי 
@@ -212,6 +219,20 @@ psych::alpha (Qs %>% filter(attention_check == 1) %>%
 
 ## חלק שני - עיבוד תוצאות המטלה
 
+by_gender = dff %>% group_by(gender) %>%
+  summarise(mean_diff = mean(diff),
+            sd_diff = sd(diff),
+            mean_correct = mean(correct_percent),
+            sd_correct = sd(correct_percent))
+
+ggplot(by_gender, aes(x = gender, y = mean_diff))+
+  geom_point()+
+  geom_errorbar(aes(ymin = mean_diff - sd_diff, ymax = mean_diff + sd_diff), width =0.2)
+
+
+ggplot(by_gender,aes(x = gender, y = mean_correct))+
+  geom_point()+
+  geom_errorbar(aes(ymin = mean_correct - sd_correct, ymax = mean_correct + sd_correct), width =0.2)
 
 
 ### עריכת נתונים
@@ -225,3 +246,24 @@ psych::alpha (Qs %>% filter(attention_check == 1) %>%
 
 ## שאלות לסיכום
 
+subj_data <- read_csv("csv files/stroop_subject_info.csv")
+
+
+stroop_summary_all = stroop_summary_all %>%
+  left_join(subj_data %>% mutate(session_id = as.numeric(session_id),
+                                 age = as.numeric(age)))
+
+ggplot(stroop_summary_all, aes(x = Site, y = mean_RT))+
+  # geom_point()+
+  stat_summary()+
+  geom_smooth(method = "lm")
+
+names(stroop_summary_all)
+
+
+dff  = dff %>%
+  left_join(subj_data %>% mutate(session_id = as.numeric(session_id),
+                                 age = as.numeric(age)))
+
+ggplot(dff %>% group_by(Site) %>% summarise(diff = mean(diff)), aes(x = Site, y = diff))+
+  geom_col()

@@ -614,40 +614,40 @@ head(table3)</code></pre>
          # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך אותה הפונקציה
          nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6,
          
-         age_above_18 = age &gt;=18,  # האם הנבדק מעל גיל 18
-        # ******************************************
-         gender = recode(gender, &quot;male&quot; = &quot;M&quot;, &quot;female&quot; = &quot;F&quot;), # דריסת עמודת המגדר וקידודה מחדש 
-                     # פונקציה זו מאפשר לנו לקודד מחדש עמודות עם מספר רמות - להחליף את הערכים המייצגים קבוצות שונות 
-         
          )
 # שימו לב לסוגריים - כל העמודות שיצרנו בוכנסו בתוך פונקצייה אחת, בה הפרדנו את ההתייחסות לכל עמודה בפסיקים.
 # ירידת השורה בין עמודה לעמודה נועדה כדי לשמור על הסדר ואינה נדרשת בשביל תקינות הקוד
 
 print(mutated_table)</code></pre>
-<pre><code>## # A tibble: 2,466 × 15
+<pre><code>## # A tibble: 2,466 × 14
 ##    session_id   age gender attention_check nfc_01 nfc_02r nfc_03r nfc_04 nfc_05
 ##         &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1    7385046    19 F                    1      3       4       4      3      2
-##  2    7385155    18 F                    1      1       2       5      1      3
-##  3    7391990    18 F                    1      5       5       1      5      5
-##  4    7392153    18 F                    0      4       4       4      1      1
-##  5    7392233    18 F                    1      2       2       2      3      4
-##  6    7392698    24 M                    0      4       3       4      2      3
-##  7    7392875    18 F                    1      4       1       2      5      4
-##  8    7397218    19 M                    1      2       4       3      2      3
-##  9    7397377    20 F                    0      3       2       4      3      3
-## 10    7397497    18 F                    1      3       2       4      3      4
+##  1    7385046    19 female               1      3       4       4      3      2
+##  2    7385155    18 female               1      1       2       5      1      3
+##  3    7391990    18 female               1      5       5       1      5      5
+##  4    7392153    18 female               0      4       4       4      1      1
+##  5    7392233    18 female               1      2       2       2      3      4
+##  6    7392698    24 male                 0      4       3       4      2      3
+##  7    7392875    18 female               1      4       1       2      5      4
+##  8    7397218    19 male                 1      2       4       3      2      3
+##  9    7397377    20 female               0      3       2       4      3      3
+## 10    7397497    18 female               1      3       2       4      3      4
 ## # ℹ 2,456 more rows
-## # ℹ 6 more variables: nfc_06r &lt;dbl&gt;, nfc_02 &lt;dbl&gt;, nfc_03 &lt;dbl&gt;, nfc_06 &lt;dbl&gt;,
-## #   nfc &lt;dbl&gt;, age_above_18 &lt;lgl&gt;</code></pre>
+## # ℹ 5 more variables: nfc_06r &lt;dbl&gt;, nfc_02 &lt;dbl&gt;, nfc_03 &lt;dbl&gt;, nfc_06 &lt;dbl&gt;,
+## #   nfc &lt;dbl&gt;</code></pre>
 <p>דרך פונקציה זו נוכל גם לעדכן את סוג העמודות (מספרי, תווים, ערכים
-לוגיים, פקטור), לחלק לקבוצות על סמך ערך מספרי או לערוך עמודות על פי
+לוגיים, פקטור), לחלק לקבוצות על סמך ערך מספרי או לייצר עמודות על פי
 תנאי</p>
 <div class="tutorial-exercise" data-label="e14" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0"
 data-pipe="|&gt;">
 <pre class="text"><code>table3 = need_for_cognition %&gt;% #*
-  mutate(gender_factor = factor(gender),             # יצרנו גרסת פקטור של נתוני המגדר
+  mutate(age_above_18 = age &gt;=18,  # האם הנבדק מעל גיל 18
+         
+         gender = recode(gender, &quot;male&quot; = &quot;M&quot;, &quot;female&quot; = &quot;F&quot;), # דריסת עמודת המגדר וקידודה מחדש 
+                     # פונקציה זו מאפשר לנו לקודד מחדש עמודות עם מספר רמות - להחליף את הערכים המייצגים קבוצות שונות 
+        
+         gender_factor = factor(gender),             # יצרנו גרסת פקטור של נתוני המגדר
          gender_numeric = as.numeric(gender_factor), # יצרנו עמודה מספרית על סמך העמודה הקודמת (תכיל 0 ו1)
          
          # * delete
@@ -966,6 +966,16 @@ print(df_full)</code></pre>
 ## 7          3   1     1    9
 ## 8          3   2     4    6
 ## 9          3   3     5    8</code></pre>
+<div class="text-block1">
+<p><strong>שימו לב:</strong> כדי שהצירוף יתבצע בהצלחה, כל העמודות שאנחנו
+מעוניינים לבצע על בסיסן את הצירוף חייבות להיות <strong>ולהיות מאותו
+הסוג</strong> בשתי הטבלאות.</p>
+<p>אם אחת העמודות תוגדר כעמודה מספרית (numeric) בטבלה אחת והמקבילה שלה
+בטבלה השנייה תוגדר כעמודה המכילה תווים (character), למשל - כשננסה לבצע
+את הצירוף נקבל הודעת שגיאה.</p>
+<p>במקרים כאלו נצטרך להמיר את העמודה באחת הטבלאות לסוג המתאים (כפי
+שלמדנו בפרק על עריכת נתונים) לפני שנבצע את הצירוף.</p>
+</div>
 <p><code>תרגיל:</code></p>
 <p>הטבלה <code>results</code> כוללת את הישגי הנבדקים בסבבים שונים של
 מטלה ממוחשבת, אך היא אינה מציינת מה היה התנאי בכל סבב (קל / בינוני /
@@ -1305,21 +1315,21 @@ learnr:::store_exercise_cache(structure(list(label = "exercise1_5_piping", globa
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "q1_5", question = structure("<div style='direction: rtl;'>אם היינו מריצים את קטע הקוד האחרון (עדכון הטבלה שיצרנו כך שלא תכיל את נתוני הגיל) פעמיים ברציפות - היינו מקבלים הודעת שגיאה. מדוע?<\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_955381e", 
+"character")), answers = list(structure(list(id = "lnr_ans_b573fb2", 
     option = "כיוון שאי אפשר להריץ את אותו הקוד פעמיים", 
     value = "כיוון שאי אפשר להריץ את אותו הקוד פעמיים", 
     label = structure("כיוון שאי אפשר להריץ את אותו הקוד פעמיים", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_d9a8ccd", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_30856cd", 
     option = "כיוון שהטבלה בה אנו משתמשים כבר לא קיימת", 
     value = "כיוון שהטבלה בה אנו משתמשים כבר לא קיימת", 
     label = structure("כיוון שהטבלה בה אנו משתמשים כבר לא קיימת", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_78415f8", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_f422312", 
     option = "כיוון שהטבלה גדולה מדי", value = "כיוון שהטבלה גדולה מדי", 
     label = structure("כיוון שהטבלה גדולה מדי", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_6534abb", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_3e9d64c", 
     option = "כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", 
     value = "כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", 
     label = structure("כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", html = TRUE, class = c("html", 
@@ -1331,7 +1341,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q1_5-answer", question = "q1_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1090904438.99201, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1049226525.01142, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
@@ -1477,7 +1487,7 @@ learnr:::store_exercise_cache(structure(list(label = "ex_drop_na", global_setup 
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q2_5", question = structure("<div style='direction: rtl;'>כמה תצפיות סיננתם?<\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_1c1e137", 
+"character")), answers = list(structure(list(id = "lnr_ans_cd37d", 
     option = "66", value = "66", label = structure("66", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1487,7 +1497,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q2_5-answer", question = "q2_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 329738389.846454, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1631054376.74048, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -1508,7 +1518,7 @@ learnr:::store_exercise_cache(structure(list(label = "e14", global_setup = struc
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
     chunks = list(list(label = "prepare-table2", code = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
         opts = list(label = "\"prepare-table2\""), engine = "r"), 
-        list(label = "e14", code = "\ntable3 = need_for_cognition %>% #*\n  mutate(gender_factor = factor(gender),             # יצרנו גרסת פקטור של נתוני המגדר\n         gender_numeric = as.numeric(gender_factor), # יצרנו עמודה מספרית על סמך העמודה הקודמת (תכיל 0 ו1)\n         \n         # * delete\n         age_category = cat(age,                     # יצירת עמודת קבוצות גיל\n                            breaks = c(0,18,30,50,120),\n                            labels = c(\"youth\",\"young adult\",\"adult\",\"senior\")),\n         \n         # במידה וגילינו שנפלה טעות ונתוני הגיל של הנשים במדגם שלנו קטנים ב5 מהערכים האמיתיים\n         # נרצה לערוך רק את נתוני הגיל של נשים. הפונקציה הבאה מאפשרת לנו לבצע עריכה שכזו\n         corrected_age = ifelse(gender == \"F\",\n                                age+5 , # ערכנו את נתוני הגיל של נשים\n                                age)    # והשארנו את נתוני הגיל כפי שהם עבור מי שאינו אישה\n         )", 
+        list(label = "e14", code = "\ntable3 = need_for_cognition %>% #*\n  mutate(age_above_18 = age >=18,  # האם הנבדק מעל גיל 18\n         \n         gender = recode(gender, \"male\" = \"M\", \"female\" = \"F\"), # דריסת עמודת המגדר וקידודה מחדש \n                     # פונקציה זו מאפשר לנו לקודד מחדש עמודות עם מספר רמות - להחליף את הערכים המייצגים קבוצות שונות \n        \n         gender_factor = factor(gender),             # יצרנו גרסת פקטור של נתוני המגדר\n         gender_numeric = as.numeric(gender_factor), # יצרנו עמודה מספרית על סמך העמודה הקודמת (תכיל 0 ו1)\n         \n         # * delete\n         age_category = cat(age,                     # יצירת עמודת קבוצות גיל\n                            breaks = c(0,18,30,50,120),\n                            labels = c(\"youth\",\"young adult\",\"adult\",\"senior\")),\n         \n         # במידה וגילינו שנפלה טעות ונתוני הגיל של הנשים במדגם שלנו קטנים ב5 מהערכים האמיתיים\n         # נרצה לערוך רק את נתוני הגיל של נשים. הפונקציה הבאה מאפשרת לנו לבצע עריכה שכזו\n         corrected_age = ifelse(gender == \"F\",\n                                age+5 , # ערכנו את נתוני הגיל של נשים\n                                age)    # והשארנו את נתוני הגיל כפי שהם עבור מי שאינו אישה\n         )", 
             opts = list(label = "\"e14\"", exercise = "TRUE", 
                 exercise.eval = "FALSE", exercise.setup = "\"prepare-table2\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
@@ -1532,7 +1542,10 @@ learnr:::store_exercise_cache(structure(list(label = "e14", global_setup = struc
         exercise.error.check.code = "gradethis_error_checker()", 
         label = "e14", exercise = TRUE, exercise.eval = FALSE, 
         exercise.setup = "prepare-table2", code = c("", "table3 = need_for_cognition %>% #*", 
-        "  mutate(gender_factor = factor(gender),             # יצרנו גרסת פקטור של נתוני המגדר", 
+        "  mutate(age_above_18 = age >=18,  # האם הנבדק מעל גיל 18", 
+        "         ", "         gender = recode(gender, \"male\" = \"M\", \"female\" = \"F\"), # דריסת עמודת המגדר וקידודה מחדש ", 
+        "                     # פונקציה זו מאפשר לנו לקודד מחדש עמודות עם מספר רמות - להחליף את הערכים המייצגים קבוצות שונות ", 
+        "        ", "         gender_factor = factor(gender),             # יצרנו גרסת פקטור של נתוני המגדר", 
         "         gender_numeric = as.numeric(gender_factor), # יצרנו עמודה מספרית על סמך העמודה הקודמת (תכיל 0 ו1)", 
         "         ", "         # * delete", "         age_category = cat(age,                     # יצירת עמודת קבוצות גיל", 
         "                            breaks = c(0,18,30,50,120),", 
@@ -1600,7 +1613,7 @@ learnr:::store_exercise_cache(structure(list(label = "summary11", global_setup =
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q3_5", question = structure("<div style='direction: rtl;'> מה היה ממוצע מדד nfc אצל הנשים במדגם? <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_a39a81a", 
+"character")), answers = list(structure(list(id = "lnr_ans_99c1b31", 
     option = "3.15", value = "3.15", label = structure("3.15", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1610,7 +1623,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q3_5-answer", question = "q3_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1088564565.4931, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 980119304.043596, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -1618,7 +1631,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q4_5", question = structure("<div style='direction: rtl;'> כמה תצפיות חסרות היו במדד הnfc אצל גברים? <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_9b7e625", 
+"character")), answers = list(structure(list(id = "lnr_ans_3bf08d5", 
     option = "14", value = "14", label = structure("14", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1628,14 +1641,14 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q4_5-answer", question = "q4_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 435970205.296986, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 247693287.884659, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_numeric", label = "q5_5", question = structure("<div style='direction: rtl;'> כמה נבדקים יש בקובץ שערך המגדר שלהם חסר, אבל הציון שלהם במדד nfc תקין? <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_34b1375", 
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q5_5", question = structure("<div style='direction: rtl;'> כמה נבדקים יש בקובץ שערך המגדר שלהם חסר, אבל הציון שלהם במדד nfc תקין? <\u002fdiv>\n", html = TRUE, class = c("html", 
+"character")), answers = list(structure(list(id = "lnr_ans_9425081", 
     option = "23", value = "23", label = structure("23", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1645,8 +1658,8 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_numeric", labe
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q5_5-answer", question = "q5_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1710351630.70356, 
-    options = list(min = NA, max = NA, step = NA, tolerance = 1.5e-08)), class = c("learnr_numeric", 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 2001710808.56788, 
+    options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
 
@@ -1910,18 +1923,20 @@ learnr:::store_exercise_cache(structure(list(label = "exercise5_5_gather", globa
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
 ")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
-), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
-    chunks = list(list(label = "exercise5_5_gather", code = "\nhead(mood)\n\n# המירו את הטבלה לפורמט רחב וחשבו את ההפרשים בציוני מצב הרוח\nwide_mood = __________________\n\n\n# חתכו טבלה חדשה המכילה רק את ציוני ההפרשים ואת המספר המזהה של כל נבדק\n# והמירו את הטבלה לפורמט ארוך\n\nlong_mood_diff = ____________\n\n# סכמו את הנתונים\nmood_diff_summary = _____________\n\n# שלפו את עמודת ממוצעי ההפרשים\nmood_diff_means = ____________", 
-        opts = list(label = "\"exercise5_5_gather\"", exercise = "TRUE", 
-            exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
-    error_check = NULL, check = structure(c("", "solution1 = mood %>% spread(key = \"measurement_time\",   # to wide", 
+), chunk_opts = list(label = "setup", include = FALSE)), setup = "set.seed(111)\nmood_scores = rep(runif(20,2,8), each = 3) + rnorm(60,0,2) + rep(c(-0.5,0,0.5),20)\nmood = data.frame(subject = rep(1:20, each = 3),\n                                 measurement_time = rep(c(\"T1\",\"T2\",\"T3\"),20),\n                                 mood_score = ifelse(mood_scores>10,10,\n                                                      ifelse(mood_scores<0,0,mood_scores)) %>% round() )", 
+    chunks = list(list(label = "prepare-mood", code = "set.seed(111)\nmood_scores = rep(runif(20,2,8), each = 3) + rnorm(60,0,2) + rep(c(-0.5,0,0.5),20)\nmood = data.frame(subject = rep(1:20, each = 3),\n                                 measurement_time = rep(c(\"T1\",\"T2\",\"T3\"),20),\n                                 mood_score = ifelse(mood_scores>10,10,\n                                                      ifelse(mood_scores<0,0,mood_scores)) %>% round() )", 
+        opts = list(label = "\"prepare-mood\""), engine = "r"), 
+        list(label = "exercise5_5_gather", code = "\nhead(mood)\n\n# המירו את הטבלה לפורמט רחב וחשבו את ההפרשים בציוני מצב הרוח\nwide_mood = __________________\n\n\n# חתכו טבלה חדשה המכילה רק את ציוני ההפרשים ואת המספר המזהה של כל נבדק\n# והמירו את הטבלה לפורמט ארוך\n\nlong_mood_diff = ____________\n\n# סכמו את הנתונים\nmood_diff_summary = _____________\n\n# שלפו את עמודת ממוצעי ההפרשים\nmood_diff_means = ____________", 
+            opts = list(label = "\"exercise5_5_gather\"", exercise = "TRUE", 
+                exercise.eval = "FALSE", exercise.setup = "\"prepare-mood\""), 
+            engine = "r")), code_check = NULL, error_check = NULL, 
+    check = structure(c("", "", "grade_result(", "  pass_if(~identical(sum(.result),", 
+    "                     ", "                     mood %>% spread(key = \"measurement_time\",   # to wide", 
     "                value = \"mood_score\") %>%", "  mutate(diff2_1 = T2 - T1,              # calc diffs", 
     "         diff3_2 = T3-T2) %>%", "    ", "  select(- T1, - T2, - T3) %>%              # select only diff columns", 
     "  gather(key = \"time\", value = \"diff\", -subject) %>%   # to long ", 
     "  ", "  group_by(time) %>%", "  summarise(mn = mean(diff)) %>%", 
-    "  pull(mn)", "", "", "solution2 =  solution1[2:1]", "", 
-    "", "grade_result(", "  pass_if(identical(.result, solution1) |", 
-    "          identical(.result, solution2)))", ""), chunk_opts = list(
+    "  pull(mn) %>%", "    sum()", ")))", ""), chunk_opts = list(
         label = "exercise5_5_gather-check")), solution = NULL, 
     tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
         tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
@@ -1942,13 +1957,14 @@ learnr:::store_exercise_cache(structure(list(label = "exercise5_5_gather", globa
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
         label = "exercise5_5_gather", exercise = TRUE, exercise.eval = FALSE, 
-        code = c("", "head(mood)", "", "# המירו את הטבלה לפורמט רחב וחשבו את ההפרשים בציוני מצב הרוח", 
+        exercise.setup = "prepare-mood", code = c("", "head(mood)", 
+        "", "# המירו את הטבלה לפורמט רחב וחשבו את ההפרשים בציוני מצב הרוח", 
         "wide_mood = __________________", "", "", "# חתכו טבלה חדשה המכילה רק את ציוני ההפרשים ואת המספר המזהה של כל נבדק", 
         "# והמירו את הטבלה לפורמט ארוך", 
         "", "long_mood_diff = ____________", "", "# סכמו את הנתונים", 
         "mood_diff_summary = _____________", "", "# שלפו את עמודת ממוצעי ההפרשים", 
         "mood_diff_means = ____________"), out.width.px = 624, 
-        out.height.px = 384, params.src = "exercise5_5_gather, exercise=TRUE, exercise.eval = FALSE", 
+        out.height.px = 384, params.src = "exercise5_5_gather, exercise=TRUE, exercise.eval = FALSE, exercise.setup =\"prepare-mood\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
