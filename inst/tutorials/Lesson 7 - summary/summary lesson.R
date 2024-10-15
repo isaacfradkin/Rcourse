@@ -1,3 +1,8 @@
+# יבוא חבילות
+library(tidyverse)
+library(ggplot2)
+
+
 
 #### עיבוד נתוני מטלת הסטרופ ####
 
@@ -5,6 +10,11 @@
 ## ייבוא 
 
 stroop_data <- read_csv("csv files/stroop_data.csv")
+
+
+# תחילה -הדפיסו את צפו בשורות הראשונות בטבלה כדי להבין אילו עמודות קיימות בטבלה ואילו ערכים נמצאים בהן.
+
+head(stroop_data)
 
 
 # צרו 2 עמודות חדשות:
@@ -38,7 +48,7 @@ first_summary = stroop_data %>% group_by(session_id) %>%
 
 ggplot(stroop_data, aes(x = response_time))+
   geom_histogram()+
-  xlim(lims = c(0,5000))
+  xlim(lims = c(0,5000)) # תוספת לצמצום הטווח בציר האיקס
 
 # מהו לדעתכם הרף העליון הסביר לזמני התגובה?
 # סננו את הטבלה כך שתכיל רק זמני תגובה הקטנים מ3000 מילי שניות
@@ -70,13 +80,17 @@ nrow(stroop_data_filtered)
 ### סיכום הנתונים
 
 
-# כעת סכמו את הנתונים עבור כל תנאי, עבור כל נבדק
-# הסירו את הסבבים בהם הנבדק טעה
-# ואז סכמו את ממוצע זמן התגובה
+# כעת סכמו את ממוצע זמן התגובה עבור כל תנאי, עבור כל נבדק
 
 stroop_summary = stroop_data_filtered%>%
   filter( correct == 1) %>%
   group_by(session_id,condition) %>%
+  summarise(mean_RT = mean(response_time))
+
+
+stroop_summary_all = stroop_data_filtered%>%
+  filter( correct == 1) %>%
+  group_by(session_id) %>%
   summarise(mean_RT = mean(response_time))
 
 
@@ -119,13 +133,27 @@ stroop_subj_summary = stroop_subj_summary %>%
 # האם נראה קשר בין המשתנים?
 
 ggplot(stroop_subj_summary, aes(x = correct_percent, y = diff))+
+  geom_point(alpha = 0.1) +
+  geom_smooth(method  = "lm")+
+  xlim(c(0.8,1))
+
+
+
+
+# צרו גם תרשים עמודות המציג עמודה אחת עבור זמן התגובה בתנאי התואם ועמודה נוספת עבור 
+# זמן התגובה בתנאי חוסר ההתאמה. הוסיפו לכל עמודה קווי טעות
+# המייצגים את *טעות* התקן
+
+sum_by_condition = stroop_summary  %>% group_by(condition) %>%
+  summarise(mean = mean(mean_RT),
+            sd = sd(mean_RT))
+
+ggplot(sum_by_condition, aes(x = condition, y = mean, col = gender))+
   geom_point()+
-  geom_smooth(method  = "lm")
+  geom_errorbar(aes(x = condition, ymin = mean - sd, ymax = mean + sd), width = 0.2)
+  # ***
 
-cor(stroop_subj_summary$correct_percent, stroop_subj_summary$diff)
-
-
-## חלק ראשון - חישוב ציוני השאלון
+## חלק שני - חישוב ציוני השאלון
 
 ### ייבוא הטבלה
 
@@ -154,7 +182,7 @@ intr = Qs %>% #filter(attention_check == 1) %>%
 
 nrow(intr)
 
-  
+
 int_subj = intr 
 
 ggplot(intr,aes(x = intr))+ geom_histogram()
@@ -168,7 +196,7 @@ dff = full_join(dff,first_summary) %>%
 
 
 dfff = gather(dff, key = "measure", value = "value", correct_percent,diff)
-ggplot(dfff , aes(x = intr, y = value))+
+ggplot(dfff , aes(x = gender, y = value))+
   geom_point(alpha = 0.2)+
   geom_smooth(method  = "lm")+
   facet_wrap(~measure, scales = "free")
@@ -177,8 +205,12 @@ ggplot(dfff , aes(x = intr, y = value))+
 cor(dff$intr, dff$diff)
 
 
+ggplot(dff,aes(x= gender, y = correct_percent))+
+  #  geom_violin()+
+  geom_point(alpha = 0.1)
+
 psych::alpha (Qs %>% filter(attention_check == 1) %>%
-  select(contains("intr")),check.keys=TRUE )
+                select(contains("intr")),check.keys=TRUE )
 ### סינון תצפיות חריגות ובעייתיות
 
 # סננו נבדקים בעלי 
@@ -187,6 +219,20 @@ psych::alpha (Qs %>% filter(attention_check == 1) %>%
 
 ## חלק שני - עיבוד תוצאות המטלה
 
+by_gender = dff %>% group_by(gender) %>%
+  summarise(mean_diff = mean(diff),
+            sd_diff = sd(diff),
+            mean_correct = mean(correct_percent),
+            sd_correct = sd(correct_percent))
+
+ggplot(by_gender, aes(x = gender, y = mean_diff))+
+  geom_point()+
+  geom_errorbar(aes(ymin = mean_diff - sd_diff, ymax = mean_diff + sd_diff), width =0.2)
+
+
+ggplot(by_gender,aes(x = gender, y = mean_correct))+
+  geom_point()+
+  geom_errorbar(aes(ymin = mean_correct - sd_correct, ymax = mean_correct + sd_correct), width =0.2)
 
 
 ### עריכת נתונים
@@ -200,3 +246,24 @@ psych::alpha (Qs %>% filter(attention_check == 1) %>%
 
 ## שאלות לסיכום
 
+subj_data <- read_csv("csv files/stroop_subject_info.csv")
+
+
+stroop_summary_all = stroop_summary_all %>%
+  left_join(subj_data %>% mutate(session_id = as.numeric(session_id),
+                                 age = as.numeric(age)))
+
+ggplot(stroop_summary_all, aes(x = Site, y = mean_RT))+
+  # geom_point()+
+  stat_summary()+
+  geom_smooth(method = "lm")
+
+names(stroop_summary_all)
+
+
+dff  = dff %>%
+  left_join(subj_data %>% mutate(session_id = as.numeric(session_id),
+                                 age = as.numeric(age)))
+
+ggplot(dff %>% group_by(Site) %>% summarise(diff = mean(diff)), aes(x = Site, y = diff))+
+  geom_col()

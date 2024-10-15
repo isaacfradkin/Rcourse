@@ -120,13 +120,23 @@ p {
 .text-block1 {
   direction: rtl;       /* Set text direction to right-to-left */
   text-align: right;
-  background-color: #f0f0f0; /* Light grey background */
+  background-color: #e7f3fe; /* Light grey background */
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd; /* Light border */
   margin: 10px 0; /* Space around the block */
+}
   
+/* Index panel (sidebar) background color */
+.tutorial-sidebar {
+  background-color: #2c3e50; /* Dark blue/grey background for the sidebar */
+  color: #ecf0f1;            /* Light color for sidebar text */
+}
+
+
 </style>
+
+
 <div id="section-טבלאות---היכרות" class="section level2">
 <h2>טבלאות - היכרות</h2>
 <p>בשיעור הנוכחי נלמד לעבוד עם סוג נוסף של אובייקטים שנפוצים מאוד בעבודה
@@ -533,25 +543,10 @@ summary(need_for_cognition)</code></pre>
 ##  NA&#39;s   :48</code></pre>
 <pre class="r"><code># שליפת שמות העמודות 
 col_names = names(need_for_cognition)
-print(colnames)</code></pre>
-<pre><code>## function (x, do.NULL = TRUE, prefix = &quot;col&quot;) 
-## {
-##     if (is.data.frame(x) &amp;&amp; do.NULL) 
-##         return(names(x))
-##     dn &lt;- dimnames(x)
-##     if (!is.null(dn[[2L]])) 
-##         dn[[2L]]
-##     else {
-##         nc &lt;- NCOL(x)
-##         if (do.NULL) 
-##             NULL
-##         else if (nc &gt; 0L) 
-##             paste0(prefix, seq_len(nc))
-##         else character()
-##     }
-## }
-## &lt;bytecode: 0x0000025394c32a38&gt;
-## &lt;environment: namespace:base&gt;</code></pre>
+print(col_names)</code></pre>
+<pre><code>##  [1] &quot;session_id&quot;      &quot;age&quot;             &quot;gender&quot;          &quot;attention_check&quot;
+##  [5] &quot;nfc_01&quot;          &quot;nfc_02r&quot;         &quot;nfc_03r&quot;         &quot;nfc_04&quot;         
+##  [9] &quot;nfc_05&quot;          &quot;nfc_06r&quot;         &quot;subject_index&quot;</code></pre>
 </div>
 </div>
 <div id="section-תרגיל" class="section level2">
@@ -561,7 +556,6 @@ print(colnames)</code></pre>
 <p>בסיום העבודה, העתיקו את הקוד שכתבתם חזרה לחלונית הקוד, למעט שורות
 הקוד העוסקות בייבוא הנתונים (הטבלה כבר טענה מראש, תחת השם
 “need_for_cognition”).</p>
-<p>הגישו את תשובותיכם **</p>
 <div class="tutorial-exercise" data-label="summary_exercise"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
@@ -758,10 +752,10 @@ session$onSessionEnded(function() {
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "text_Q", question = structure("מהו ציון המסוגלות העצמית של הנבדק הגר באילת?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_8490c42", 
+"character")), answers = list(structure(list(id = "lnr_ans_a232985", 
     option = "3", value = "3", label = structure("3", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_a0be876", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_a4552ec", 
     option = "3.0", value = "3.0", label = structure("3.0", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -771,7 +765,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "text_Q-answer", question = "text_Q"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1325825758.38261, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1419523317.83898, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -921,22 +915,22 @@ learnr:::store_exercise_cache(structure(list(label = "df3_part_2", global_setup 
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "Q1", question = structure("<div style='direction: rtl;'>מה קורה כשאתם משנים ערך אחד של עמודה מספרית (למשל - ציון המסוגלות העצמית) לערך מסוג character?<\u002fdiv>", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_42e9c78", 
+"character")), answers = list(structure(list(id = "lnr_ans_c634459", 
     option = "<div style='direction: rtl;'>מקבלים הודעת שגיאה <\u002fdiv>", 
     value = "<div style='direction: rtl;'>מקבלים הודעת שגיאה <\u002fdiv>", 
     label = structure("<div style='direction: rtl;'>מקבלים הודעת שגיאה <\u002fdiv>\n", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_de7b80b", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_fc137c5", 
     option = "<div style='direction: rtl;'>הערך הופך להיות מסוג numeric<\u002fdiv>", 
     value = "<div style='direction: rtl;'>הערך הופך להיות מסוג numeric<\u002fdiv>", 
     label = structure("<div style='direction: rtl;'>הערך הופך להיות מסוג numeric<\u002fdiv>\n", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_ef9df59", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_99d0a16", 
     option = "<div style='direction: rtl;'> העמודה תכיל גם ערכים מסוג numeric וגם ערך אחד מסוג character <\u002fdiv>", 
     value = "<div style='direction: rtl;'> העמודה תכיל גם ערכים מסוג numeric וגם ערך אחד מסוג character <\u002fdiv>", 
     label = structure("<div style='direction: rtl;'> העמודה תכיל גם ערכים מסוג numeric וגם ערך אחד מסוג character <\u002fdiv>\n", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_6b108ef", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_bd2111c", 
     option = "<div style='direction: rtl;'>העמודה כולה הופכת להיות מסוג character<\u002fdiv>", 
     value = "<div style='direction: rtl;'>העמודה כולה הופכת להיות מסוג character<\u002fdiv>", 
     label = structure("<div style='direction: rtl;'>העמודה כולה הופכת להיות מסוג character<\u002fdiv>\n", html = TRUE, class = c("html", 
@@ -948,7 +942,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "Q1-answer", question = "Q1"), loading = NULL, random_answer_order = FALSE, 
-    allow_retry = TRUE, seed = 1608854364.75082, options = list()), class = c("learnr_radio", 
+    allow_retry = TRUE, seed = 232631629.391672, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
  
@@ -1111,7 +1105,7 @@ learnr:::store_exercise_cache(structure(list(label = "df5", global_setup = struc
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "Q2", question = structure("מה הגיל של הנבדקת הראשונה בקובץ שייבאתם?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_287f5a5", 
+"character")), answers = list(structure(list(id = "lnr_ans_4a687a7", 
     option = "19", value = "19", label = structure("19", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1121,7 +1115,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "Q2-answer", question = "Q2"), loading = NULL, random_answer_order = FALSE, 
-    allow_retry = TRUE, seed = 508770815.763085, options = list()), class = c("learnr_text", 
+    allow_retry = TRUE, seed = 1587653617.76069, options = list()), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
 
