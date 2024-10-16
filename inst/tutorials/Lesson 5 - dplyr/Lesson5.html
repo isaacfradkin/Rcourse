@@ -612,8 +612,7 @@ head(table3)</code></pre>
          nfc_06 = 6 - nfc_06r,
          # נחשב את ממוצע ששת השאלות.
          # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך אותה הפונקציה
-         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6,
-         
+         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6
          )
 # שימו לב לסוגריים - כל העמודות שיצרנו בוכנסו בתוך פונקצייה אחת, בה הפרדנו את ההתייחסות לכל עמודה בפסיקים.
 # ירידת השורה בין עמודה לעמודה נועדה כדי לשמור על הסדר ואינה נדרשת בשביל תקינות הקוד
@@ -635,8 +634,8 @@ print(mutated_table)</code></pre>
 ## # ℹ 2,456 more rows
 ## # ℹ 5 more variables: nfc_06r &lt;dbl&gt;, nfc_02 &lt;dbl&gt;, nfc_03 &lt;dbl&gt;, nfc_06 &lt;dbl&gt;,
 ## #   nfc &lt;dbl&gt;</code></pre>
-<p>דרך פונקציה זו נוכל גם לעדכן את סוג העמודות (מספרי, תווים, ערכים
-לוגיים, פקטור), לחלק לקבוצות על סמך ערך מספרי או לייצר עמודות על פי
+<p>דרך פונקציה זו נוכל גם לעדכן את סוג העמודות (מספרי / תווים / ערכים
+לוגיים / פקטור), לחלק לקבוצות על סמך ערך מספרי או לייצר עמודות על פי
 תנאי</p>
 <div class="tutorial-exercise" data-label="e14" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0"
@@ -1240,7 +1239,7 @@ tutorial_options(
   exercise.timelimit = 60,
 )
 
-
+gradethis::gradethis_setup()
 knitr::opts_chunk$set(error = TRUE, warning = FALSE) 
 </script>
  
@@ -1276,7 +1275,7 @@ output$`tutorial-exercise-exercise1_5_piping-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "exercise1_5_piping", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
     chunks = list(list(label = "exercise1_5_piping", code = "\nnumbers_as_text = c(\"12\",\"14\",\"15\",\"7\",\"34\",\"22\",\"17\")\n\nmean_number =  \n  \nprint(mean_number)\n", 
         opts = list(label = "\"exercise1_5_piping\"", exercise = "TRUE", 
@@ -1315,21 +1314,21 @@ learnr:::store_exercise_cache(structure(list(label = "exercise1_5_piping", globa
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "q1_5", question = structure("<div style='direction: rtl;'>אם היינו מריצים את קטע הקוד האחרון (עדכון הטבלה שיצרנו כך שלא תכיל את נתוני הגיל) פעמיים ברציפות - היינו מקבלים הודעת שגיאה. מדוע?<\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_b573fb2", 
+"character")), answers = list(structure(list(id = "lnr_ans_86e44b2", 
     option = "כיוון שאי אפשר להריץ את אותו הקוד פעמיים", 
     value = "כיוון שאי אפשר להריץ את אותו הקוד פעמיים", 
     label = structure("כיוון שאי אפשר להריץ את אותו הקוד פעמיים", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_30856cd", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_60eac64", 
     option = "כיוון שהטבלה בה אנו משתמשים כבר לא קיימת", 
     value = "כיוון שהטבלה בה אנו משתמשים כבר לא קיימת", 
     label = structure("כיוון שהטבלה בה אנו משתמשים כבר לא קיימת", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_f422312", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_2fc67de", 
     option = "כיוון שהטבלה גדולה מדי", value = "כיוון שהטבלה גדולה מדי", 
     label = structure("כיוון שהטבלה גדולה מדי", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_3e9d64c", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_103eac7", 
     option = "כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", 
     value = "כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", 
     label = structure("כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", html = TRUE, class = c("html", 
@@ -1341,7 +1340,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q1_5-answer", question = "q1_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1049226525.01142, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 809020892.62327, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
@@ -1358,7 +1357,7 @@ output$`tutorial-exercise-exercise2_5_select-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "exercise2_5_select", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
     chunks = list(list(label = "exercise2_5_select", code = "\nsession_and_attention = ______________\n\nprint(session_and_attention)", 
         opts = list(label = "\"exercise2_5_select\"", exercise = "TRUE", 
@@ -1405,7 +1404,7 @@ output$`tutorial-exercise-exercise3_5_filter-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "exercise3_5_filter", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
     chunks = list(list(label = "exercise3_5_filter", code = "# גברים מעל גיל 25 ונשים מעל גיל 30 \nfemale_or_male_by_age = need_for_cognition %>%\n    filter(___________)\n             ", 
         opts = list(label = "\"exercise3_5_filter\"", exercise = "TRUE", 
@@ -1452,7 +1451,7 @@ output$`tutorial-exercise-ex_drop_na-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "ex_drop_na", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
     chunks = list(list(label = "ex_drop_na", code = "\n\nfiltered_table =  ______________\n\n\nprint(paste(\"Filtered\", nrow(need_for_cognition) - nrow(filtered_table),\"rows\"))", 
         opts = list(label = "\"ex_drop_na\"", exercise = "TRUE", 
@@ -1487,7 +1486,7 @@ learnr:::store_exercise_cache(structure(list(label = "ex_drop_na", global_setup 
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q2_5", question = structure("<div style='direction: rtl;'>כמה תצפיות סיננתם?<\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_cd37d", 
+"character")), answers = list(structure(list(id = "lnr_ans_dc5df61", 
     option = "66", value = "66", label = structure("66", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1497,7 +1496,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q2_5-answer", question = "q2_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1631054376.74048, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 2144473525.5014, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -1514,7 +1513,7 @@ output$`tutorial-exercise-e14-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "e14", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
     chunks = list(list(label = "prepare-table2", code = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
         opts = list(label = "\"prepare-table2\""), engine = "r"), 
@@ -1572,7 +1571,7 @@ output$`tutorial-exercise-summary11-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "summary11", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
     chunks = list(list(label = "prepare-table2", code = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
         opts = list(label = "\"prepare-table2\""), engine = "r"), 
@@ -1613,7 +1612,7 @@ learnr:::store_exercise_cache(structure(list(label = "summary11", global_setup =
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q3_5", question = structure("<div style='direction: rtl;'> מה היה ממוצע מדד nfc אצל הנשים במדגם? <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_99c1b31", 
+"character")), answers = list(structure(list(id = "lnr_ans_7aeec52", 
     option = "3.15", value = "3.15", label = structure("3.15", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1623,7 +1622,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q3_5-answer", question = "q3_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 980119304.043596, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1984898238.57571, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -1631,7 +1630,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q4_5", question = structure("<div style='direction: rtl;'> כמה תצפיות חסרות היו במדד הnfc אצל גברים? <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_3bf08d5", 
+"character")), answers = list(structure(list(id = "lnr_ans_2c8ae7e", 
     option = "14", value = "14", label = structure("14", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1641,14 +1640,14 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q4_5-answer", question = "q4_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 247693287.884659, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1571782575.76808, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "q5_5", question = structure("<div style='direction: rtl;'> כמה נבדקים יש בקובץ שערך המגדר שלהם חסר, אבל הציון שלהם במדד nfc תקין? <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_9425081", 
+"character")), answers = list(structure(list(id = "lnr_ans_d4b0387", 
     option = "23", value = "23", label = structure("23", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -1658,7 +1657,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "q5_5-answer", question = "q5_5"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 2001710808.56788, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1797083958.16317, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -1675,7 +1674,7 @@ output$`tutorial-exercise-summary2-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "summary2", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
     chunks = list(list(label = "prepare-table2", code = "table2 = need_for_cognition %>%\n  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות\n         nfc_03 = 6 - nfc_03r,\n         nfc_06 = 6 - nfc_06r,\n         # נחשב את ממוצע ששת השאלות.\n         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה\n         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6\n         \n         )", 
         opts = list(label = "\"prepare-table2\""), engine = "r"), 
@@ -1726,7 +1725,7 @@ output$`tutorial-exercise-e115-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "e115", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "\ndf_full = data.frame(subject_id = 1:6,\n                              age = c(24,26,29,19,41,35),\n                     eye_color = c(\"blue\",\"brown\",\"green\",\"brown\",\"blue\",\"brown\"),\n                             stylish_socks = c(TRUE,TRUE,FALSE,FALSE,TRUE,FALSE))\n\n# row bind\n\ndf_partial1 = df_full[1:4,]\ndf_partial2 = df_full[5:6,]\n\n# column bind\n\ndf_first_columns = df_full[1:4,][1:2]\ndf_last_columns = df_full[1:4,][3:4]\n  ", 
     chunks = list(list(label = "prepare-rbind", code = "\ndf_full = data.frame(subject_id = 1:6,\n                              age = c(24,26,29,19,41,35),\n                     eye_color = c(\"blue\",\"brown\",\"green\",\"brown\",\"blue\",\"brown\"),\n                             stylish_socks = c(TRUE,TRUE,FALSE,FALSE,TRUE,FALSE))\n\n# row bind\n\ndf_partial1 = df_full[1:4,]\ndf_partial2 = df_full[5:6,]\n\n# column bind\n\ndf_first_columns = df_full[1:4,][1:2]\ndf_last_columns = df_full[1:4,][3:4]\n  ", 
         opts = list(label = "\"prepare-rbind\""), engine = "r"), 
@@ -1773,7 +1772,7 @@ output$`tutorial-exercise-e116-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "e116", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "\ndf_full = data.frame(subject_id = 1:6,\n                              age = c(24,26,29,19,41,35),\n                     eye_color = c(\"blue\",\"brown\",\"green\",\"brown\",\"blue\",\"brown\"),\n                             stylish_socks = c(TRUE,TRUE,FALSE,FALSE,TRUE,FALSE))\n\n# row bind\n\ndf_partial1 = df_full[1:4,]\ndf_partial2 = df_full[5:6,]\n\n# column bind\n\ndf_first_columns = df_full[1:4,][1:2]\ndf_last_columns = df_full[1:4,][3:4]\n  ", 
     chunks = list(list(label = "prepare-rbind", code = "\ndf_full = data.frame(subject_id = 1:6,\n                              age = c(24,26,29,19,41,35),\n                     eye_color = c(\"blue\",\"brown\",\"green\",\"brown\",\"blue\",\"brown\"),\n                             stylish_socks = c(TRUE,TRUE,FALSE,FALSE,TRUE,FALSE))\n\n# row bind\n\ndf_partial1 = df_full[1:4,]\ndf_partial2 = df_full[5:6,]\n\n# column bind\n\ndf_first_columns = df_full[1:4,][1:2]\ndf_last_columns = df_full[1:4,][3:4]\n  ", 
         opts = list(label = "\"prepare-rbind\""), engine = "r"), 
@@ -1822,7 +1821,7 @@ output$`tutorial-exercise-e16-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "e16", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "\ndf_full = data.frame(subject_id = 1:6,\n                              age = c(24,26,29,19,41,35),\n                     eye_color = c(\"blue\",\"brown\",\"green\",\"brown\",\"blue\",\"brown\"),\n                             stylish_socks = c(TRUE,TRUE,FALSE,FALSE,TRUE,FALSE))\n\n# row bind\n\ndf_partial1 = df_full[1:4,]\ndf_partial2 = df_full[5:6,]\n\n# column bind\n\ndf_first_columns = df_full[1:4,][1:2]\ndf_last_columns = df_full[1:4,][3:4]\n  ", 
     chunks = list(list(label = "prepare-rbind", code = "\ndf_full = data.frame(subject_id = 1:6,\n                              age = c(24,26,29,19,41,35),\n                     eye_color = c(\"blue\",\"brown\",\"green\",\"brown\",\"blue\",\"brown\"),\n                             stylish_socks = c(TRUE,TRUE,FALSE,FALSE,TRUE,FALSE))\n\n# row bind\n\ndf_partial1 = df_full[1:4,]\ndf_partial2 = df_full[5:6,]\n\n# column bind\n\ndf_first_columns = df_full[1:4,][1:2]\ndf_last_columns = df_full[1:4,][3:4]\n  ", 
         opts = list(label = "\"prepare-rbind\""), engine = "r"), 
@@ -1869,7 +1868,7 @@ output$`tutorial-exercise-exercise4_5_join-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "exercise4_5_join", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "set.seed(111)\nresults = data.frame(subject = rep(1:3,each = 3),\n                     trial = rep(1:3,3),\n                     score = rnorm(9,70,20) %>% round())\n\ntrial_data = data.frame(subject = rep(1:4,each = 3),\n                     trial = rep(1:3,4),\n                     condition = c(\"easy\",\"hard\",\"medium\",\"medium\",\"easy\",\"hard\",\"hard\",\"easy\",\"medium\",\"hard\",\"medium\",\"easy\"))\n", 
     chunks = list(list(label = "prepare-join", code = "set.seed(111)\nresults = data.frame(subject = rep(1:3,each = 3),\n                     trial = rep(1:3,3),\n                     score = rnorm(9,70,20) %>% round())\n\ntrial_data = data.frame(subject = rep(1:4,each = 3),\n                     trial = rep(1:3,4),\n                     condition = c(\"easy\",\"hard\",\"medium\",\"medium\",\"easy\",\"hard\",\"hard\",\"easy\",\"medium\",\"hard\",\"medium\",\"easy\"))\n", 
         opts = list(label = "\"prepare-join\""), engine = "r"), 
@@ -1922,7 +1921,7 @@ output$`tutorial-exercise-exercise5_5_gather-output` <- renderUI({
 learnr:::store_exercise_cache(structure(list(label = "exercise5_5_gather", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(dplyr)", "library(tidyr)", 
 "", "filter = dplyr::filter", "", "tutorial_options(", "  exercise.timelimit = 60,", 
-")", "", "", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
+")", "", "gradethis::gradethis_setup()", "knitr::opts_chunk$set(error = TRUE, warning = FALSE) "
 ), chunk_opts = list(label = "setup", include = FALSE)), setup = "set.seed(111)\nmood_scores = rep(runif(20,2,8), each = 3) + rnorm(60,0,2) + rep(c(-0.5,0,0.5),20)\nmood = data.frame(subject = rep(1:20, each = 3),\n                                 measurement_time = rep(c(\"T1\",\"T2\",\"T3\"),20),\n                                 mood_score = ifelse(mood_scores>10,10,\n                                                      ifelse(mood_scores<0,0,mood_scores)) %>% round() )", 
     chunks = list(list(label = "prepare-mood", code = "set.seed(111)\nmood_scores = rep(runif(20,2,8), each = 3) + rnorm(60,0,2) + rep(c(-0.5,0,0.5),20)\nmood = data.frame(subject = rep(1:20, each = 3),\n                                 measurement_time = rep(c(\"T1\",\"T2\",\"T3\"),20),\n                                 mood_score = ifelse(mood_scores>10,10,\n                                                      ifelse(mood_scores<0,0,mood_scores)) %>% round() )", 
         opts = list(label = "\"prepare-mood\""), engine = "r"), 

@@ -188,23 +188,35 @@ print(df$short_ID)</code></pre>
 </div>
 </div>
 </div>
-<div id="section-בלוגים-אינטרנטיים" class="section level2">
-<h2>בלוגים אינטרנטיים</h2>
+<div id="section-בלוגים-ופורומים-אינטרנטיים" class="section level2">
+<h2>בלוגים ופורומים אינטרנטיים</h2>
 <p>משאב נוסף, שהינו מעט יותר ידידותי למשתמש, כולל מידע שהועלה על ידי
 משתמשים לרשת.</p>
 <p>בחלק מהמקרים מדובר בפורומים בהם אנשים העלו בעיות שהם נתקלו בהם וקיבלו
-תשובות שעשויות לעזור לנו בבעיות איתן אנחנו מתמודדים ובחלקם מדובר בבלוגים
-מסודר, בהם אנשים מעלים מדריכים מפורטים לגבי אופן השימוש בפונקציות
+תשובות העשויות לעזור לנו בבעיות איתן אנחנו מתמודדים ובחלקם מדובר בבלוגים
+מסודרים, בהם אנשים מעלים מדריכים מפורטים לגבי אופן השימוש בפונקציות
 מוסימות ודרכים בהם אפשר לבצע ניתוחים מורכבים. הפירוט כאן לרוב יהיה עשיר
 יותר, לפעמים בליווי דוגמאות או סרטונים רלוונטיים.</p>
+<p>בנוסף, ישנם סיכומים מסודרים לפונקציות מחבילות שונות ואופן השימוש בהן
+שהועלו לרשת כקבצי PDF שנועדו לאפשר חיפוש מהיר ונוח של מידע.</p>
 <p>את רוב הרשומות והשאלות בפורומים אפשר למצוא באמצעות חיפוש ברשת של
 הבעיה איתה אתם מתמודדים, כך שאין חשיבות אמיתית להיכרות עם הבלוגים השונים
-מראש אבל נמליץ כאן בכל זאת על בלוג אחד שעשוי להיות שימושי:</p>
+מראש אבל נמליץ כאן בכל זאת על בלוג אחד וכמה דפי מידע העשויים להיות
+שימושיים:</p>
 <div class="text-block1">
 <p><a href="https://r-graph-gallery.com/" title="קישור לאתר">The R Graph
 Gallery</a>- בלוג המפרט על אופן היצירה של סוגים שונים של תרשימים, רובם
 באמצעות <code>ggplot</code> ומספר חבילות המאפשרות לייצר תרשימים
 אינטראקטיביים.</p>
+<p><strong>דפי מידע:</strong></p>
+<p><a
+href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">פונקציות
+בסיסיות</a></p>
+<p><a
+href="https://www.rstudio.com/wp-content%2Fuploads%2F2015%2F02%2Fdata-wrangling-cheatsheet.pdf%2F">עריכת
+נתונים עם החבילות dplyr וtidyr</a></p>
+<p><a href="https://posit.co/resources/cheatsheets/">מאגר של דפי מידע
+נוספים במגוון נשאים</a></p>
 </div>
 <p>למיטיבי לכת ישנם גם פורומים שבועיים המעדכנים בדבר שינויים ועדכונים
 בתוכנה ואפילו <a href="https://r-podcast.org/">פודקסט</a>.</p>
@@ -213,7 +225,7 @@ Gallery</a>- בלוג המפרט על אופן היצירה של סוגים שו
 <h2>בינה מלאכותית</h2>
 <div id="section-מבוא-1" class="section level3">
 <h3>מבוא</h3>
-<p>עד לאחרונה, השימוש ברשומות ופורמים היווה את המשאב העיקרי עבור למידה
+<p>עד לאחרונה, השימוש ברשומות ופורומים היווה את המשאב העיקרי עבור למידה
 ופתרון בעיות בR, אבל מאז העלייה של מנועי הבינה המלאכותית בשנים האחרונות
 רבים עוברים לעשות שימוש במנועים כדוגמת chatGPT, Claude וכו’. היתרון
 בשימוש בבינה מלאכותית הוא בכך שהם מאפשרים לשאול שאלות תכנותיות באופן
@@ -222,33 +234,36 @@ Gallery</a>- בלוג המפרט על אופן היצירה של סוגים שו
 כדי להדגים את התשובות שלהם ולתקן בעיות בקוד שלנו.</p>
 <p>הכלים האלו אמנם מגבירים את היכולת שלנו לפתור בעיות ולבצע ניתוחים
 מורכבים - אבל חשוב להכיר גם את המגבלות שלהם.</p>
+<p><img src="images/ai.jpg" width="100" /></p>
 <p>בפרק הנוכחי נדבר על מספר שימושים מומלצים בבינה מלאכותית ונתעכב על כמה
-אזהרות חשובות</p>
+אזהרות חשובות.</p>
 </div>
 <div id="section-בירור-לגבי-פונקציות" class="section level3">
 <h3>בירור לגבי פונקציות</h3>
 <p>השימוש הנפוץ ביותר בבינה מלאכותית, בו הוא גם בדרך כלל מצטיין, כולל
 התייחסות אליו כאל מאגר מידע. במקום לנסות מילות מפתח שונות ולגלול ברחבי
-הרשת עד שתמצאו את הפונקציה הספציפית שאתם צריכים או רשומה נוחה לגבי אופן
-השימוש בה - התוכנה בדרך כלל תדע לספק לכם תשובות מהירות ומבוססות לגבי
-איזו פונקציה מבצעת את הפעולה שאתם צריכים או לגבי הדרכים השונות להשתמש
-בפונקציה נתונה.</p>
+הרשת עד שתמצאו את הפונקציה הספציפית שאתם צריכים, או רשומה נוחה לגבי אופן
+השימוש בה - בינה מלאכותית בדרך כלל תדע לספק לכם תשובות מהירות ומבוססות
+לגבי איזו פונקציה מבצעת את הפעולה שאתם מחפשים לבצע או לגבי הדרכים השונות
+להשתמש בפונקציה נתונה.</p>
 <div class="text-block1">
-<p>גם כאן יכולות להיות טעויות והתכנה לעיתים רחוקות תמציא פונקציות או
-תשמשתש בהן בצורה לא נכונה, אבל ברוב המקרים הפשוטים היא מספקת מענה מוצלח
-מאוד. בכל אופן - נוכל לבדוק את התשובות שלה באופן מיידי, או באמצעות הרצת
-הפונקציה או באמצעות עיון בתיעוד של הפונצקיה וברשומות קיימות לגביה.</p>
+<p>גם כאן יכולות להיות טעויות והתכנה לפעמים תמציא פונקציות או תשמשתש בהן
+בצורה לא נכונה, אבל ברוב המקרים הפשוטים היא מספקת מענה מוצלח מאוד. בכל
+אופן - נוכל לבדוק את התשובות שלה באופן מיידי, בין אם באמצעות הרצת
+הפונקציה או באמצעות עיון בתיעוד הנלווה של הפונצקיה וברשומות קיימות
+לגביה.</p>
 </div>
 <p><code>תרגיל</code> : בררו איזו פונקציה יכולה לשמש אותנו כדי להפריד
 עמודה לשניים.</p>
-<p>בטבלה הבאה ישנה עמודה בשם “session”. הפרידו אותה לעמודות
-“subject”ולעמודה “trial” כך שכל עמודה תכיל את התוכן המתאים.</p>
+<p>בטבלה הבאה ישנה עמודה בשם “session” המכילה מידע גם על מספר הנבדק וגם
+על מספר הסבב של אותו הנבדק. הפרידו אותה לעמודות “subject”ולעמודה “trial”
+כך שכל עמודה תכיל את התוכן המתאים.</p>
 <p>למשל - בשורה הראשונה נרצה שתחת העמודה “subject” יופיע “s01” ותחת
 העמודה “trial” יופיע “t1”.</p>
 <div class="tutorial-exercise" data-label="separate" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0"
 data-pipe="|&gt;">
-<pre class="text"><code>df = data.frame(session = c(&quot;s01_t1&quot;,&quot;s01_t2&quot;,&quot;s01_t3&quot;,&quot;s02_t1&quot;,&quot;s02_t2&quot; ))
+<pre class="text"><code>print(df)
 
 df = df %&gt;% ________________
   
@@ -262,13 +277,13 @@ print(df)</code></pre>
 שמדי פעם אנחנו נתקלים בתקלות ובעיות בהרצה שלא תמיד ברור לנו איך עלינו
 לפתור אותן. הפלט בR יכול להכווין אותנו לפונקציה שבה ארעה התקלה - אבל גם
 אז לפעמים קשה להבין ממה התקלה נובעת.</p>
-<p>מנועי בינה מלאכותית יכולים לעזור לנו לצאת מהבוץ במקרים רבים שכאלו. אם
+<p>מנועי בינה מלאכותית יכולים לעזור לנו לצאת מהבוץ בחלק ממקרים אלו. אם
 נדביק את הפלט של השגיאה למנוע הבינה המלאכותית הוא יוכל להסביר לנו בפירוט
 את המשמעות של השגיאה שחווינו. הוא לא תמיד יוכל להסיק את שורש הבעיה, אבל
 הוא יוכל לתת לנו הבנה ראשונית של הבעיה לכל הפחות.</p>
 <p>אם נצרף לפנייה שלנו גם את החלק הבעייתי בקוד שלנו, התוכנה תוכל להבין
-בצורה טובה יותר את מקור הבעייה ובמקרים רבים גם להציע לנו איך לתקן אותה
-או לספק לנו קטע קוד מתוקן.</p>
+בצורה טובה יותר את מקור הבעיה ובמקרים רבים גם להציע לנו איך לתקן
+אותה.</p>
 <p><code>תרגיל</code> הריצו את קטע הקוד הבאה והיעזרו במנוע בינה מלאכותית
 לבחירתכם כדי להבין את מקור השגיאות ולתקן אותן. שימו לב - הקוד מכיל מספר
 שגיאות שונות.</p>
@@ -298,31 +313,32 @@ print(cumulative_score)</code></pre>
 </div>
 <div id="section-יצירת-קטעי-קוד" class="section level3">
 <h3>יצירת קטעי קוד</h3>
-<div class="text-block1">
 <p>שימוש נוסף, יעיל אך מעט בעייתי, בבינה מלאכותית הוא יצירה של קטעי קוד
 שלמים. במקום להקדיש זמן יקר לכתיבת קוד, זיהוי שגיאות ותיקונים, אנחנו
 לכאורה יכולים לבקש מהבינה המאכותית לכתוב את הקוד עבורנו.</p>
-</div>
 <p>יש בכך 3 בעיות עיקריות:</p>
-<p><strong>1) הקוד עלול לייצר שגיאות</strong></p>
-<p>טעויות קטנות בקוד, בין אם הן מתגלות מיד או שמייצרות בעיות שיתגלו
-בהמשך, יכולות לגרום לקוד כולו לא לעבוד - ובמידה והקוד לא נכתב על ידינו -
-יהיה לנו מאוד קשה להבין את מקור הטעות ולתקן אותה. נוכל להיזר בבינה
-המלאוכתית בשביל תיקונים כאלו, אבל במקרים רבים נמצא את עצמנו עם שמיכת
-טלאים של קטעי קוד שאנחנו פשוט לא מצליחים לתקן. זה קורה בעיקר בקטעי קוד
-ארוכים (מעל פסקה אחת).</p>
-<p>במידה ועושים שימוש בקטע קוד שנכתב על ידי בינה מלאכותית - חשוב מאוד
-שהוא יהיה קצר ושאנחנו מבינים כל חלק בו. אפשר ורצוי לבקש מהתוכנה שתסביר
-מה כל חלק עושה - אבל כל עוד לא הבנו מה כל שורה עושה, השימוש וההתבססות על
-קטעי קוד כאלו הוא הימור שאינו מומלץ. זה אמנם חוסך זמן בטווח הקצר, אבל
-יוסיף לכם הרבה עבודה בהמשך.</p>
-<p><strong>2) הקוד עלול לעבוד, אבל לבצע ניתוח מעט שונה ממה שאתם
-צריכים</strong></p>
+<div class="text-block1">
+<p><strong>1) גם תוכנות טועות</strong></p>
+<p>טעויות קטנות בקוד יגרמו לקוד כולו לא לעבוד - ובמידה והקוד לא נכתב על
+ידינו - יהיה לנו מאוד קשה להבין את מקור הטעות ולתקן אותה. נוכל להיעזר
+בבינה המלאוכתית בשביל תיקונים כאלו, אבל במקרים רבים נמצא את עצמנו עם
+שמיכת טלאים של קטעי קוד שאנחנו פשוט לא מצליחים לתקן. זה קורה בעיקר בקטעי
+קוד ארוכים (מעל פסקה אחת).</p>
+<p>נכון לרגע כתיבת מילים אלו - יש לא מעט תחומים בניתוח נתונים שמנועי
+בינה מלאכותית מסתבכים בהם. במקרים כאלו, גם אם תבקשו מהם לתקן את הקוד
+שקיבלתם מהם - הם לא יידעו לתקן את הבעיות.</p>
+<p>כפועל יוצא מכך - מומלץ להגביל את השימוש בקוד שנוצר על ידי בינה
+מלאכותית לפסקה או פעולה אחת בכל פעם. אפשר ורצוי לבקש מהתוכנה שתסביר מה
+כל חלק עושה - אבל כל עוד לא הבנו מה כל שורה עושה, השימוש וההתבססות על
+קטעי קוד כאלו הוא הימור בעייתי. זה אמנם לפעמים חוסך זמן בטווח הקצר, אבל
+במקרים רבים יוסיף לכם הרבה עבודה בהמשך.</p>
+<p><strong>2) קצרים בתקשורת</strong></p>
 <p>במובנים רבים, האפשרות הזו יותר מסוכנת לנו מאשר יצירת קוד שלא עובד.
-במידה והתכנה לא תבין את הניתוח / העריכה שאתם מתכננים היא יכולה לספק לכם
-קוד מפורט ותקין שמבצע ניתוח כלשהו, שאינו הניתוח שאתם רוצים. כלומר -
-בנוסף ל”השגחה” על תקינות הקוד מבחינה תכנותית, חשוב גם לוודא שהקוד באמת
-מבצע את הניתוח שאנחנו מעוניינים בו.</p>
+במידה והתכנה לא תבין את הניתוח שאתם מתכננים היא יכולה לספק לכם קוד מפורט
+ותקין שמבצע ניתוח כלשהו, שאינו הניתוח שאתם רוצים. כלומר - בנוסף להשגחה
+על תקינות הקוד מבחינה תכנותית, חשוב גם לוודא שהקוד באמת מבצע את הניתוח
+שאנחנו מעוניינים בו. זו סיבה נוספת להתעקש להבין כל שורה בקוד
+שקיבלתם.</p>
 <p><strong>3) יצירת תלות</strong></p>
 <p>בשלב זה אתם עוד לומדים להשתמש בתוכנה. כלומר - יש הרבה פונקציות
 ופרקטיקות ניתוח בסיסיות שאתם עוד רוכשים. מצד אחד - אלו תחומים בהם הבינה
@@ -333,6 +349,37 @@ print(cumulative_score)</code></pre>
 <p>בשלב זה, וגם בהמשך העבודה עם בינה מלאכותית, מומלץ להשתמש בה רק כמורה
 - שמסביר, מדגים ועוזר לכם למצוא את הטעויות שלכם ולתקן אותן - אבל לא מבצע
 את הניתוחים במקומכם.</p>
+</div>
+</div>
+<div id="section-דוגמה" class="section level3">
+<h3>דוגמה</h3>
+<p>בקשו מצ’אט GPT או מנוע בינה מלאכותית אחר לבחירתכם לייצר עבורכם תרשים
+עמודות המציג את זמן התגובה הממוצע בתנאי התואם ובתנאי הבלתי תואם של מטלת
+הסטרופ עם קווי טעות המייצגים סטיית תקן (על סמך הנתונים ששימשו בתרגיל
+המסכם ביחידה 7).</p>
+<p>תוכלו להשתמש בפרומט הבא או בניסוח משלכם.</p>
+<div class="text-block1">
+<p>Hi ChatGPT, Please help me build a plot in R. I have a dataframe
+named “stroop_data” with columns named “condition” [values: “congruent”
+/ “incongruent”] and “response_time” [values: RT in miliseconds]. I want
+to generate a bar plot for the mean response time for trials from each
+condition with error bars representing standard deviation.</p>
+</div>
+<p>טענו את הטבלה עם תוצאות מטלת הסטרופ והוסיפו לה עמודה בשם “condition”
+המייצגת את התנאי ואז הריצו את הקוד שקיבלתם מהבינה המלאכותית.</p>
+<p>האם התרשים שקיבלתם הגיוני?</p>
+<p><code>תרגיל בונוס:</code> נסו להבין מה השתבש בקוד שקיבלתם</p>
+</div>
+<div id="section-מאמרים-נוספים-בנושא" class="section level3">
+<h3>מאמרים נוספים בנושא</h3>
+<p>חוסר ההצלחה של מנועי הבינה המלאכותית בכתיבת קוד הוא נושא שמעסיק רבות
+את עולם התכנות. אמנם קיים שיפור מתמיד בביצועים של מנועים אלו, אך קיימת
+הסכמה רחבה על כך שלפחות בנקודת זמן זו יש להן עדיין כברת דרך לעבור לפני
+שיוכלו להיות תחליף לתכנות ידני.</p>
+<p>מצורף קישור ל<a
+href="https://dl.acm.org/doi/pdf/10.1145/3613904.3642596">מאמר בנושא</a>
+ול<a href="https://www.youtube.com/watch?v=VJ-JyrgvHO0">סרטון יוטיוב</a>
+שמציג מקרה נוסף בו הבינה המלאכותית נכשלה בהכנת תרשים לא מאוד מורכב.</p>
 </div>
 <div id="section-קופיילוט" class="section level3">
 <h3>קופיילוט <img src="images/copilot.png" width="50"
@@ -432,11 +479,6 @@ library(dplyr)
 library(gradethis)
 library(tidyverse)
 
-tutorial_options(
-  exercise.timelimit = 60
-)
-
-
 knitr::opts_chunk$set(error = TRUE)
 </script>
  
@@ -471,7 +513,6 @@ output$`tutorial-exercise-rdocumentation-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "rdocumentation", global_setup = structure(c("library(learnr)", 
 "library(dplyr)", "library(gradethis)", "library(tidyverse)", 
-"", "tutorial_options(", "  exercise.timelimit = 60", ")", "", 
 "", "knitr::opts_chunk$set(error = TRUE)"), chunk_opts = list(
     label = "setup", include = FALSE)), setup = "set.seed(111)\ndf1 = data.frame(subject = rep(1:5,each = 4),\n                 trial   = rep(1:4,5),\n                 score   = round(rep(1:4,5) + rnorm(20, 20,5)) %>% as.character())\n", 
     chunks = list(list(label = "prepare-df1", code = "set.seed(111)\ndf1 = data.frame(subject = rep(1:5,each = 4),\n                 trial   = rep(1:4,5),\n                 score   = round(rep(1:4,5) + rnorm(20, 20,5)) %>% as.character())\n", 
@@ -523,16 +564,18 @@ output$`tutorial-exercise-separate-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "separate", global_setup = structure(c("library(learnr)", 
 "library(dplyr)", "library(gradethis)", "library(tidyverse)", 
-"", "tutorial_options(", "  exercise.timelimit = 60", ")", "", 
 "", "knitr::opts_chunk$set(error = TRUE)"), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "separate", code = "\ndf = data.frame(session = c(\"s01_t1\",\"s01_t2\",\"s01_t3\",\"s02_t1\",\"s02_t2\" ))\n\ndf = df %>% ________________\n  \nprint(df)\n", 
-        opts = list(label = "\"separate\"", exercise = "TRUE"), 
-        engine = "r")), code_check = NULL, error_check = NULL, 
-    check = structure(c("", "grade_result(", "  pass_if(~identical(.result, ", 
-    "                     ", "data.frame(session = c(\"s01_t1\",\"s01_t2\",\"s01_t3\",\"s02_t1\",\"s02_t2\" ))%>%", 
-    "  separate(session, into = c(\"subject\",\"trial\"))", "  ", 
-    "  ))", ")"), chunk_opts = list(label = "separate-check")), 
+    label = "setup", include = FALSE)), setup = "\ndf = data.frame(session = c(\"s01_t1\",\"s01_t2\",\"s01_t3\",\"s02_t1\",\"s02_t2\"),\n                score = c(45,65,57,71,52))\n", 
+    chunks = list(list(label = "prepare-df2", code = "\ndf = data.frame(session = c(\"s01_t1\",\"s01_t2\",\"s01_t3\",\"s02_t1\",\"s02_t2\"),\n                score = c(45,65,57,71,52))\n", 
+        opts = list(label = "\"prepare-df2\""), engine = "r"), 
+        list(label = "separate", code = "\nprint(df)\n\ndf = df %>% ________________\n  \nprint(df)\n", 
+            opts = list(label = "\"separate\"", exercise = "TRUE", 
+                exercise.setup = "\"prepare-df2\""), engine = "r")), 
+    code_check = NULL, error_check = NULL, check = structure(c("", 
+    "grade_result(", "  pass_if(~identical(.result, ", "                     ", 
+    "data.frame(session = c(\"s01_t1\",\"s01_t2\",\"s01_t3\",\"s02_t1\",\"s02_t2\"),", 
+    "                score = c(45,65,57,71,52))%>%", "  separate(session, into = c(\"subject\",\"trial\"))", 
+    "  ", "  ))", ")"), chunk_opts = list(label = "separate-check")), 
     solution = NULL, tests = NULL, options = list(eval = FALSE, 
         echo = TRUE, results = "markup", tidy = FALSE, tidy.opts = NULL, 
         collapse = FALSE, prompt = FALSE, comment = NA, highlight = FALSE, 
@@ -551,9 +594,10 @@ learnr:::store_exercise_cache(structure(list(label = "separate", global_setup = 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
-        label = "separate", exercise = TRUE, code = c("", "df = data.frame(session = c(\"s01_t1\",\"s01_t2\",\"s01_t3\",\"s02_t1\",\"s02_t2\" ))", 
-        "", "df = df %>% ________________", "  ", "print(df)", 
-        ""), out.width.px = 624, out.height.px = 384, params.src = "separate, exercise = TRUE", 
+        label = "separate", exercise = TRUE, exercise.setup = "prepare-df2", 
+        code = c("", "print(df)", "", "df = df %>% ________________", 
+        "  ", "print(df)", ""), out.width.px = 624, out.height.px = 384, 
+        params.src = "separate, exercise = TRUE, exercise.setup = \"prepare-df2\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
@@ -569,7 +613,6 @@ output$`tutorial-exercise-warnings-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "warnings", global_setup = structure(c("library(learnr)", 
 "library(dplyr)", "library(gradethis)", "library(tidyverse)", 
-"", "tutorial_options(", "  exercise.timelimit = 60", ")", "", 
 "", "knitr::opts_chunk$set(error = TRUE)"), chunk_opts = list(
     label = "setup", include = FALSE)), setup = "set.seed(111)\ndf1 = data.frame(subject = rep(1:5,each = 4),\n                 trial   = rep(1:4,5),\n                 score   = round(rep(1:4,5) + rnorm(20, 20,5)) %>% as.character())\n", 
     chunks = list(list(label = "prepare-df1", code = "set.seed(111)\ndf1 = data.frame(subject = rep(1:5,each = 4),\n                 trial   = rep(1:4,5),\n                 score   = round(rep(1:4,5) + rnorm(20, 20,5)) %>% as.character())\n", 

@@ -30,3 +30,30 @@ save(mood, file = "data/mood.rda")
 write.csv(stroop_data,"stroop_data_full.csv")
 write.csv(stroop_data %>% select(-correct,-congruent),"stroop_data.csv")
 
+# stroop subj data
+
+
+subj1 <- read_csv("csv files/stroop_subj_data_part_1.csv")
+subj2 <- read_csv("csv files/stroop_subj_data_part_2.csv")
+
+
+subj1_wide = subj1 %>% select(-age) %>%
+  distinct() %>%
+  drop_na() %>% 
+  mutate(dummy = 1) %>%
+  spread(key = "Site",value = "dummy")%>%
+  mutate(across(everything(), ~replace_na(., 0)))
+
+
+subj2_wide = subj2 %>% select(-age) %>%
+  distinct() %>%
+  drop_na() %>% 
+  mutate(dummy = 1) %>%
+  spread(key = "Site",value = "dummy")%>%
+  mutate(across(everything(), ~replace_na(., 0)))
+
+write.csv(subj1_wide,"subj1_wide.csv")
+write.csv(subj2_wide,"subj2_wide.csv")
+
+
+
