@@ -453,11 +453,11 @@ working_directory = getwd()
 print(working_directory)
 
 # שינוי כתובת העבודה
-# כרגע אנחנו מגדירים את התיקייה לפי התיקייה הנוכחית, ולכן היא לא תשתנה. החליפו את האובייקט 
-# "working_directory" 
+# כרגע אנחנו מגדירים את התיקייה לפי התיקייה הנוכחית, ולכן היא לא תשתנה. החליפו את  
+# "C:\Users\one\Desktop\R files\file directory example"
 # בכתובת לתיקייה אחרת כדי לשנות את תיקיית העבודה, במידה ואתם מעוניינים בכך
 
-new_working_directory = working_directory
+new_working_directory = "C:\Users\one\Desktop\R files\file directory example"
 setwd(new_working_directory)
 
 ```
