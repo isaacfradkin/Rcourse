@@ -1,11 +1,15 @@
 ---
-title: "Lesson_6"
+title: "Lesson 6: ggplot2"
 author: "Chen"
 date: "2024-09-09"
 output:
   learnr::tutorial:
     progressive: true
     allow_skip: true
+description: >
+  <div style='direction: rtl;'>
+ בשיעור זה נלמד על סוג הגרפים השונים ועל אופן האיור שלהם באמצעות החבילה ggplot2
+  </div>
 runtime: shiny_prerendered
 ---
 
@@ -30,18 +34,10 @@ library(dplyr)
 #need_for_cognition = nfc
 
 tutorial_options(
-  exercise.timelimit = 60,
-  # A simple checker function that just returns the message in the check chunk
-  exercise.checker = function(check_code, ...) {
-    list(
-      message = eval(parse(text = check_code)),
-      correct = logical(0),
-      type = "info",
-      location = "append"
-    )
-  }
+  exercise.timelimit = 60
 )
 knitr::opts_chunk$set(error = TRUE)
+
 
 table2 = need_for_cognition %>%
   mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות
@@ -61,6 +57,8 @@ table2 = need_for_cognition %>%
          
          )
 need_for_cognition = table2
+
+#gradethis::gradethis_setup()
 ```
 
 
@@ -126,7 +124,7 @@ ggplot(data_frame, aes(x=variable_1, y=variable_2))+ geom_point()
 
 ### היסטורגרמה
 
-נתחיל בגרף שמייצג נתונים של משתנה אחד - `ההיסטוגרמה` או _דיאגרמת שכיחות_
+נתחיל בגרף שמייצג נתונים של משתנה אחד רציף - `ההיסטוגרמה` או _דיאגרמת שכיחות_
 היסטוגרמה היא איור יוצא דופן מהבחינה שהוא מבוסס רק על משתנה אחד. אך הוא עדיין מורכב משני צירים שמתאר את ערך המשתנה (X) והשני שמתאר את השכיחות של אותו ערך.  
 הפונקציה המייצרת איור זה נקראית `geom_histogram()`
 נתחיל עם דוגמה פשוטה. בשיעורים הקודמים למדנו להכיר את הנתונים שלנו. נתחיל מלאייר את השכיחות של התשובות לשאלה הראשונה (nfc01).
@@ -166,7 +164,7 @@ question(" איזה ערכים מביאים אותנו למצב בו ההיסט�
 ```
 
 `תרגיל`  
-הוספו עמודה לטבלה שבה יאוכסן סכום הציונים של כל נבדק בשאלון והציגו את ההיסטוגמה של העמודה שיצרתם
+הוספו עמודה לטבלה שבה יאוכסן סכום הציונים של כל נבדק בשאלון והציגו את ההיסטוגמה של העמודה שיצרתם. שימו לב להגדרת רוחב העמודות.
 ```{r hist_ex, exercise=TRUE, exercise.eval = FALSE}
 # חשבו כאן את הסכום
 need_for_cognition$nfc_sum <-
@@ -182,17 +180,16 @@ ggplot(need_for_cognition, aes(x=nfc_sum)) + geom_histogram(binwidth=1)
 ```
 
 ```{r hist_ex-check}
-
+grade_this_code(correct = "כל הכבוד!", incorrect = "האיור עוד לא נכון לגמרי, שימו לב לרוחב העמודות ושכבות האיור.")
 ```
 
 ## גרף עמודות
 גרף עמודות (או _bar graph_) היא כנראה דוגמה קלאסית ופשוטה למה שעולה לכם כשאתם חושבים על גרף.  
-איור עמודות יכול להיות דרך נוספת לייצר היסטוגרמה. כדי לייצר איור כזה נשתמש בפונקציה `geom_bar`. פונקציה זאת מקבלת ארגומנט אחד `stat`. ברירת המחדל כאן היא count כלומר, אנחנו ניתן לפונקציה רק משתנה אחד והיא תספור את השכיחות של כל ערך ותציג אותה בציר y.
+איור עמודות יכול להיות דרך נוספת לייצר היסטוגרמה אך למשתנים שאינם רציפים. כדי לייצר איור כזה נשתמש בפונקציה `geom_bar`. פונקציה זאת מקבלת ארגומנט אחד `stat`. ברירת המחדל כאן היא count כלומר, אנחנו ניתן לפונקציה רק משתנה אחד והיא תספור את השכיחות של כל ערך ותציג אותה בציר y.
 
 למשל נחזור על הדוגמה עם השאלה הראשונה בשאלון:
 ```{r}
-ggplot(data=need_for_cognition, aes(x=nfc_01)) +
-+     geom_bar()
+ggplot(data=need_for_cognition, aes(x=nfc_01)) + geom_bar()
 
 # שימו לב! זה שלא פירטנו כלום בפונקציה אומר שהיא השתמשה בברירת המחדל שלה:
 # stat="count"
@@ -327,8 +324,13 @@ scatter_plot
 אבל מה עם הערכים הקיצוניים של סכום השאלות?
 
 `תרגיל`  
-חשבו מה הם הערכים הקיצוניים של הסכום והסירו אותם והציגו את הגרף שוב.
+חישבו מה הם הערכים הקיצוניים של הסכום והסירו אותם והציגו את הגרף שוב.
+
 ```{r outlier_ex, exercise=TRUE, exercise.eval = FALSE}
+#נתחיל מאותה נקודה 
+need_for_cognition <- need_for_cognition %>% mutate(nfc_sum  = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06))
+need_for_cognition <- filter(need_for_cognition, age<90 & age>10)
+
 # הסירו כאן את הערכים הקיצוניים
 need_for_cognition <-
 
@@ -336,7 +338,12 @@ need_for_cognition <-
 
 
 ```
+
 ```{r outlier_ex-solution}
+#נתחיל מאותה נקודה 
+need_for_cognition <- need_for_cognition %>% mutate(nfc_sum  = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06))
+need_for_cognition <- filter(need_for_cognition, age<90 & age>10)
+
 # הסירו כאן את הערכים הקיצוניים
 need_for_cognition <- filter(need_for_cognition, nfc_sum>0)
 
@@ -347,8 +354,9 @@ scatter_plot <- ggplot(need_for_cognition, aes(x=age, y=nfc_sum))+ geom_point()
 scatter_plot
 
 ```
+
 ```{r outlier_ex-check}
-"הערכים הקיצוניים הטעותיים שיש לנו במקרה זה הם 0 כיוון שהדירוג הנמוך ביותר שיכול להתקבל הוא 6 (1 בכל תשובה). הסיבה שיש 0 בנתונים היא בגלל שהם בעצם חסרים וחישבנו את הסכום כך שיתעלמו מערכים חסרים אך לא יסירו אותם. ערכים קיצוניים שאינם בהכרח טעותיים הם 6 ו30, התשובות הקיצוניות ביותר שיכולות להתקבל. אבל זאת לא בהכרח טעות ולכן נשאיר אותם."
+grade_this_code(correct = "מעולה, 0 היא אכן לא תשובה שיכולה להתקבל, בגלל שהתשובה הנמוכה ביותר בשאלון היא 1 ולכן אלה ערכים שאינם נכונים", incorrect="עוד לא הגעת לתשובה. רמז - הערכים הקיצוניים הם אלה שלא יכולים להתקבל בשאלון (והם דווקא נמוכים)")
 ```
 
 ## מגמות לינאריות
@@ -368,22 +376,33 @@ ggplot(need_for_cognition, aes(x=age, y=nfc_sum)) + geom_point() + geom_smooth(m
 שימו לב! את השיטה יש להכניס כמחרוזת, כך הפונקציה יכולה לפרש אותה. ארגומנט חשוב נוסף שכדאי להכיר הוא se, הכוונה בse היא בעצם אומדן לסטיית התקן מהקו. אם נגדיר FALSE, יופיע קו ללא סטיית תקן.  
 
 `תרגיל`  
-ייצרו את אותו גרף שראיתם בדוגמה ללא סטיית התקן והציגו אותו.
+ייצרו את אותו הגרף שראיתם בדוגמה ללא סטיית התקן והציגו אותו. 
+
 ```{r smooth_ex, exercise=TRUE, exercise.eval = FALSE}
+# נתחיל מאותה נקודת פתיחה
+need_for_cognition <- need_for_cognition %>% mutate(nfc_sum  = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06))
+need_for_cognition <- filter(need_for_cognition, age<90 & age>10)
+need_for_cognition <- filter(need_for_cognition, nfc_sum>0)
 
-
+# צרו את הגרף כאן
 ```
 
 ```{r smooth_ex-solution}
-# נתונים:
+# נתחיל מאותה נקודת פתיחה
+need_for_cognition <- need_for_cognition %>% mutate(nfc_sum  = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06))
+need_for_cognition <- filter(need_for_cognition, age<90 & age>10)
+need_for_cognition <- filter(need_for_cognition, nfc_sum>0)
 
-scatter_plot <- ggplot(need_for_cognition, aes(x=age, y=scores)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+# צרו את הגרף כאן
+
+scatter_plot <- ggplot(need_for_cognition, aes(x=age, y=nfc_sum)) + geom_point() + geom_smooth(method="lm", se=FALSE)
 
 scatter_plot
 
 ```
-```{r smooth_ex-check}
 
+```{r smooth_ex-check}
+grade_this_code(correct = "מעולה!", incorrect = "נסו עוד פעם")
 ```
 
 ## גרפים של שלושה משתנים
@@ -420,13 +439,24 @@ scatter_plot + geom_smooth(method="lm")
 `תרגיל`  
 הציגו את הגרף פיזור של גיל וסכום השאלות בו הצבע מסמן את המגדר של המשתתפים (שימו לב, האם צריך להסיר משהו?) וגודל מסמל את התשובה לשאלה הראשונה
 ```{r col_size_scatter_ex, exercise=TRUE, exercise.eval = FALSE}
+# נתחיל מאותה נקודת פתיחה
+need_for_cognition <- need_for_cognition %>% mutate(nfc_sum  = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06))
+need_for_cognition <- filter(need_for_cognition, age<90 & age>10)
+need_for_cognition <- filter(need_for_cognition, nfc_sum>0)
+# בצעו עריכה כאן
 
+# צרו את הגרף כאן
 
 ```
 
 ```{r col_size_scatter_ex-solution}
+# נתחיל מאותה נקודת פתיחה
+need_for_cognition <- need_for_cognition %>% mutate(nfc_sum  = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06))
+need_for_cognition <- filter(need_for_cognition, age<90 & age>10)
+need_for_cognition <- filter(need_for_cognition, nfc_sum>0)
+# בצעו עריכה כאן
 need_for_cognition <- filter(need_for_cognition, !is.na(gender))
-
+# צרו את הגרף כאן
 scatter_plot <- ggplot(need_for_cognition, aes(x=age, y=nfc_sum, col=gender, size =nfc_01)) + geom_point()
 # עכשיו נוכל להציג את הגרף עם כמה הצבעים,    
 scatter_plot  
@@ -434,7 +464,7 @@ scatter_plot
 ```
 
 ```{r col_size_scatter_ex-check}
-
+grade_this_code(correct = "נהדר!", incorrect = "נסו עוד פעם, אל תשכחו לטפל בערכים החסרים.")
 ```
 
 ## התאמות ותצוגה 
@@ -505,16 +535,22 @@ scatter_plot + theme_classic()
 
 
 ```{r col_and_labs_ex, exercise=TRUE, exercise.eval = FALSE}
-
+# יצירת הטבלה
+gender_ave <- need_for_cognition %>% group_by(gender) %>% summarise(mean_nfc_01=mean(nfc_01, na.rm=TRUE))
+# יצירת הגרף
 
 ```
 
 ```{r col_and_labs_ex-solution}
+# יצירת הטבלה
+gender_ave <- need_for_cognition %>% group_by(gender) %>% summarise(mean_nfc_01=mean(nfc_01, na.rm=TRUE))
+# יצירת הגרף
 ggplot(gender_ave, aes(x=gender, y=mean_nfc_01)) + geom_bar(stat="identity", col="red", fill="yellow")+ labs(y="Mean of Question 1", title="Need for cogintion by gender", subtitle="first question") + theme_minimal()
 
 ```
 
 ```{r col_and_labs_ex-check}
+
 
 ```
 
@@ -550,6 +586,19 @@ ggplot(gender_ave, aes(x=gender, y=mean_nfc_01)) + geom_bar(stat="identity", col
 ציירו לה איור קופסא שידגים איך הנתוני מדד הראשוניות נראים כאשר הם מחולקים לפי מגדר על ציר הX ולבי בדיקת הקשב (צבע)
 
 ![](images/lesson6_ex2_fig.png){width="500"} 
+העתיקו את הקוד של שתי השאלות הקודמות מהסטודיו לתיבה הזאת והגישו:
+```{r submit_final, echo = FALSE}
+  question_text(
+    "Please enter the code here",
+    incorrect = "Excercise was submitted!",
+    correct = "Excercise was submitted!",
+    answer(text = "asd",message="DFGDF"),
+    answer(text = "",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
+
 
 ```{r final_ex2_q, echo = FALSE}
 question("מה הגרף מראה לנו לגבי ציון הראשוניות והחלוקה שלו לפי מגדר ובדיקת הקשב?",
