@@ -1,7 +1,6 @@
 ---
 title: "Lesson 2: Variables"
-author: "Chen"
-date: "2024-08-21"
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 output:
   learnr::tutorial:
     progressive: true

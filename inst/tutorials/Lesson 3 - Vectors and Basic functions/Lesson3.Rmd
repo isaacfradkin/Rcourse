@@ -1,7 +1,6 @@
 ---
 title: "Lesson 3: Vectors and Basic Functions"
-author: "Chen"
-date: "2024-09-09"
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 output:
   learnr::tutorial:
     progressive: true

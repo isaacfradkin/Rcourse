@@ -1,5 +1,6 @@
 ---
 title: "Lesson 4: Dataframes" 
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 output:
   learnr::tutorial:
     progressive: true
