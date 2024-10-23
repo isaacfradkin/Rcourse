@@ -1,6 +1,7 @@
 # יבוא חבילות
 library(tidyverse)
 library(ggplot2)
+library(readr)
 
 
 
@@ -111,12 +112,19 @@ stroop_subj_summary  = stroop_subj_summary  %>%
 # מהתרשמותכם - האם זה נראה שנבדקים נוטים להגיב לאט יותר באחד התנאים?
 
 ggplot(stroop_subj_summary,aes(x = diff))+
-  geom_histogram()+
-  geom_vline(xintercept =0, linetype = 2)
+  geom_histogram(fill = "lightblue")+
+  geom_vline(xintercept =0, linetype = 2)+
+  theme_minimal()+
+  xlab("Response time difference (congruent - incogruent)")+
+  ggtitle("Stroop effect")+ # center
+  theme(plot.title = element_text(hjust = 0.5))+
+  ylab("Frequency")
 
+  
 
-# חשבו את ממוצע ההפרשים
+# חשבו את ממוצע וס"ת ההפרשים
 
+סstroop_subj_summary %>% group_by() %>% summarise(mean(diff),sd(diff))
 
 
 ### סיכום המטלה
@@ -134,8 +142,7 @@ stroop_subj_summary = stroop_subj_summary %>%
 
 ggplot(stroop_subj_summary, aes(x = correct_percent, y = diff))+
   geom_point(alpha = 0.1) +
-  geom_smooth(method  = "lm")+
-  xlim(c(0.8,1))
+  geom_smooth(method  = "lm")
 
 
 
@@ -153,11 +160,37 @@ ggplot(sum_by_condition, aes(x = condition, y = mean, col = gender))+
   geom_errorbar(aes(x = condition, ymin = mean - sd, ymax = mean + sd), width = 0.2)
   # ***
 
-## חלק שני - חישוב ציוני השאלון
+## ייבוא נתוני הנבדקים
+
+subj1 <- read_csv("csv files/stroop_subj_data_part_1.csv")
+subj2 <- read_csv("csv files/stroop_subj_data_part_2.csv")
+
+subj1 %>% pull(session_id) %>% unique() %>% length()
+
+x = subj1 %>% select(-age) %>%
+  distinct() %>%
+  drop_na() %>% 
+  mutate(dummy = 1) %>%
+  spread(key = "Site",value = "dummy")%>%
+  mutate(across(everything(), ~replace_na(., 0)))
+
+
+y = x %>% gather(key = "site", value = "dummy", -session_id) %>% drop_na()
+
+subj = bind_rows(subj1,subj2)
+
+stroop_subj_summary = stroop_subj_summary %>% 
+  left_join(subj %>% mutate(session_id = as.numeric(session_id)), by = "session_id")
+
+
+stroop_subj_summary_by_uni = stroop_subj_summary %>% group_by(Site) %>%
+  summarise(mean_diff = mean(diff),
+            sd_diff = sd(diff),
+            mean_correct = mean(correct_percent),
+            sd_correct = sd(correct_percent))
 
 ### ייבוא הטבלה
 
-Qs <- read_csv("inst/tutorials/datasets/stroop + Qs/Qs edited.csv")
 
 ### חישוב ממוצע השאלון
 
@@ -267,3 +300,26 @@ dff  = dff %>%
 
 ggplot(dff %>% group_by(Site) %>% summarise(diff = mean(diff)), aes(x = Site, y = diff))+
   geom_col()
+
+
+
+
+library(ggplot2)
+library(dplyr)
+
+# Step 1: Summarize data to calculate mean and SD for each condition
+stroop_summary <- stroop_data %>%
+  group_by(condition) %>%
+  summarise(
+    mean_response_time = mean(response_time, na.rm = TRUE),
+    sd_response_time = sd(response_time, na.rm = TRUE)
+  )
+
+# Step 2: Create the bar plot with error bars
+ggplot(stroop_summary, aes(x = condition, y = mean_response_time)) +
+  geom_bar(stat = "identity", fill = "lightblue", width = 0.6) +  # Bar plot
+  geom_errorbar(aes(ymin = mean_response_time - sd_response_time, 
+                    ymax = mean_response_time + sd_response_time), 
+                width = 0.2) +  # Error bars
+  labs(x = "Condition", y = "Mean Response Time (ms)", title = "Mean Response Time by Condition") +
+  theme_minimal()
