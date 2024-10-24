@@ -26,6 +26,8 @@ save(long_df, file = "data/long_df.rda")
 save(long_df2, file = "data/long_df2.rda")
 save(mood, file = "data/mood.rda")
 
+write.csv(mood,"mood.csv")
+
 
 write.csv(stroop_data,"stroop_data_full.csv")
 write.csv(stroop_data %>% select(-correct,-congruent),"stroop_data.csv")
