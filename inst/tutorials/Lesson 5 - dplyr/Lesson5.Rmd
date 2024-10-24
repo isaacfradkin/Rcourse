@@ -291,11 +291,15 @@ head(no_attention_check,3)
 ```{r q1_5, echo = FALSE}
 question("<div style='direction: rtl;'>אם היינו מריצים את קטע הקוד האחרון (עדכון הטבלה שיצרנו כך שלא תכיל את נתוני הגיל) פעמיים ברציפות - היינו מקבלים הודעת שגיאה. מדוע?</div>",
          
-         answer("כיוון שאי אפשר להריץ את אותו הקוד פעמיים"),
-         answer("כיוון שהטבלה בה אנו משתמשים כבר לא קיימת"),
-         answer("כיוון שהטבלה גדולה מדי"),
+         answer("כיוון שאי אפשר להריץ את אותו הקוד פעמיים", message = "באופן כללי, אין שום בעיה להריץ את אותו הקוד פעמים"),
+         answer("כיוון שהטבלה בה אנו משתמשים כבר לא קיימת" , message = "הטבלה עדיין קיימת"),
+         answer("כיוון שהטבלה גדולה מדי", message = "גודל הטבלה אינו גורם לשגיאה"),
          answer("כיוון שאנחנו מנסים להסיר מהטבלה עמודה שכבר לא קיימת בה", correct = TRUE),
-         allow_retry = TRUE
+         allow_retry = TRUE,
+         
+         
+  correct="תשובה נכונה", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -312,7 +316,10 @@ print(session_and_attention)
 grade_result(
   pass_if(~identical(.result,
                      session_and_attention %>% 
-                       select(session_id, attention_check)))
+                       select(session_id, attention_check))),
+  
+  correct="יפה מאוד", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -438,7 +445,11 @@ female_or_male_by_age = need_for_cognition %>%
 ```{r exercise3_5_filter-check}
 grade_result(
   pass_if(~identical(.result, need_for_cognition %>%
-    filter((gender == "male" & age>25)|(gender=="female" & age >30))))
+    filter((gender == "male" & age>25)|(gender=="female" & age >30)))),
+  
+           
+  correct="עבודה מצוינת", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -511,7 +522,11 @@ print(paste("Filtered", nrow(need_for_cognition) - nrow(filtered_table),"rows"))
 question_text(
   "<div style='direction: rtl;'>כמה תצפיות סיננתם?</div>",
   answer("66", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE,
+  
+           
+  correct="אליפות!", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -679,7 +694,7 @@ table3 = need_for_cognition %>%
  
         gender = ifelse(gender == "female", # שימוש נוסף בפונקציה כדי לקודד מחדש ערכים
                         "F", # שינינו את הקידוד של נשים
-                        ifelse(gender == "male", "M", # בתצפיות שאינן של נשים - שינונו את הקידוד של גברים
+                        ifelse(gender == "male", "M", # בתצפיות שאינן של נשים - שינינו את הקידוד של גברים
                                "Prefered not to say")) # ואת הקידוד של מי שהערך שלו אינו אף אחד מהשניים הנ"ל
                                                        # (ערכים חסרים או אחרים)
 ```
@@ -725,7 +740,11 @@ print(summary_table)
 question_text(
   "<div style='direction: rtl;'> מה היה ממוצע מדד nfc אצל הנשים במדגם? </div>",
          answer("3.15", correct = TRUE),
-         allow_retry = TRUE
+         allow_retry = TRUE,
+  
+           
+  correct="מצוין", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -733,7 +752,10 @@ question_text(
 question_text(
   "<div style='direction: rtl;'> כמה תצפיות חסרות היו במדד הnfc אצל גברים? </div>",
          answer("14", correct = TRUE),
-         allow_retry = TRUE
+         allow_retry = TRUE,
+           
+  correct="המשיכו כך!", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -741,7 +763,11 @@ question_text(
 question_text(
   "<div style='direction: rtl;'> כמה נבדקים יש בקובץ שערך המגדר שלהם חסר, אבל הציון שלהם במדד nfc תקין? </div>",
          answer("23", correct = TRUE),
-         allow_retry = TRUE
+         allow_retry = TRUE,
+  
+           
+  correct="נהדר", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -1004,7 +1030,11 @@ trial_data = data.frame(subject = rep(1:4,each = 3),
 
 grade_result(
   pass_if(~identical(.result, 
-                     left_join(results, trial_data, by = c("subject","trial"))))
+                     left_join(results, trial_data, by = c("subject","trial")))),
+          
+                   
+  correct="עבודה יפה!", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -1172,7 +1202,13 @@ grade_result(
   summarise(mn = mean(diff)) %>%
   pull(mn) %>%
     sum()
-)))
+)),
+
+         
+  correct="מעולה!", 
+  incorrect = "נסו שוב"
+
+)
 
 ```
 
