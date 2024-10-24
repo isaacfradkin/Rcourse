@@ -1,14 +1,15 @@
 ---
 title: "Lesson 6: ggplot2"
-author: "Chen"
-date: "2024-09-09"
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 output:
   learnr::tutorial:
     progressive: true
     allow_skip: true
+  
+
 description: >
   <div style='direction: rtl;'>
- בשיעור זה נלמד על סוג הגרפים השונים ועל אופן האיור שלהם באמצעות החבילה ggplot2
+  בשיעור זה נלמד על סוגי גרפים שונים ועל אופן האיור שלהם בחבילת GGPLOT2
   </div>
 runtime: shiny_prerendered
 ---
