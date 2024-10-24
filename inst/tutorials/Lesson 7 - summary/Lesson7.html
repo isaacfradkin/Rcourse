@@ -307,14 +307,14 @@ href="https://www.psytoolkit.org/experiment-library/experiment_stroop.html">בק
 <div id="section-תרשימים" class="section level3">
 <h3>תרשימים</h3>
 <p>צרו תרשימים שימחישו:</p>
-<p><strong>1)</strong> את הקשר בין אחוז הטעויות לבין ההפרש בזמני התגובה
-בין התנאים.</p>
+<p><strong>1)</strong> את הקשר בין אחוז הטעויות של נבדק לבין ההפרש בזמני
+התגובה בין התנאים של אותו הנבדק.</p>
 <p><strong>2)</strong> את זמני הגובה הממוצעים בכל תנאי ואת סטיית התקן
 שלהם.</p>
-<p>לצורך חישוב הממוצע וסטיית התקן לטובת התרשים תצטרכו להשתמש
-ב<strong>ממוצעי</strong> זמני התגובה של כל נבדק בתנאים השונים (ולא בזמני
-התגובה הגולמיים - מה שהיה נותן משקל עודף לנבדקים עם מספר גבוה יותר של
-תצפיות תקינות).</p>
+<p>לצורך חישוב הממוצע (מעבר לנבדקים) וסטיית התקן לטובת התרשים תצטרכו
+להשתמש ב<strong>ממוצעי</strong> זמני התגובה של כל נבדק בתנאים השונים
+(ולא בזמני התגובה הגולמיים - מה שהיה נותן משקל עודף לנבדקים עם מספר גבוה
+יותר של תצפיות תקינות).</p>
 <p><strong>3)</strong> את ממוצע הפרשי זמני התגובה בין התנאים עבור כל אחת
 מהאוניברסטאות / מוסדות בה המחקר נעשה.</p>
 <p>המידע הנוסף שתצטרכו לצורך ניתוח זה נמצא בקבצים
@@ -466,21 +466,27 @@ session$onSessionEnded(function() {
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "correct_percent", 
     question = structure("<div style='direction: rtl;'>\nמה היה אחוז הדיוק של הנבדק השני (session_id = 668587)? \n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_eae4fa3", 
+    "character")), answers = list(structure(list(id = "lnr_ans_d4c127c", 
         option = "0.889", value = "0.889", label = structure("0.889", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_a66cf68", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_3038529", 
         option = "0.89", value = "0.89", label = structure("0.89", html = TRUE, class = c("html", 
+        "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_b590aae", 
+        option = "0.8889", value = "0.8889", label = structure("0.8889", html = TRUE, class = c("html", 
+        "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_76d3cd6", 
+        option = "0.8888889", value = "0.8888889", label = structure("0.8888889", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+    "character"))), messages = list(correct = structure("תשובה נכונה", html = TRUE, class = c("html", 
+    "character")), try_again = structure("נסו שוב", html = TRUE, class = c("html", 
+    "character")), incorrect = structure("נסו שוב", html = TRUE, class = c("html", 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "correct_percent-answer", question = "correct_percent"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1053006012.50966, options = list(placeholder = "Enter answer here...", 
+    seed = 532964753.751819, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
@@ -489,37 +495,37 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "percent_congruent", 
     question = structure("<div style='direction: rtl;'>\nהאם אחוז הסבבים בהם הייתה התאמה בין הצבע לטקסט תואמת לציפיות שלנו?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_c464328", 
+    "character")), answers = list(structure(list(id = "lnr_ans_bfdf87c", 
         option = "כן", value = "כן", label = structure("כן", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_3001027", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_948d44f", 
         option = "לא", value = "לא", label = structure("לא", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+    "character"))), messages = list(correct = structure("נכון מאוד", html = TRUE, class = c("html", 
+    "character")), try_again = structure("נסו שוב", html = TRUE, class = c("html", 
+    "character")), incorrect = structure("נסו שוב", html = TRUE, class = c("html", 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "percent_congruent-answer", question = "percent_congruent"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1992972928.57195, options = list()), class = c("learnr_radio", 
+    seed = 1274999674.40628, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "n_filtered", question = structure("<div style='direction: rtl;'>\nכמה תצפיות סיננתם?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_4e751e8", 
+"character")), answers = list(structure(list(id = "lnr_ans_a5d954a", 
     option = "629", value = "629", label = structure("629", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
 "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+"character"))), messages = list(correct = structure("יפה! אתם בדרך הנכונה", html = TRUE, class = c("html", 
+"character")), try_again = structure("זו לא התוצאה שציפינו לקבל. וודאו שסיננתם לפי ההוראות", html = TRUE, class = c("html", 
+"character")), incorrect = structure("זו לא התוצאה שציפינו לקבל. וודאו שסיננתם לפי ההוראות", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "n_filtered-answer", question = "n_filtered"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 871463834.094193, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1130963160.97335, 
     options = list(placeholder = "Enter answer here...", trim = TRUE)), class = c("learnr_text", 
 "tutorial_question")), session = session)
 </script>
@@ -528,39 +534,39 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "are_there_NAs", 
     question = structure("<div style='direction: rtl;'>\nבדקו - האם הקובץ מכיל ערכים חסרים?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_42ada55", 
+    "character")), answers = list(structure(list(id = "lnr_ans_cbedfa1", 
         option = "כן", value = "כן", label = structure("כן", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7363e7d", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d694c33", 
         option = "לא", value = "לא", label = structure("לא", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+    "character"))), messages = list(correct = structure("נכון מאוד", html = TRUE, class = c("html", 
+    "character")), try_again = structure("בדקו שוב", html = TRUE, class = c("html", 
+    "character")), incorrect = structure("בדקו שוב", html = TRUE, class = c("html", 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "are_there_NAs-answer", question = "are_there_NAs"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 85081476.9603809, options = list()), class = c("learnr_radio", 
+    seed = 315209644.853219, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "n_filtered_total", 
     question = structure("<div style='direction: rtl;'>\nלאחר כל הסינונים, כמה תצפיות נותרו בקובץ?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_435aa08", 
+    "character")), answers = list(structure(list(id = "lnr_ans_21ad195", 
         option = "201511", value = "201511", label = structure("201511", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+    "character"))), messages = list(correct = structure("תשובה נכונה", html = TRUE, class = c("html", 
+    "character")), try_again = structure("זו לא התוצאה שציפינו לקבל. וודאו שסיננתם לפי ההוראות", html = TRUE, class = c("html", 
+    "character")), incorrect = structure("זו לא התוצאה שציפינו לקבל. וודאו שסיננתם לפי ההוראות", html = TRUE, class = c("html", 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "n_filtered_total-answer", question = "n_filtered_total"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1188570531.44653, options = list(placeholder = "Enter answer here...", 
+    seed = 1843071864.14175, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
@@ -568,82 +574,82 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "stroop_mean", question = structure("<div style='direction: rtl;'>\nמהו ממוצע ההפרשים שקיבלתם?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_6e1708d", 
+"character")), answers = list(structure(list(id = "lnr_ans_132b56e", 
     option = "56.4", value = "56.4", label = structure("56.4", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_fe4173", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_20440a", 
     option = "56.37443", value = "56.37443", label = structure("56.37443", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_b4bbac5", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_7303a21", 
     option = "56.3744", value = "56.3744", label = structure("56.3744", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_1bff6d7", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_de2898d", 
     option = "56.374", value = "56.374", label = structure("56.374", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_e46b105", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_3335f7f", 
     option = "56.37", value = "56.37", label = structure("56.37", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_5840d8a", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_61e37c1", 
     option = "56", value = "56", label = structure("56", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_9dd3d6", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_314a347", 
     option = "-56.4", value = "-56.4", label = structure("-56.4", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_5a4594d", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_52b9ea", 
     option = "-56.37443", value = "-56.37443", label = structure("-56.37443", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_a84d765", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_fb7ec84", 
     option = "-56.3744", value = "-56.3744", label = structure("-56.3744", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_bebca5b", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_e7fa200", 
     option = "-56.374", value = "-56.374", label = structure("-56.374", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_4a41a22", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_3f682dc", 
     option = "-56.37", value = "-56.37", label = structure("-56.37", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_8cb4b0d", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_805a37a", 
     option = "-56", value = "-56", label = structure("-56", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
 "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-"character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-"character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-"character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+"character"))), messages = list(correct = structure("יפה!", html = TRUE, class = c("html", 
+"character")), try_again = structure("זו לא התוצאה שציפינו לקבל. כנראה שמשהו השתבש בדרך", html = TRUE, class = c("html", 
+"character")), incorrect = structure("זו לא התוצאה שציפינו לקבל. כנראה שמשהו השתבש בדרך", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "stroop_mean-answer", question = "stroop_mean"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1929220971.60164, options = list(placeholder = "Enter answer here...", 
+    seed = 1519418748.79247, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "sd_congruent", 
-    question = structure("<div style='direction: rtl;'>\nמה היתה סטיית התקן זמן התגובה בתנאי התואם?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_367bf17", 
+    question = structure("<div style='direction: rtl;'>\nמה היתה סטיית התקן של זמן התגובה בתנאי התואם?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
+    "character")), answers = list(structure(list(id = "lnr_ans_a22d612", 
         option = "133", value = "133", label = structure("133", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d0b46db", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_2d96195", 
         option = "132.6728", value = "132.6728", label = structure("132.6728", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_f69e5e2", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_a01d359", 
         option = "132.673", value = "132.673", label = structure("132.673", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9d4eb1f", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_2fb208d", 
         option = "132.67", value = "132.67", label = structure("132.67", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_f1fdae4", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d32d000", 
         option = "132.7", value = "132.7", label = structure("132.7", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+    "character"))), messages = list(correct = structure("תשובה נכונה", html = TRUE, class = c("html", 
+    "character")), try_again = structure("זו לא התוצאה שציפינו לקבל. משהו ככל הנראה השתבש בדרך", html = TRUE, class = c("html", 
+    "character")), incorrect = structure("זו לא התוצאה שציפינו לקבל. משהו ככל הנראה השתבש בדרך", html = TRUE, class = c("html", 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "sd_congruent-answer", question = "sd_congruent"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1636497334.73795, options = list(placeholder = "Enter answer here...", 
+    seed = 1146142077.46629, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
@@ -652,51 +658,51 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label =
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_text", label = "mean_diff_ashland_university", 
     question = structure("<div style='direction: rtl;'>\nמה היה ממוצע הפרשי זמני התגובה באוניברסיטת Ashland?\n  <\u002fdiv>\n", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_c7cb8b6", 
+    "character")), answers = list(structure(list(id = "lnr_ans_4d82ae3", 
         option = "-57.48028", value = "-57.48028", label = structure("-57.48028", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_23faef1", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_547a6b0", 
         option = "-57.4803", value = "-57.4803", label = structure("-57.4803", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_cd8d09e", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4d4e065", 
         option = "-57.480", value = "-57.480", label = structure("-57.480", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_914412e", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_a323f4", 
         option = "-57.48", value = "-57.48", label = structure("-57.48", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_f0c8706", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_b761b52", 
         option = "-57.5", value = "-57.5", label = structure("-57.5", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4ffa7a4", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_6c290d2", 
         option = "-57", value = "-57", label = structure("-57", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_6838051", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_cc59c99", 
         option = "57.48028", value = "57.48028", label = structure("57.48028", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7401e2c", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_3d643f3", 
         option = "57.4803", value = "57.4803", label = structure("57.4803", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_596c883", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7ba30f0", 
         option = "57.480", value = "57.480", label = structure("57.480", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_cc96331", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9004ad2", 
         option = "57.48", value = "57.48", label = structure("57.48", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_669de69", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4600dda", 
         option = "57.5", value = "57.5", label = structure("57.5", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7a6857b", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7081dc0", 
         option = "57", value = "57", label = structure("57", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
     "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
     "character")), try_again = structure("<span data-i18n=\"button.questiontryagain\">Try Again<\u002fspan>", html = TRUE, class = c("html", 
-    "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", 
-    "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", 
-    "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
+    "character"))), messages = list(correct = structure("עבודה מצויינת!", html = TRUE, class = c("html", 
+    "character")), try_again = structure("זו לא התוצאה שציפינו לקבל. וודאו שכל חלקי הניתוח נעשו כהלכה", html = TRUE, class = c("html", 
+    "character")), incorrect = structure("זו לא התוצאה שציפינו לקבל. וודאו שכל חלקי הניתוח נעשו כהלכה", html = TRUE, class = c("html", 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "mean_diff_ashland_university-answer", question = "mean_diff_ashland_university"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = TRUE, 
-    seed = 1792726826.1652, options = list(placeholder = "Enter answer here...", 
+    seed = 253784153.381823, options = list(placeholder = "Enter answer here...", 
         trim = TRUE)), class = c("learnr_text", "tutorial_question"
 )), session = session)
 </script>
