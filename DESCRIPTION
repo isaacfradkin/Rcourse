@@ -1,7 +1,7 @@
 Package: Rcourse
 Title: Rcourse for BA students in the Psychology Department, Hebrew University of Jerusalem
 Version: 1.0.0.0
-Authors@R:c( 
+Authors@R: c( 
     person("Isaac", "Fradkin", role = "cre",email = "itzik.fradkin@mail.huji.ac.il"),
     person("Boaz", "Rosenberg", role = "aut",email = "boazrsnbrg@gmail.com"),
     person("Chen", "Guata",role = "aut",email ="chen.gueta1@mail.huji.ac.il"))
@@ -13,11 +13,13 @@ RoxygenNote: 7.3.1
 Suggests: 
     learnr
 Imports: 
+    ggcheck (>= 0.0.5),
     gradethis (>= 0.2.14),
     learnrhash (>= 0.2.0)
-Remotes: 
+Remotes:  
     rundel/learnrhash,
-    rstudio-education/gradethis
+    rstudio-education/gradethis,
+    rstudio/ggcheck
 Depends: 
     R (>= 2.10)
 LazyData: true
