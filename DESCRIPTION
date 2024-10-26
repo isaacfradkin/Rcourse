@@ -1,12 +1,12 @@
 Package: Rcourse
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Title: Rcourse for BA students in the Psychology Department, Hebrew University of Jerusalem
+Version: 1.0.0.0
+Authors@R:c( 
+    person("Isaac", "Fradkin", role = "cre",email = "itzik.fradkin@mail.huji.ac.il"),
+    person("Boaz", "Rosenberg", role = "aut",email = "boazrsnbrg@gmail.com"),
+    person("Chen", "Guata",role = "aut",email ="chen.gueta1@mail.huji.ac.il"))
+Description: This package is designed to help BA students at the HUJI Psychology department get familiar with R. 
+License: file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
