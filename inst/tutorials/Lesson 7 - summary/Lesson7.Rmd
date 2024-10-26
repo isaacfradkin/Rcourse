@@ -139,7 +139,12 @@ question_text(
   </div>",
   answer("0.889", correct = TRUE),
   answer("0.89", correct = TRUE),
-  allow_retry = TRUE
+  answer("0.8889",correct=TRUE),
+  answer("0.8888889",correct=TRUE),
+  allow_retry = TRUE , 
+         
+  correct="תשובה נכונה", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -152,7 +157,10 @@ question(
   </div>",
   answer("כן", correct = TRUE),
   answer("לא"),
-  allow_retry = TRUE
+  allow_retry = TRUE , 
+         
+  correct="נכון מאוד", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -194,7 +202,11 @@ question_text(
 כמה תצפיות סיננתם?
   </div>",
   answer("629", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE, 
+
+         
+  correct="מעולה", 
+  incorrect = "זו לא התוצאה שציפינו לקבל. וודאו שסיננתם לפי ההוראות"
 )
 
 ```
@@ -214,7 +226,11 @@ question(
   </div>",
   answer("כן"),
   answer("לא", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE,
+
+         
+  correct="נכון מאוד", 
+  incorrect = "בדקו שוב"
 )
 
 ```
@@ -237,7 +253,10 @@ question_text(
 לאחר כל הסינונים, כמה תצפיות נותרו בקובץ?
   </div>",
   answer("201511", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE,
+         
+  correct="נהדר", 
+  incorrect = "זו לא התוצאה שציפינו לקבל. וודאו שסיננתם לפי ההוראות"
 )
 
 ```
@@ -279,7 +298,10 @@ question_text(
   answer("-56.374", correct = TRUE),
   answer("-56.37", correct = TRUE),
   answer("-56", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE ,
+         
+  correct="יפה!", 
+  incorrect = "זו לא התוצאה שציפינו לקבל. כנראה שמשהו השתבש בדרך"
 )
 
 ```
@@ -294,18 +316,18 @@ question_text(
 
 צרו תרשימים שימחישו:
 
-  **1)**  את הקשר בין אחוז הטעויות לבין ההפרש בזמני התגובה בין
-התנאים.
+  **1)**  את הקשר בין אחוז הטעויות של נבדק לבין ההפרש בזמני התגובה בין
+התנאים של אותו הנבדק.
 
   
   **2)** את זמני הגובה הממוצעים בכל תנאי ואת סטיית התקן שלהם.
   
-לצורך חישוב הממוצע וסטיית התקן לטובת התרשים תצטרכו להשתמש ב**ממוצעי** זמני התגובה של כל נבדק בתנאים השונים (ולא בזמני התגובה הגולמיים - מה שהיה נותן משקל עודף לנבדקים עם מספר גבוה יותר של תצפיות תקינות).
+לצורך חישוב הממוצע (מעבר לנבדקים) וסטיית התקן לטובת התרשים תצטרכו להשתמש ב**ממוצעי** זמני התגובה של כל נבדק בתנאים השונים (ולא בזמני התגובה הגולמיים - מה שהיה נותן משקל עודף לנבדקים עם מספר גבוה יותר של תצפיות תקינות).
 
   
   **3)** את ממוצע הפרשי זמני התגובה בין התנאים עבור כל אחת מהאוניברסטאות / מוסדות בה המחקר נעשה.
   
-המידע הנוסף שתצטרכו לצורך ניתוח זה נמצא בקבצים "stroop_subj_data_part_1" ו"stroop_subj_data_part_2".
+המידע הנוסף שתצטרכו לצורך ניתוח זה נמצא בקבצים "stroop_subj_data_part_1" ו"stroop_subj_data_part_2" שבמודל. 
 
 
 ### בדיקת תוצאות
@@ -317,14 +339,17 @@ question_text(
 
 question_text( 
   "<div style='direction: rtl;'>
-מה היתה סטיית התקן זמן התגובה בתנאי התואם?
+מה היתה סטיית התקן של זמן התגובה בתנאי התואם?
   </div>",
   answer("133", correct = TRUE),
   answer("132.6728", correct = TRUE),
   answer("132.673", correct = TRUE),
   answer("132.67", correct = TRUE),
   answer("132.7", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE,
+         
+  correct="תשובה נכונה", 
+  incorrect = "זו לא התוצאה שציפינו לקבל. משהו ככל הנראה השתבש בדרך"
 )
 
 ```
@@ -348,7 +373,10 @@ question_text(
   answer("57.48", correct = TRUE),
   answer("57.5", correct = TRUE),
   answer("57", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE ,
+         
+  correct="עבודה מצויינת!", 
+  incorrect = "זו לא התוצאה שציפינו לקבל. וודאו שכל חלקי הניתוח נעשו כהלכה"
 )
 
 ```

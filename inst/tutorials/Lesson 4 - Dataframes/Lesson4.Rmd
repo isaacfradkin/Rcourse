@@ -100,7 +100,10 @@ question_text(
   "מהו ציון המסוגלות העצמית של הנבדק הגר באילת?",
   answer("3", correct = TRUE),
   answer("3.0", correct = TRUE),
-  allow_retry = TRUE
+  allow_retry = TRUE,
+    
+  correct="נכון מאוד", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -143,9 +146,11 @@ print(df1)
 ```
 
 ```{r exercise1_5-check}
-grade_result(
-  pass_if(~identical(names(.result), c("subject","city","self_efficacy_score","gender")))
-)
+grade_this(
+   if (! "gender" %in% names(user_object_get("df1"))){
+     fail("לא נמצאה עמודה בשם gender")}
+   else {pass("מעולה!")}
+   )
 ```
 
 ## חיתוכים
@@ -178,7 +183,10 @@ print(x)
 
 ```{r exercise2_5-check}
 grade_result(
-  pass_if(~identical(.result, df1[5,3] ))
+  pass_if(~identical(.result, df1[5,3] )),
+  
+  correct="תשובה נכונה", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -190,7 +198,7 @@ grade_result(
 הקוד משנה את ערך זה כך שיהיה שווה ל2 ומדפיס את הטבלה המעודכנת. שימו לב שהציון של הנבדק אכן השתנה ל2.
 
 
-`תרגיל:` שנו את עיר מגוריו של הנבדק בשורה השנייה ל"Dimona".
+`תרגיל:` שנו את עיר מגוריו של הנבדק בשורה השנייה לDimona.
 
 
 ```{r exercise3_5, exercise=TRUE, exercise.eval = FALSE,  exercise.setup = "prepare-df1"}
@@ -205,7 +213,10 @@ grade_result(
   pass_if(~identical(.result, df1 %>%
                        mutate(city= ifelse(subject == 2,
                                            "Dimona",
-                                           city))))
+                                           city)))),
+  
+    correct="מצוין", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -228,26 +239,37 @@ grade_result(
 
 לפניכם מספר דוגמאות:
 
-```{r slicing,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
+```{r slicing1,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
 
 # שורות 2,4 ו 6 מעמודות 1 ו 2
 df2 = df1[c(2,4,6),1:2] 
 print(df2)
 
+```
+
+```{r slicing2,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
+
 # שורה 1, כל העמודות
 row1 = df1[1,] 
 print(row1)
 
+```
+
+```{r slicing3,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
+
 # כל השורות, עמודה 2 ו3
 columns_2_and_3 = df1[,c(2,3)] 
 print(columns_2_and_3)
+```
 
+```{r slicing4,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
 
  # עיר המגורים של הנבדקים בשורות 3 ו1
 city_subj_3_and_1 = df1[c(3,1),"city"]
 print(city_subj_3_and_1)
+```
 
-
+```{r slicing5,  exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-df1"}
 # כל השורות - אבל רק את העמודות של מספר ההרצה וציון תחושת המסוגלות העצמית
 subj_and_self_efficacy = df1[,c("subject","self_efficacy_score")]  
 print(subj_and_self_efficacy)
@@ -269,17 +291,19 @@ print(df2)
 
 ```{r exercise4_5_slicing_multi_index-check}
 grade_result(
-  pass_if(~identical(.result, df1[c(1,5),c(1,3)]))
+  pass_if(~identical(.result, df1[c(1,5),c(1,3)])),
+  
+    correct="יפה מאוד!", 
+  incorrect = "נסו שוב"
 )
 ```
 
 
+### שליפת עמודות
 
-### פקד ה\$
+ניתן לשלוף עמודות גם באמצעות פקד שליפת העמודות המיוצג על ידי התו `$`.
 
-ניתן לשלוף עמודות גם באמצעות פקד ה`$`.
-
-למשל: `df1$city` ישלוף את עמודת הערים.
+למשל: הקוד `df1$city` ישלוף את עמודת הערים מהטבלה `df1`.
 
 כמו בחיתוכים הקודמים, גם כאן נוכל להשתמש בחיתוך גם כדי לערוך את הערכים הקיימים בטבלה:
 
@@ -290,9 +314,9 @@ grade_result(
 בעמודות הקיימות.
 
 
-לפניכם מספר דוגמאות:
+לפניכם מספר דוגמאות. הריצו את הקוד בשביל לראות מה קורה:
 
-```{r df5, exercise=TRUE, exercise.eval = FALSE, , exercise.setup = "prepare-df1"}
+```{r df5, exercise=FALSE, exercise.eval = FALSE, , exercise.setup = "prepare-df1"}
 
 # חיתוך עמודת הערים מתוך הטבלה
 print(df1$city)
@@ -334,7 +358,10 @@ library(dplyr)
 
 grade_result(
   pass_if(~identical(.result,
-                     df1 %>% mutate(high_self_efficacy = self_efficacy_score > 2.5)))
+                     df1 %>% mutate(high_self_efficacy = self_efficacy_score > 2.5))),
+  
+    correct="נהדר!", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -347,15 +374,17 @@ grade_result(
 כל לייבא את הנתונים לסביבת העבודה שלנו.
 
 ישנן מספר פונקציות בR אשר מאפשרות לנו לטעון קבצים מפורמט csv או xlsx
-(שני הפורמטים העיקריים לשמירת נתונים המיוצגים בטבלה), אך הדרך הידודותית
+(שני הפורמטים הנפוצים לשמירת נתונים המיוצגים בטבלה), אך הדרך הידודותית
 ביותר למשתמש נעזרת בכלי של Rstudio שנועד להקל על ייבוא הקבצים.
 
 כדי לגשת לכלי הייבוא, פתחו את Rstudio ובחרו בלשונית "file" שבסרגל הכלים
 שבראש החלון של התוכנה. מכאן בחרו ב "Import Dataset" ובאחת מ2 האפשרויות
-הראשונות במידה ואתם מעוניינים לטעון קובץ csv, או בשלישית במידה והקובץ
-שלכם הוא מפורמט xslx.
+הראשונות ("From Text") במידה ואתם מעוניינים לטעון קובץ מפורמט csv, או בשלישית במידה והקובץ
+שלכם הוא מפורמט xslx בו נשמרים קבצי אקסל.
 
-בשיעור זה נתרגל טעינת קובץ מפורמט csv ולכן נבחר באפשרות השנייה - "From
+![](images/import.jpg){width="200"}   
+
+ביחידה זו נתרגל טעינת קובץ מפורמט csv ולכן נבחר באפשרות השנייה - "From
 Text (readr)...". גם האופצייה הראשונה אפשרית, אבל השנייה נוחה יותר.
 כשנבחר באפשרות זו ייפתח לנו חלון שיאפשר לנו לבחור קובץ לייבוא, לשלוט
 בכמה אפשרויות בתהליך הייבוא ולצפות בתצוגה מקדימה של הטבלה שאנחנו
@@ -400,8 +429,11 @@ Text (readr)...". גם האופצייה הראשונה אפשרית, אבל הש
 
 
 
-![](images/Rstudio logo.png){width="100"}  `תרגיל:` ייבאו את הקובץ "need_for_cognition.csv" שבאתר המודל של הקורס
+![](images/Rstudio logo.png){width="100"}  
+
+`תרגיל:` ייבאו את הקובץ "need_for_cognition.csv" שבאתר המודל של הקורס.
 לסביבת העבודה שלכם בRstudio
+[(קישור לקובץ במודל)](https://moodle.huji.ac.il/2024-25/mod/resource/view.php?id=135118)
 
 ראשית, הוריד את הקובץ ושמרו אותו בתיקייה לבחירתכם, ואח"כ היעזרו בחלון
 הייבוא כדי לייצר את שורות הקוד שיאפשרו ייבוא תקין של הטבלה לסביבת העבודה
@@ -411,11 +443,14 @@ Text (readr)...". גם האופצייה הראשונה אפשרית, אבל הש
 cognition" - מידת הצורך שאנשים מרגישים להבין את העולם סביבם. בהמשך השיעור
 נציץ אל תוך טבלה זו ונבין את המבנה שלה.
 
-```{r question3_5, echo = FALSE}
+```{r question2_5, echo = FALSE}
 question("מה הגיל של הנבדקת הראשונה בקובץ שייבאתם?",
          type = "learnr_text",
          answer("19", correct = TRUE),
-         allow_retry = TRUE
+         allow_retry = TRUE,
+           
+  correct="מעולה", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -425,7 +460,7 @@ question("מה הגיל של הנבדקת הראשונה בקובץ שייבאת
 
 ישנם מספר דרכים לייצא נתונים מתוך R, כדי לשתף אותם עם אנשים אחרים או לשמור אותם לטובת ניתוחים עתידיים.  דרך אחת שכזו, המתאימה לשיתוך טבלאות, ממירה את הטבלה שייצרנו בR ושומרת אותו כקובץ csv.
 
-למשל, ייתכן שייבאנו טבלה, ערכנו אותה - ואנחנו רוצים לשתף אץ הטבלה הערוכה
+למשל, ייתכן שייבאנו טבלה, ערכנו אותה - ואנחנו רוצים לשתף את הטבלה הערוכה
 עם אנשים אחרים. כדי לשתף אותה נשמור אותה חזרה לקובץ csv אותו נוכל לשלוח
 למי שנרצה.
 
@@ -462,11 +497,28 @@ setwd(new_working_directory)
 
 ```
 
-![](images/Rstudio logo.png){width="100"} `תרגיל:`
+![](images/Rstudio logo.png){width="100"}  
+
+`תרגיל:`
 ייבאו את הטבלה עם תשובות הנבדקים בשאלון "need for cognition"אל סביבת העבודה שלכם בRstudio, חתכו ממנו תת טבלה המכילה את התצפיות ב10 השורות הראשונות עבור העמודות "session_id" ו"age" וייצאו את הטבלה החדשה כקובץ csv.
 
 פתחו את הקובץ שנוצר וודאו שהוא מכיל את הנתונים הנכונים.
 
+```{r question3_5, echo = FALSE}
+
+question(
+  "כמה עמודות היו בקובץ שפתחתם?",
+  answer("אחת",  message = "תשובה שגויה. נסו שוב"),
+  answer("שתיים", 
+         message = "הטבלה שיצרתם אמנם הכילה שתי עמודות, אבל בדקו כמה יש בקובץ ששמרתם." ),
+  answer("שלוש",
+         correct = TRUE,
+         message = "תשובה נכונה. תהליך השמירה הוסיף עמודה ללא כותרת המכילה את המספר הסידורי של כל שורה."),
+  answer("ארבע",  message = "תשובה שגויה. נסו שוב"),
+  allow_retry = TRUE
+)
+
+```
 
 
 ## בחינה ראשונית של טבלה
@@ -509,7 +561,11 @@ question_text(
   "כמה תצפיות מכילה הטבלה שייבאתם?",
   answer("2466", correct = TRUE),
   answer("10", message = ".התשובה אינה נכונה. הזנתם את מספר העמודות בטבלה, במקום את מספר השורות"),
-  allow_retry = TRUE
+  allow_retry = TRUE,
+  
+    
+  correct="תשובה נכונה", 
+  incorrect = "נסו שוב"
 )
 
 ```
@@ -530,6 +586,10 @@ need_for_cognition$subject_index = 1:nrow(need_for_cognition)
 הטבלה והעמודות שהיא מכילה. הן מאפשרות לנו להבין באופן גס מה כלול בכל עמודה ולהיזכר בכותרות של העמודות השונות.
 
 
+האופציה הנגישה ביותר כוללת צפייה בטבלה באמצעות לחיצה על שמה בחלונית הסביבה (Environment) המופיעה בצד הימני של המסך בRstudio. כאשר נלחצת על שם הטבלה תוצג תצוגה מקדימה של הטבלה והעמודות שבה.
+
+במידה ונרצה לצפות רק בתחילתה או סופה של הטבלה נוכל להשתמש בפונקציות הבאות:
+
 ```{r}
 
 # שליפת השורות הראשונות בטבלה 
@@ -539,22 +599,35 @@ head(need_for_cognition,4)
 # שליפת השורות האחרונות בטבלה
 tail(need_for_cognition) 
 
+```
+
+בנוסף, ייתכן ונרצה לקבל תקציר על כל עמודה בטבלה, כך שנוכל להבין מה כל עמודה מייצגת ואילו ערכים היא מכילה. כדי לעשות זאת נשתמש בפונקציה `summary` שתחזיר לנו סיכום לכל עמודה בהתאם לסוג הנתונים המיוצגים בה.
+
+``` {r}
 # סיכום בסיסי של כל עמודה בטבלה, בהתאם לסוג העמודה
 summary(need_for_cognition)
 
+```
+
+במידה ונרצה להיזכר רק בשמות העמודות או בצורה הספציפית בה הן מאויתות נוכל להשתמש בפונקציה `names`.
+
+```{r}
 # שליפת שמות העמודות 
 col_names = names(need_for_cognition)
 print(col_names)
 
 ```
+
+
+
 ```{r question5_5, echo = FALSE}
 
 question(
-  "<div style='direction: rtl;'> מה מכילה העמודה attention_check?</div>",
-  answer("<div style='direction: rtl;'>את ציון הנבדק במטלת קשב (ציון רציף 1 עד 100)</div>"),
-  answer("<div style='direction: rtl;'>את סוג מבחן הקשב שהנבחן עבר (רגיל / קל / קשה)</div>"),
-  answer("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב (1 = עבר, 0 = לא עבר)</div>", correct = TRUE),
-  answer("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE = עבר, FALSE = לא עבר)</div>"),
+  "<div style='direction: rtl;'> בקובץ הנתונים שטענתם - מה מכילה העמודה attention_check?</div>",
+  answer("<div style='direction: rtl;'>את ציון הנבדק במטלת קשב (ציון רציף 1 עד 100)</div>" , message = "בדקו את הערכים שהעמודה מכילה - מה הם יכולים לייצג?"),
+  answer("<div style='direction: rtl;'>את סוג מבחן הקשב שהנבחן עבר (רגיל / קל / קשה)</div>" , message = "בדקו את הערכים שהעמודה מכילה - מה הם יכולים לייצג?"),
+  answer("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב (1 = עבר, 0 = לא עבר)</div>", correct = TRUE , message = "נכון מאוד"),
+  answer("<div style='direction: rtl;'>האם הנבחן עבר את מבחני הקשב TRUE = עבר, FALSE = לא עבר)</div>" , message = "בדקו את הערכים שהעמודה מכילה - מה הם יכולים לייצג?"),
   allow_retry = TRUE
 )
 
@@ -562,7 +635,9 @@ question(
 
 ## תרגיל
 
-![](images/Rstudio logo.png){width="100"} העתיקו את הקוד הבא לסביבת העבודה שלכם והשלימו אותו בהתאם להערות בגוף הקוד.
+![](images/Rstudio logo.png){width="100"}   
+
+העתיקו את הקוד הבא לסביבת העבודה שלכם והשלימו אותו בהתאם להערות בגוף הקוד.
 
 
 בסיום העבודה, העתיקו את הקוד שכתבתם חזרה לחלונית הקוד, למעט שורות הקוד העוסקות בייבוא הנתונים (הטבלה כבר טענה מראש, תחת השם "need_for_cognition").
@@ -606,12 +681,14 @@ table1$nfc_03 = ____________________
 table1$nfc_06 = ____________________
 
 
-# כעת, צרו עמודה חדשה שתכיל את סכום ששת העמודות עבור כל נבדק
+#  כעת, צרו עמודה חדשה שתכיל את סכום ששת העמודות עבור כל נבדק
 table1$nfc = ___________________________________________________________________
 
 # שלפו את עמודה זו ושמרו אותה באובייקט הבא:
 nfc_score_column =  ____________
-  
+
+# 
+
 ```
 
 
@@ -653,7 +730,17 @@ nfc_score_column = table1$nfc
 ```
 
 ```{r summary_exercise-check}
-grade_this_code()
+grade_this({
+  
+   if (user_object_get("number_of_columns") != 7){
+     fail("מספר העמודות אינו נכון")}
+   else if(user_object_get("number_of_rows") != 100) {
+     fail("מספר השורות אינו נכון")}
+   else if(!identical(user_object_get("nfc_score_column"), solution_object_get("nfc_score_column"))) {
+     fail("טעות בחישוב עמודת הציונים או בשליפתה")}
+   else {pass("עבודה מצוינת!")}
+}
+   )
 ```
 
 
