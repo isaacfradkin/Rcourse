@@ -1,1 +1,1 @@
-# RcourseA line I wrote on my local computer
+# Psychology Department, Hebrew University of Jerusalem R course
