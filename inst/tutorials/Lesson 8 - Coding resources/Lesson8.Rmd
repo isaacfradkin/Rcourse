@@ -41,7 +41,6 @@ p {
 library(learnr)
 library(dplyr)
 library(gradethis)
-library(tidyverse)
 
 knitr::opts_chunk$set(error = TRUE)
 ```
