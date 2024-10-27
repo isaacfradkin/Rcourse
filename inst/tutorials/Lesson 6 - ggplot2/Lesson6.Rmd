@@ -31,6 +31,8 @@ library(gradethis)
 library(Rcourse)
 library(ggplot2)
 library(dplyr)
+library(ggcheck)
+
 #need_for_cognition = data("need_for_cognition")
 #need_for_cognition = nfc
 
@@ -403,7 +405,13 @@ scatter_plot
 ```
 
 ```{r smooth_ex-check}
-grade_this_code(correct = "מעולה!", incorrect = "נסו עוד פעם")
+grade_this({
+  if (all(ggcheck::uses_geom_param(p = .result,geom ="smooth",list(se=F,method="lm")))){
+    pass("מעולה")
+  }
+  fail("זאת לא התשובה הנכונה.. נסו שוב!")
+})
+
 ```
 
 ## גרפים של שלושה משתנים
@@ -465,7 +473,12 @@ scatter_plot
 ```
 
 ```{r col_size_scatter_ex-check}
-grade_this_code(correct = "נהדר!", incorrect = "נסו עוד פעם, אל תשכחו לטפל בערכים החסרים.")
+grade_this({
+  if (all(ggcheck::uses_mappings(p = .result,aes(x=age,y=nfc_sum,col=gender,size=nfc_01)))){
+    pass("נהדר!")
+  }
+  fail("נסו שוב...")
+})
 ```
 
 ## התאמות ותצוגה 
