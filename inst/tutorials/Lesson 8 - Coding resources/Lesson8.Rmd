@@ -1,6 +1,5 @@
 ---
 title: "Lesson 8: Coding resources" 
-author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 output:
   learnr::tutorial:
     progressive: true
@@ -140,7 +139,10 @@ df = data.frame(ID = c("001p","002f","003f","004f","005p","006f"),
   
   
 grade_result(
-  pass_if(~identical(.result,substr(df$ID,1,3) ))
+  pass_if(~identical(.result,substr(df$ID,1,3) )),
+         
+  correct="יפה מאוד!", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -243,7 +245,10 @@ data.frame(session = c("s01_t1","s01_t2","s01_t3","s02_t1","s02_t2"),
                 score = c(45,65,57,71,52))%>%
   separate(session, into = c("subject","trial"))
   
-  ))
+  )),
+         
+  correct="מעולה!", 
+  incorrect = "נסו שוב"
 )
 ```
 
@@ -303,7 +308,10 @@ grade_result(
   summarise(trial_amount = max(trial, na.rm = T), # מספר החזרות שביצע
             cumulative_score = sum(score),
             score = mean(score, na.rm = T)     # הציון הממוצע 
-            )  %>% pull(cumulative_score) ))
+            )  %>% pull(cumulative_score) )),
+         
+  correct="נהדר!", 
+  incorrect = "נסו שוב, משהו ככל הנראה השתבש"
 )
 ```
 
