@@ -15,8 +15,10 @@ Suggests:
 Imports: 
     ggcheck (>= 0.0.5),
     gradethis (>= 0.2.14),
-    learnrhash (>= 0.2.0)
-Remotes:  
+    learnrhash (>= 0.2.0),
+    psych,
+    readr
+Remotes: 
     rundel/learnrhash,
     rstudio-education/gradethis,
     rstudio/ggcheck
