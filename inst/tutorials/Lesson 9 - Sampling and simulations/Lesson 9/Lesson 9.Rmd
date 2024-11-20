@@ -1,0 +1,169 @@
+---
+title: "Lesson 9: Loops and Clean coding" 
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: false
+
+
+description: >
+ <div style='direction: rtl;'>
+ 
+ </div>
+       
+runtime: shiny_prerendered  
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+
+```{=html}
+<style>
+h1, h2, h3, h4, h5, h6 {
+  direction: rtl;
+}
+p {
+  direction: rtl;
+}
+.text-block1 {
+  direction: rtl;       /* Set text direction to right-to-left */
+  text-align: right;
+  background-color: #e7f3fe; /* Light grey background */
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd; /* Light border */
+  margin: 10px 0; /* Space around the block */
+}
+</style>
+
+```
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+library(Rcourse)
+library(ggplot2)
+library(tidyverse)
+
+tutorial_options(
+  exercise.timelimit = 60
+)
+
+knitr::opts_chunk$set(error = TRUE)
+gradethis::gradethis_setup()
+```
+
+```{r prepare-df1}
+
+```
+
+## מבוא
+
+ביחידה זו נלמד על מספר טכניקות חשובות לקידוד מסודר ואפקטיבי. במהלך היחידה נעבור 
+ונקבל כלים חשובים לכתיבת קוד נקי ומובנה. נלמד על לולאות, פונקציות וכיצד להשתמש בהן בצורה יעילה ומובנת. נלמד גם על כלים נוספים שיעזרו לנו לכתוב קוד נקי וקל להבנה.
+
+
+הצורך בשמירה על הקוד תמציתי הוא כפול - כתיבה כזו היא גם יעילה ומהירה יותר ומאפשרת לנו לבצע בקוד תיקונים ושינויים ביתר קלות, והיא גם חשובה כדי שיהיה לנו קל יותר להבין את הקוד שכתבנו כשנחזור אליו במועד עתידי.
+
+היחידה מכילה מספר נושאים:
+
+ לולאות קוד
+ 
+ פונקציות
+ 
+ הערות, חלוקה לפרקים וכיפולי קוד
+ 
+ שמירה וייצוא תוצאות
+
+
+## לולאות
+
+### מטרה ושימוש
+### מעבר על נתונים
+
+## פונקציות
+
+## הערות, חלוקה לפרקים וכיפולי קוד
+
+### חלוקה לפרקים
+
+## שמירה וייצוא תוצאות
+
+### פרוייקטים
+### Rmarkdown
+### שמירת אובייקטים
+
+
+
+עד כה למדנו להשתמש בתוכנה באופן שהיה מכוון לניתוח נתונים אמיתיים. בעוד שזה בהחלט השימוש העיקרי של התוכנה עבורנו כחוקרים - אנחנו יכולים להתשמש בה גם כדי לחקור רעיונות תיאורטיים. כלומר - במקום לעבד ולהבין את המשמעות של הנתונים שאספנו, אנחנו יכולים לייצר נתונים באמצעות הדמייה של תהליך שמעניין אותנו, ואז לנתח את הנתונים שייצרנו.
+
+כדי להדגים, נייצר הדמיה פשוט של דגימה סטטיסטית.
+
+### התפלגות דגימה
+
+נדמיין מצב בו משתנה רמת הדיכאון באוכלוסייה מסויימת מתפלג נורמלית עם תוחלת 30 וס"ת 10 
+
+```{r}
+x = rnorm(30, 30,10)
+mn = mean(x)
+ggplot(data.frame(x), aes(x)) +
+  geom_histogram(bins = 30, fill = "lightblue", color = "black")+
+  geom_vline(xintercept = mn, color = "red", linetype = "dashed")
+
+```
+
+```{r}
+mns = c()
+for (i in 1:20000){
+  x = rnorm(30, 30,10)
+  mn = mean(x)
+  mns = c(mns, mn)
+}
+
+ggplot(data.frame(mns), aes(mns)) +
+  geom_histogram()
+
+```
+
+comparison with analytic solution
+
+לא תוחלת בודדת - הפרש בין תוחלות
+
+### עוצמת מבחן
+
+אחוזונים מתוך סימולציה
+qnorm
+
+
+
+
+
+### דגימה מוקטור
+### דגימה מהתפלגות
+
+נושאים:
+
+כתיבה מקוצרת
+שימוש בפונקציות מבחן סטטיסטי
+תרשימים מתאימים ?
+דגימה ובוטסטראפ, פרמוטציות
+שימוש בפונקציות נוספות
+סימולציות? עוצמת מבחן
+
+
+
+## הגשה
+  עברו על הקובץ וודאו שהגשתם את כל התרגילים ועניתם על כל השאלות
+  
+  במידה וכל התשובות שלכם תקינות יש ללחוץ על הכפתור:  Generate, להעתיק את הטקסט שמופיע בחלון למטה ולהגישו במודל  
+  בהצלחה!
+
+```{r context="server"}
+learnrhash::encoder_logic()
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui()
+```
