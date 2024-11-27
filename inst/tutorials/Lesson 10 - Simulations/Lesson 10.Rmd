@@ -94,6 +94,35 @@ gradethis::gradethis_setup()
 
 
 
+
+
+### התפלגות דגימה
+
+נדמיין מצב בו משתנה רמת הדיכאון באוכלוסייה מסויימת מתפלג נורמלית עם תוחלת 30 וס"ת 10 
+
+```{r}
+x = rnorm(30, 30,10)
+mn = mean(x)
+ggplot(data.frame(x), aes(x)) +
+  geom_histogram(bins = 30, fill = "lightblue", color = "black")+
+  geom_vline(xintercept = mn, color = "red", linetype = "dashed")
+
+```
+
+```{r}
+mns = c()
+for (i in 1:20000){
+  x = rnorm(30, 30,10)
+  mn = mean(x)
+  mns = c(mns, mn)
+}
+
+ggplot(data.frame(mns), aes(mns)) +
+  geom_histogram()
+
+```
+
+
 ## הגשה
   עברו על הקובץ וודאו שהגשתם את כל התרגילים ועניתם על כל השאלות
   
