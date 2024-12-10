@@ -1,0 +1,278 @@
+---
+title: "Lesson 11: t-test"
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+  
+
+description: >
+  <div style='direction: rtl;'>
+  בשיעור זה נלמד איך לבצע מבחני t למדגם בודד, שני מדגמים בלתי תלויים ולמדגמים מזווגים בנוסף נלמד להציג את התוצאות בצורה גרפית
+  </div>
+runtime: shiny_prerendered
+---
+
+<style>
+h1, h2, h3, h4, h5, h6 {
+  direction: rtl;
+}
+p {
+  direction: rtl;
+}
+</style>
+
+
+<!-- tutorial options and checking options  -->
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+library(Rcourse)
+library(ggplot2)
+library(dplyr)
+library(ggcheck)
+
+#need_for_cognition = data("need_for_cognition")
+#need_for_cognition = nfc
+
+tutorial_options(
+  exercise.timelimit = 60
+)
+knitr::opts_chunk$set(error = TRUE)
+
+
+table2 = need_for_cognition %>%
+  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות
+         nfc_03 = 6 - nfc_03r,
+         nfc_06 = 6 - nfc_06r,
+         # נחשב את ממוצע ששת השאלות.
+         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה
+         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6,
+         
+         age_above_18 = age >=18,  # האם הנבדק מעל גיל 18
+         
+         gender = recode(gender, "male" = "M", "female" = "F"), # דריסת עמודת המגדר וקידוד מחדש של הערכים שנמצאים בה
+                     # פונקציה זו מאפשר לנו לקודד מחדש עמודות עם מספר רמות - להחליף את הערכים המייצגים קבוצות שונות 
+         
+         # תקנון ציוני המדד ויצירת ציוני תקן - באופן שמתעלם מערכים חסרים
+         nfc_Z_score = (nfc - mean(nfc,na.rm = T)) / sd(nfc, na.rm = T)  
+         
+         )
+need_for_cognition = table2
+
+#gradethis::gradethis_setup()
+```
+
+## מבחני t-test מבוא
+בקורס הסטטיסטיקה למדתם על מבחני t ועל הרקע התיאורטי של שמאחוריו. בשיעור זה אנחנו נלמד איך לבצע מבחני t על נתונים אמיתיים בR ולהציג אותם. כמו שבוודאי ידוע לכם, מבחן t מתבסס על השוואת נתוני המדגם להתפלגות הt.
+
+התפלגות הt היא התפלגות התסתברותית המשתמשת לבדיקת השערות כאשר סטיית התקן של האוכלוסיה הנבדקת איננה ידועה. צורת ההתפלגות של התפלגות זאת דומה להתפלגות נורמלית אך בעלת "זנבות כבדים" אשר משקפים את חוסר הוודאות שנגרמת מגודל המדגם. כך שככל שגודל המדגם גדול יותר, כך צורת ההתפלגות מתקרבת להתפלגות נורמלית.
+
+בואו נמחיש את ההתפלגות:
+
+```{r}
+# לצורך ההצגה נדמה נתונים
+x <- seq(-5, 5, length.out = 100)
+
+# נשווה התפלגות במדגם של 10 משתתפים להתפלגות נורמלית
+samp_size = 10
+# שימו לב, דרגות החופש הן גודל המדגם פחות 1
+# נבנה את ההתפלגויות בטבלה
+dist_data <- data.frame(
+  x = rep(x, 2),
+  y = c(
+    dt(x, df = samp_size-1),
+    dnorm(x)
+  ),
+  Distribution = factor(rep(c("T", "Normal"), each = length(x)))
+)
+
+# כעת נצייר את ההתפלגות
+ggplot(dist_data, aes(x = x, y = y, color = Distribution)) +
+  geom_line(size = 1) +
+  labs(
+    title = "Comparison of t-Distribution and Normal Distribution",
+    x = "t-value",
+    y = "Density",
+    color = "Distribution"
+  )
+
+
+```
+
+בקוד למעלה בעצם דימינו את התפלגות הt למשתנה x שהינו בעל טווח ערכים מוגדר.  
+את מעטפת ההתפלגות ייצרנו באמצעות הפונקציה `dt()` אשר מקבלת את x ואת דרגות החופש. 
+
+`תרגיל`  
+העתיקו את הקוד למעלה ושנו אותו כך שיוצגו התפלגויות t עם דרגות חופש של 5, 10, 30 ו100.
+
+```{r t_dist_ex, exercise=TRUE, exercise.eval = FALSE}
+
+
+```
+
+```{r t_dist_ex-solution}
+# לצורך ההצגה נדמה נתונים
+x <- seq(-5, 5, length.out = 100)
+
+# נשווה התפלגות במדגם של 10 משתתפים להתפלגות נורמלית
+samp_size = c(5, 10, 30, 100)
+# שימו לב, דרגות החופש הן גודל המדגם פחות 1
+# נבנה את ההתפלגויות בטבלה
+dist_data <- data.frame(
+  x = rep(x, length(samp_size)+1),
+  y = c(
+    dt(x, df = samp_size[1]-1),
+    dt(x, df = samp_size[2]-1),
+    dt(x, df = samp_size[3]-1),
+    dt(x, df = samp_size[4]-1),
+    dnorm(x)
+  ),
+  Distribution = factor(rep(c("t, df=5", "t, df=10", "t, df=30", "t, df=100", "Normal"), each = length(x)))
+)
+
+# כעת נצייר את ההתפלגות
+ggplot(dist_data, aes(x = x, y = y, color = Distribution)) +
+  geom_line(size = 1) +
+  labs(
+    title = "Comparison of t-Distribution and Normal Distribution",
+    x = "t-value",
+    y = "Density",
+    color = "Distribution"
+  )
+```
+
+```{r t_dist_ex-check}
+grade_this({
+  if (all(ggcheck::uses_mappings(p = .result,aes(x=nfc_sum)))){
+    pass("כל הכבוד! האיור שלך מדויק")
+  }
+  fail("הגרף עוד לא מדויק, האם איירת את ההתפלגות עבור כל דרגות החופש המבוקשות?")
+})
+```
+
+כעת כשהצגנו את התפלגות t אנחנו יכולים לראות שכאשר גודל מדגם שווה ל30 ומעלה ההתפלגות בעצם דומה מאוד להתפלגות נורמלית.  
+עכשיו כשיש לנו את ההתפלגות נוכל להשתמש בה כדי לבצע את מבחני הt שלמדנו עליהם בקורס סטטיסטיקה.
+כידוע לכם מבחן t משווה ממוצע של המדגם להתפלגות הt. כך שתוצאת המבחן תלויה במספר פרמטרים:  
+1. דרגות החופש (אשר מגדירות את צורת ההתפלגות)  
+2. רמת המובהקות (אלפא)
+3. סוג ההשערה (חד או דו זנבית)
+
+כלומר על בסיס גורמים אלה נוכל לחשב מהו `ערך הt הקריטי` שנצטרך לקבל במדגם כדי לקבל תוצאה מובהקת.  
+נוכל לחשב את הערך הקריטי באמצעות הפונקציה `qt()` אשר מחשבת מהו הערך המתכתב עם אחוז מסוים של ההתפלגות ודרגות החופש שלה. למשל:
+
+```{r}
+# נרצה לחשב מה הוא הערך הקריטי
+alpha <- 0.05 # הצבנו ערך קריטי של 5%
+df <- 10 # דרגות החופש
+critical_t <- qt(1 - alpha, df) 
+# הצבנו את ההופכי של רמת המובהקות שכן נרצה לחשב את הערך הקריטי שמתכתב איתו
+critical_t
+
+# נוסיף את הערך הקריטי לאיור ההתפלגות
+# קודם כל נדמה שוב נתונים
+x <- seq(-4, 4, length.out = 1000)
+y <- dt(x, df = df)
+
+# נאייר קודם את  ההתפלגות עצמה
+ggplot(data.frame(x, y), aes(x, y)) +
+  geom_line(color = "blue", size = 1) +  
+  # נוסיף את הערך הקריטי להתפלגות באמצעות קו אונכי
+  geom_vline(xintercept = c(critical_t), color = "red", linetype = "dashed", size = 1) +  # עיצוב
+  labs(
+    title = "t-Distribution with Critical Values (df = 10)",
+    x = "t-value",
+    y = "Density"
+  ) +
+  theme_minimal()
+
+```
+
+בדוגמה למעלה, אם במדגם שלנו היה מתקבל ערך גבוהה מערך הt הקריטי, אפשר היה להגיד שתחת רמת הבטחון הנוכחית אפשר לדחות את השערת ה0.
+
+שימו לב, הדוגמה למעלה מדגימה לנו איך נראית ההתפלגות עם הערך הקריטי עבור רמת מובהקות של 5% והשערה חד זנבית. כדי לשנות את רמת המובהקות יש פשוט לערוך את המשתנה שנקרא אלפא. אבל כדי להתחשב בהשערה דו זנבית יש צורך בעצם לחלק את ההיגד:
+1-alpha 
+ב2, שכן עכשיו רמת המבוהקות בעצם מתחלקת בין שתי קצוות העקומה.  
+
+`תרגיל` 
+בואו נחשב את הערך הקריטי עבור השערה דו זנבית ורמת מובהקות של 1%.  
+רמז - התבססו על הקוד של הדוגמה למעלה ושימו לב שעכשיו יש לאייר שני קווים (כבר בדוגמה יש שימוש בוקטור אז אפשר פשוט להוסיף לו עוד ערך).  
+
+```{r critical_t_ex, exercise=TRUE, exercise.eval = FALSE}
+
+
+```
+
+```{r critical_t_ex-solution}
+# נרצה לחשב מה הוא הערך הקריטי
+alpha <- 0.01 # הצבנו ערך קריטי של 5%
+df <- 10 # דרגות החופש
+critical_t <- qt(1 - alpha/2, df) 
+# הצבנו את ההופכי של רמת המובהקות שכן נרצה לחשב את הערך הקריטי שמתכתב איתו
+critical_t
+
+# נוסיף את הערך הקריטי לאיור ההתפלגות
+# קודם כל נדמה שוב נתונים
+x <- seq(-4, 4, length.out = 1000)
+y <- dt(x, df = df)
+
+# נאייר קודם את  ההתפלגות עצמה
+ggplot(data.frame(x, y), aes(x, y)) +
+  geom_line(color = "blue", size = 1) +  
+  # נוסיף את הערך הקריטי להתפלגות באמצעות קו אונכי
+  geom_vline(xintercept = c(-critical_t, critical_t), color = "red", linetype = "dashed", size = 1) +  # עיצוב
+  labs(
+    title = "t-Distribution with Critical Values (df = 10)",
+    x = "t-value",
+    y = "Density"
+  ) +
+  theme_minimal()
+
+```
+
+```{r critical_t_ex-check}
+grade_this({
+  if (all(ggcheck::uses_mappings(p = .result,aes(x=nfc_sum)))){
+    pass("מעולה! הקוים עכשיו הרבה יותר קיצוניים בגלל החלוקה ל2 ורמת המובהקות הגבוהה")
+  }
+  fail("הגרף עוד לא מדויק, האם קיבלת שני קווים אנכיים?")
+})
+```
+
+## מבחן t למדגם בודד
+
+
+
+
+```{r}
+# Load dataset
+library(datasets)
+data("ChickWeight") # Replace with Stroop data if available
+
+# Simulated Stroop data (reaction times)
+set.seed(123)
+reaction_time <- rnorm(50, mean = 18, sd = 3)
+
+# Perform one-sample t-test (hypothesized mean = 20)
+t_test_result <- t.test(reaction_time, mu = 20)
+
+# Print results
+print(t_test_result)
+
+# Visualization
+library(ggplot2)
+stroop_data <- data.frame(Condition = "Reaction Time", Reaction_Time = reaction_time)
+
+ggplot(stroop_data, aes(x = "", y = Reaction_Time)) +
+  geom_boxplot(fill = "skyblue", alpha = 0.6) +
+  geom_hline(yintercept = 20, linetype = "dashed", color = "red") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, color = "blue") +
+  labs(title = "One-Sample t-test: Reaction Time", y = "Reaction Time (seconds)", x = "") +
+  theme_minimal()
+```
+
+## מבחן t למדגמים בלתי תלויים
+
+
+## מבחן t למדגמים תלויים
