@@ -31,40 +31,43 @@ library(gradethis)
 library(Rcourse)
 library(ggplot2)
 library(dplyr)
+library(tidyr)
 library(ggcheck)
 
-#need_for_cognition = data("need_for_cognition")
-#need_for_cognition = nfc
+# simulate paired t-test data
+set.seed(42)
 
-tutorial_options(
-  exercise.timelimit = 60
+# Number of pairs
+n <- 30
+
+# Correlation coefficient between paired samples
+rho <- 0.7
+
+# Mean and standard deviation for the two conditions
+mean_diff <- 0.4  # Mean difference between the two conditions
+sd <- 0.3         # Standard deviation of the measurements
+
+# Simulate paired data
+# Generate baseline scores (Condition A)
+Congurent <- rnorm(n, mean = 1.8, sd = sd)
+
+# Generate paired scores (Condition B) with correlation
+Incongurent <- rho * Congurent + sqrt(1 - rho^2) * rnorm(n, mean = mean_diff, sd = sd)
+
+# Combine into a data frame
+paired_data <- data.frame(
+  ID = 1:n,
+  Congurent = Congurent,
+  Incongurent = Incongurent
 )
+
+
 knitr::opts_chunk$set(error = TRUE)
-
-
-table2 = need_for_cognition %>%
-  mutate(nfc_02 = 6 - nfc_02r,  # נהפוך את הקידוד של שלושת העמודות ההפוכות
-         nfc_03 = 6 - nfc_03r,
-         nfc_06 = 6 - nfc_06r,
-         # נחשב את ממוצע ששת השאלות.
-         # שימו לב - אפשר להשתמש בעמודות שיצרנו מוקדם יותר בתוך הפונקציה
-         nfc    = (nfc_01 + nfc_02 + nfc_03 + nfc_04 + nfc_05 + nfc_06)/6,
-         
-         age_above_18 = age >=18,  # האם הנבדק מעל גיל 18
-         
-         gender = recode(gender, "male" = "M", "female" = "F"), # דריסת עמודת המגדר וקידוד מחדש של הערכים שנמצאים בה
-                     # פונקציה זו מאפשר לנו לקודד מחדש עמודות עם מספר רמות - להחליף את הערכים המייצגים קבוצות שונות 
-         
-         # תקנון ציוני המדד ויצירת ציוני תקן - באופן שמתעלם מערכים חסרים
-         nfc_Z_score = (nfc - mean(nfc,na.rm = T)) / sd(nfc, na.rm = T)  
-         
-         )
-need_for_cognition = table2
 
 #gradethis::gradethis_setup()
 ```
 
-## מבחני t-test מבוא
+## מבוא - התפלגות t
 בקורס הסטטיסטיקה למדתם על מבחני t ועל הרקע התיאורטי של שמאחוריו. בשיעור זה אנחנו נלמד איך לבצע מבחני t על נתונים אמיתיים בR ולהציג אותם. כמו שבוודאי ידוע לכם, מבחן t מתבסס על השוואת נתוני המדגם להתפלגות הt.
 
 התפלגות הt היא התפלגות התסתברותית המשתמשת לבדיקת השערות כאשר סטיית התקן של האוכלוסיה הנבדקת איננה ידועה. צורת ההתפלגות של התפלגות זאת דומה להתפלגות נורמלית אך בעלת "זנבות כבדים" אשר משקפים את חוסר הוודאות שנגרמת מגודל המדגם. כך שככל שגודל המדגם גדול יותר, כך צורת ההתפלגות מתקרבת להתפלגות נורמלית.
@@ -90,7 +93,7 @@ dist_data <- data.frame(
 
 # כעת נצייר את ההתפלגות
 ggplot(dist_data, aes(x = x, y = y, color = Distribution)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   labs(
     title = "Comparison of t-Distribution and Normal Distribution",
     x = "t-value",
@@ -134,7 +137,7 @@ dist_data <- data.frame(
 
 # כעת נצייר את ההתפלגות
 ggplot(dist_data, aes(x = x, y = y, color = Distribution)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   labs(
     title = "Comparison of t-Distribution and Normal Distribution",
     x = "t-value",
@@ -156,7 +159,7 @@ grade_this({
 עכשיו כשיש לנו את ההתפלגות נוכל להשתמש בה כדי לבצע את מבחני הt שלמדנו עליהם בקורס סטטיסטיקה.
 כידוע לכם מבחן t משווה ממוצע של המדגם להתפלגות הt. כך שתוצאת המבחן תלויה במספר פרמטרים:  
 1. דרגות החופש (אשר מגדירות את צורת ההתפלגות)  
-2. רמת המובהקות (אלפא)
+2. רמת המובהקות (אלפא)  
 3. סוג ההשערה (חד או דו זנבית)
 
 כלומר על בסיס גורמים אלה נוכל לחשב מהו `ערך הt הקריטי` שנצטרך לקבל במדגם כדי לקבל תוצאה מובהקת.  
@@ -179,7 +182,7 @@ y <- dt(x, df = df)
 ggplot(data.frame(x, y), aes(x, y)) +
   geom_line(color = "blue", size = 1) +  
   # נוסיף את הערך הקריטי להתפלגות באמצעות קו אונכי
-  geom_vline(xintercept = c(critical_t), color = "red", linetype = "dashed", size = 1) +  # עיצוב
+  geom_vline(xintercept = c(critical_t), color = "red", linetype = "dashed", linewidth  = 1) +  # עיצוב
   labs(
     title = "t-Distribution with Critical Values (df = 10)",
     x = "t-value",
@@ -195,7 +198,7 @@ ggplot(data.frame(x, y), aes(x, y)) +
 1-alpha 
 ב2, שכן עכשיו רמת המבוהקות בעצם מתחלקת בין שתי קצוות העקומה.  
 
-`תרגיל` 
+`תרגיל`  
 בואו נחשב את הערך הקריטי עבור השערה דו זנבית ורמת מובהקות של 1%.  
 רמז - התבססו על הקוד של הדוגמה למעלה ושימו לב שעכשיו יש לאייר שני קווים (כבר בדוגמה יש שימוש בוקטור אז אפשר פשוט להוסיף לו עוד ערך).  
 
@@ -221,7 +224,7 @@ y <- dt(x, df = df)
 ggplot(data.frame(x, y), aes(x, y)) +
   geom_line(color = "blue", size = 1) +  
   # נוסיף את הערך הקריטי להתפלגות באמצעות קו אונכי
-  geom_vline(xintercept = c(-critical_t, critical_t), color = "red", linetype = "dashed", size = 1) +  # עיצוב
+  geom_vline(xintercept = c(-critical_t, critical_t), color = "red", linetype = "dashed", linewidth = 1) +  # עיצוב
   labs(
     title = "t-Distribution with Critical Values (df = 10)",
     x = "t-value",
@@ -240,39 +243,578 @@ grade_this({
 })
 ```
 
+## מבוא - מבחן t
+
+כדי לבצע מבחן t אנחנו נעבוד עם הפונקציה `t.test`. אנחנו נכיר את הארגומנטים שהיא מקבלת תוך כדי העבודה על מבחני הt השונים.  
+יתכן והרשימת הארגומנטים למטה תהיה קצת מחוץ לקונטקסט, היא נועדה לספק סדר כאשר כל הארגומנטים נמצאים במקום אחד, הארגומנטים השונים יוסברו בפירוט רב יותר אם יהיה צורך.
+
+`x`  - הנתונים, חייבים להכניס לפחות וקטור אחד של נתונים לפונקציה כדי לקבל תוצאה  
+
+`y` - וקטור נוסף של נתונים במידה וישנן שתי קבוצות  
+
+`alternative` - סוג ההשערה אם לא נפרט את סוג ההשערה יעשה שימוש בברירת המחדל - השערה דו זנבית ("two.sided"). כדי לבצע מבחן חד זנבי חיובי יש להזין ("greater") ועבור מבחן חד זנבי שלילי יש לפרט ("less").  
+
+`mu` - ממוצע ההשוואה עבוד מבחן למדגם בודד.   
+
+`conf.level` -  רמת בטחון, ארגומנט זה ישמש לחישוב רווח בר סמך.
+
+ארגומנטים הרלוונטיים רק למבחן עם שני מדגמים:  
+
+`paired` -יש להזין בו ערך לוגי (כלומר TRUE אם מעוניינים לבצע מבחן מזווג).  
+
+`var.equal` - האם ניתן להניח שוויון שונויות בין שני מדגמים.  
+
+
+### היכרות עם הנתונים
+
+ביחידה זאת נעבוד עם מבחן קוגניטיבי שנקרא מבחן stroop. תלמדו על מבחן זה עוד בקורסים אחרים, אבל בגדול זהו מבחן המבדיל בין תהליכים נשלטים לתהליכים אוטומטיים.  
+בגרסה המוכרת שלו, מציגים למשתתפים שמות של צבעים הצבועים בצבע. הצבע יכול להיות `תואם` למילה הכתובה או `לא תואם`. בתנאי התואם קל יותר למשתתפים לעבד את המילה ואילו בתנאי הלא תואם צריך לגייס תהליכין נשלטים ולכן זמן התגובה של המשתתפים לרוב גדול יותר בצורה משמעותית. 
+רוצים לדעת עוד על ההיסטוריה של מבחן הסטרופ? לחצו כאן:
+[Stroop](https://he.wikipedia.org/wiki/%D7%90%D7%A4%D7%A7%D7%98_%D7%A1%D7%98%D7%A8%D7%95%D7%A4)  
+בהדגמות אנחנו נעבוד עם נתונים מדומים, אבל אל דאגה בתרגיל המסכם נעבוד עם נתונים אמיתיים.  
+
+
+
 ## מבחן t למדגם בודד
 
+ההשערה הפשוטה ביותר שאנחנו יכולים לבחון באמצעות מבחן t היא השוואה של ממוצע המדגם לממוצע ידוע. למשל בהקשר של מטלת הסטרופ, נניח שהחלטנו להריץ גרסה של המטלה בעברית ונרצה לבדוק האם זמן התגובה הממוצע בתנאי התואם שונה מזמן התגובה המוכר בספרות לתנאי זה, אשר מבוססת ברובה על המטלה באנגלית. 
 
+ההשערה שלנו היא שעיבוד אוטומטי בעברית עשוי להיות שונה מעיבוד באנגלית. נניח לצורך הדוגמה שזמן התגובה המוכר בספרות הוא של 2 שניות (זאת הנחה לטובת הדוגמה בלבד)ולכן השערת האפס היא שממוצע המדגם שלנו שווה ל2.  
+
+לצורך זה נשתמש בארגומנט `mu` שניתן להציב בפונקציה שתבצע את המבחן. ארגומנט זה מפרט מה הוא הממוצע ב"אוכלוסיה" אליה רוצים להשוות את הנתונים. כמובן שבמקרה זה אין לנו גישה להתפלגות המלאה של האוכלוסיה ולכן אנחנו משתמשים במבחן t.
+
+```{r}
+# קודם כל נדמה את נתוני המדגם
+set.seed(123)
+# נקבע את הפרמטרים של המדגם:
+sample_n <- 50 # מספר המשתתפים
+sample_rt <- 1.8 # זמן התגובה הממוצע של הקבוצה
+sample_sd <- 0.3 # סטיית התקן של הקבוצה
+
+# נדמה מדגם בעל התפלגות נורמלית  
+reaction_time <- rnorm(sample_n, mean = sample_rt, sd = sample_sd)
+
+# נבצע את המבחן עם הצבה של mu
+sig_level <- 0.05
+t_test_result <- t.test(reaction_time, mu = 2)
+
+# עכשיו נוכל לגשת לסטטיסטי שחושב בתוצאה
+t_test_result["statistic"]
+
+# לדרגות החופש
+t_test_result["parameter"]
+
+# p value
+t_test_result["p.value"]
+
+# רווח סמך
+t_test_result["conf.int"]
+
+# ואפשר גם להדפיס את התוצאה המלאה
+print(t_test_result)
+
+
+```
+
+
+### פלט המבחן
+מעולה, הרצנו את המבחן ואת התוצאה שמרנו במשתנה. כעת נוכל לעבור על הפלט.
+בשורה הראשונה מפורט לנו באיזה נתונים השתמשנו. בשורה שמתחתיה נוכל למצוא את תוצאות המבחן עצמו, אנחנו מקבלים את ערך הt של המדגם (t) את כמות דרגות החופש (df) ואת ערך הp המחושב. את ערך הp נרצה להשוות לרמת המובהקות שקבענו. אם ערך הp המחושב קטן מרמת המובהקות שבחרנו נוכל לדחות את השערת האפס.שימו לב לפורמט של המספרים בסוף חלק זה.
+כמו כן, מתוארת לנו גם השערת האפס, במקרה זה השערת האפס היא שהממוצע במדגם (כמו באוכלוסיה המשוערת) הוא 2 שניות. שימו לב, מתיאור זה אפשר גם להסיק האם המבחן היה דו זנבי או חד זנבי, שימו לב איך מתוארת השערת האפס במבחנים הבאים.   
+לאחר מכן מתואר לנו רווח הסמך (confidence interval), הערך התחתון שלו מוצג בצד שמאל והערך העליון בצד ימין. ולבסוף מוצג לנו הסטטיסטי, ממוצע המדגם.
+
+
+```{r one_samp_t_output_question, echo = FALSE}
+question(" האם ניתן לדחות את השערת האפס לפי הפלט?",
+         answer("ברור שכן, ערך הp קטן מרמת המובהקות ורווח הסמך לא כולל את הערך של השערת האפס ", correct = TRUE),
+         answer("ממש לא, רווח הסמך הינו מתחת הממוצע המוכר מאוכלוסיה ", message = "נכון, קיבלנו שממוצע המדגם כנראה נמוך מהממוצע המקורי עליו שיערנו, אבל כיוון שרווח הסמך אינו כולל את ממוצע האוכלוסיה המשוער אנחנו דווקא יכולים לדחות את השערת האפס במידה והיא דו זנבית"),
+         answer("לא ניתן כיוון שערך הp גדול מרמת המובהקות של 0.05", message = "הערך המוצג אכן קצת מטעה, אבל קראו בעיון את החלק הבא על מספרים מקוצרים והכל יתבהר. ערך הp במקרה זה בעצם ממש קטן, הוא רק מוצג בפורמט מקוצה."),
+allow_retry = TRUE
+)
+```
+
+
+### מספרים מקוצרים
+שימו לב לפורמט, כאשר ערך הp ממש ממש קטן הוא יוצג בפורמט מקוצר, תוכלו לדעת שזה קרה כשהאות e תוצג בתוך המספר. למשל בדוגמה למעלה קיבלנו שערך הp הוא 1.388e-05. זוהי בעצם פעולה חשבונית שמקצרת לנו את ההצגה של המספר. המשמעות של e ואחריו מספר שמתחיל ב- היא בעצם חלוקה של המספר ב1 וכמות האפסים הרשומה לאחר ה-. למקרה שזה לא היה מספיק ברור, את ערך הp שקיבלנו בניתוח זה אפשר היה לכתוב גם כך:  
+1.388/100000  
+כלומר, אתם מבינים שמדובר במספר קטן מאוד, שאין ספק שהוא קטן מ0.05.  
+חשוב לדעת! כמו שהתוכנה משתמשת בe כדי לקצר את התצוגה של מספרים ממש קטנים (כלומר, בעלי הרבה אפסים לאחר הנקודה העשרונית) היא גם יכולה לשמש את התוכנה כדי לקצר מספרים מאוד גדולים. כך שלמשל:
+1.388e05 שווה למכפלה ב100000 ולא לחלוקה בו. (כלומר היא 138800).
+
+
+```{r e_numbers_question, echo = FALSE}
+question("איזה משורות הקוד הבאות יכולו לעזור להבין האם ניתן לדחות את השערת האפס",
+         answer("t_test_result['p.value'] < sig_level", message = "בדקו את התשובות שוב.."),
+         answer("1.388e-05 < 5e-02", message = "נסו שוב.."),
+         answer("1.388/100000 < 0.05", message = "לא בדיוק"), answer("כל התשובות נכונות", correct = TRUE),
+allow_retry = TRUE
+)
+```
+
+
+ועכשיו נוסיף איור שמשווה את נתוני המדגם למידע הקיים בספרות. 
 
 
 ```{r}
-# Load dataset
-library(datasets)
-data("ChickWeight") # Replace with Stroop data if available
-
-# Simulated Stroop data (reaction times)
-set.seed(123)
-reaction_time <- rnorm(50, mean = 18, sd = 3)
-
-# Perform one-sample t-test (hypothesized mean = 20)
-t_test_result <- t.test(reaction_time, mu = 20)
-
-# Print results
-print(t_test_result)
-
 # Visualization
 library(ggplot2)
 stroop_data <- data.frame(Condition = "Reaction Time", Reaction_Time = reaction_time)
 
-ggplot(stroop_data, aes(x = "", y = Reaction_Time)) +
+one_samp_t_plot <- ggplot(stroop_data, aes(x = "", y = Reaction_Time)) +
   geom_boxplot(fill = "skyblue", alpha = 0.6) +
-  geom_hline(yintercept = 20, linetype = "dashed", color = "red") +
-  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, color = "blue") +
+  geom_hline(yintercept = 2, linetype = "dashed", linewidth=2, color = "red") +
   labs(title = "One-Sample t-test: Reaction Time", y = "Reaction Time (seconds)", x = "") +
   theme_minimal()
+
+one_samp_t_plot + geom_dotplot(binaxis='y', binwidth=0.05, stackdir='center',dotsize=0.5,position=position_dodge(0.75))
 ```
+
+איור זה מציג איור קופסא של הנתונים (כחול) ואת ממוצע זמני התגובה של הנבדקים הבודדים במדגם (הנקודות השחורות). הממוצע המוכר מהספרות מסומן על ידי הקו האדום. ניתן לראות שלא כל הנבדקים היו בעלי ממוצע זמן תגובה שהינו מתחת לממוצע, המוכר מהספרות, אך כי השלושת הרבעונים הראשונים של ההתפלגות כן נמצאות מתחת אליו.
+
+
+`תרגיל`  
+בתיבת הקוד למטה דימינו לכם נתונים של זמני התגובה בטיאלים הלא תואמים. בניגוד להגדמה שבציענו על עיבוד אוטומטי לחוקר שהריץ את המחקר הייתה השערה יותר מנומקת לגבי עיבוד נשלט בעברית לעומת אנגלית.  
+בספרות בתחום מוכר כי זמן התגובה הממוצע בתנאי הלא תואם הוא 2.5 שניות. החוקר טען שכיוון שהמילים בעברית קצרות יותר, הוא צפוי להיות קטן יותר בעברית. ולכן הוא כעת מבקש לבצע מבחן t עם השערה חד זנבית שלישית לממוצע הידוע באוכלוסיה. לסיום הדפיסו השוואה בין רמת המובהקות לערך הp.
+
+
+```{r one_sample_t_ex, exercise=TRUE, exercise.eval = FALSE}
+# קודם כל נדמה את נתוני המדגם
+set.seed(123)
+# נקבע את הפרמטרים של המדגם:
+sample_n <- 50 # מספר המשתתפים
+sample_rt <- 2.2 # זמן התגובה הממוצע של הקבוצה
+sample_sd <- 0.4 # סטיית התקן של הקבוצה
+
+# נדמה מדגם בעל התפלגות נורמלית  
+reaction_time <- rnorm(sample_n, mean = sample_rt, sd = sample_sd)
+
+# בצעו את המבחן כאן
+
+# הדפיסו את ההשוואה
+
+```
+
+```{r one_sample_t_ex-solution}
+# קודם כל נדמה את נתוני המדגם
+set.seed(123)
+# נקבע את הפרמטרים של המדגם:
+sample_n <- 50 # מספר המשתתפים
+sample_rt <- 2.2 # זמן התגובה הממוצע של הקבוצה
+sample_sd <- 0.4 # סטיית התקן של הקבוצה
+
+# נדמה מדגם בעל התפלגות נורמלית  
+reaction_time <- rnorm(sample_n, mean = sample_rt, sd = sample_sd)
+
+# בצעו את המבחן כאן
+sig_level <- 0.05
+t_test_result <- t.test(reaction_time, mu = 2.5, alternative = "less")
+
+# הדפיסו את ההשוואה
+t_test_result["p.value"] < sig_level
+```
+
+```{r one_sample_t_ex-check}
+grade_this({if (identical(.result, TRUE)) {
+    pass("מעולה, גם במקרה זה דחינו את השערת האפס")
+  }
+  fail("זאת לא התשובה הנכונה.. נסו שוב!")
+})
+
+# Im thinking of replcing this with open questions where they report their results. TBD
+```
+
 
 ## מבחן t למדגמים בלתי תלויים
 
+ההשוואה של תוצאת המדגם לממוצע ידוע באוכלוסיה רלוונטית בפועל במספר קטן של מקרים. שכן לרוב אין לנו ממוצע ידוע באוכלוסיה. תרחיש יותר נפוץ הוא השוואה בין שתי מדגמים.  
+אם נמשיך עם הדוגמה הקודמת, יותר סביר שהחוקר באוניברסיטה העברית יעבוד בשיתוף פעולה עם חוקר אחר בארה"ב אשר דוברת אנגלית וההשוואה תתבצע בין נתוני המדגם המקומי לנתוני המדגם של דוברי האנגלית. 
+הפעם נשווה מדגם של מטלת הסטרופ בעברית למדגם של המטלה באנגלית. הפעם, נוכל להשתמש בשערה שממוצע זמן התגובה במדגם באנגלית יהיה גבוה מאשר בעברית, שכן כבר יש לנו בסיס לשער השערה כזאת.
+
+
+```{r}
+# קודם כל נדמה את נתוני המדגם
+set.seed(234)
+# נקבע את הפרמטרים של המדגם:
+# מספר המשתתפים
+sample_n <- 50
+# נדמה את זמני התגובה של כל קבוצה
+sample_rt_heb <- 1.8 
+sample_rt_eng <- 2
+# סטיית התקן של הקבוצה בדוגמה זאת נניח שוויון שונויות
+sample_sd <- 0.3
+
+# נדמה שני מדגמים בעלי התפלגות נורמלית  
+reaction_time_heb <- rnorm(sample_n, mean = sample_rt_heb, sd = sample_sd)
+reaction_time_eng <- rnorm(sample_n, mean = sample_rt_eng, sd = sample_sd)
+
+# נציג את הנתונים
+stroop_data_heb <- data.frame(Condition = "Hebrew", Reaction_Time = reaction_time_heb)
+stroop_data_eng <- data.frame(Condition = "English", Reaction_Time = reaction_time_eng)
+stroop_data = rbind(stroop_data_heb,stroop_data_eng )
+
+two_samp_t_plot <- ggplot(stroop_data, aes(x = Condition, y = Reaction_Time)) +
+    geom_boxplot(fill="pink") +
+    geom_hline(yintercept = 2, linetype = "dashed", linewidth=2, color = "red") +
+    labs(title = "Two-Sample t-test: Reaction Time", y = "Reaction Time (seconds)", x = "") +
+    theme_minimal()
+two_samp_t_plot + geom_dotplot(binaxis='y', binwidth=0.05, stackdir='center',dotsize=0.5,position=position_dodge(0.75))
+
+# ועכשיו נשווה בין שתי הדגימות
+# כאשר ההשערה היא חד זנבית כיוון ההשוואה הוא תמיד בין הוקטור הראשון לשני
+# כלומר אם ההשערה היא שאנגלית גדול מעברית והמדגם באנגלית הוא ראשון ההשערה תהיה גדול יותר
+# כמו כן במדגם זה אפשר להניח שוויון שונויות 
+t_test_result <- t.test(x = reaction_time_eng, y = reaction_time_heb, alternative = "greater", var.equal=TRUE, paired = FALSE)
+
+# ואפשר גם להדפיס את התוצאה המלאה
+print(t_test_result)
+
+```
+
+שוב קילנו תוצאה מובהקת. אבל יש כמה נקודות חדשות ששכדאי לשים לב אליהן בפלט. ההשערה שונה, עכשיו ההשערה מתייחסת להבדל בין הקבוצות. כמו כן, רווח הסמך מקבל ערך אחד בלבד כאשר ההשערה היא חד זנבית (במקרה של השערה חיובית הוא אנחנו מקבלים רק את הערך התחתון) הסיבה לכך היא ש הקצה העליון לא רלוונטי במקרה זה, אנחנו בעצם בוחנים האם הווח הסמך כולל את אפס בקצהו התחתון או לא.  
+
+
+
+`תרגיל`  
+החוקר התלהב מההצלחה המסחררת של שיתוף הפעולה עם המעבדה בארה"ב לגבי עיבוד אוטומטי. הוא החליט להמשיך בקו המחקר הזה וגייס מעבדה נוספת באנגליה. בתיבה מטה כבר נתון לכם הקוד בו השתמשנו קודם. ערכו בו את הסימולציה כך שסטיית התקן של המבחן באנגלית היא 2.8. ובצעו את מבחן הt.  
+
+```{r two_samp_t_ex, exercise=TRUE, exercise.eval = FALSE}
+# קודם כל נדמה את נתוני המדגם
+set.seed(234)
+# נקבע את הפרמטרים של המדגם
+sample_n <- 50
+# נדמה את זמני התגובה של כל קבוצה
+sample_rt_heb <- 1.8 
+sample_rt_eng <- 2
+# סטיית התקן של הקבוצה בדוגמה זאת נניח שוויון שונויות
+sample_sd_heb <- 0.3
+sample_sd_eng <- 0.3
+
+# נדמה שני מדגמים בעלי התפלגות נורמלית  
+reaction_time_heb <- rnorm(sample_n, mean = sample_rt_heb, sd = sample_sd_heb)
+reaction_time_eng <- rnorm(sample_n, mean = sample_rt_eng, sd = sample_sd_eng)
+
+
+stroop_data_heb <- data.frame(Condition = "Hebrew", Reaction_Time = reaction_time_heb)
+stroop_data_eng <- data.frame(Condition = "English", Reaction_Time = reaction_time_eng)
+stroop_data = rbind(stroop_data_heb,stroop_data_eng )
+
+two_samp_t_plot <- ggplot(stroop_data, aes(x = Condition, y = Reaction_Time)) +
+    geom_boxplot(fill="pink") +
+    geom_hline(yintercept = 2, linetype = "dashed", linewidth=2, color = "red") +
+    labs(title = "Two-Sample t-test: Reaction Time", y = "Reaction Time (seconds)", x = "") +
+    theme_minimal()
+two_samp_t_plot + geom_dotplot(binaxis='y', binwidth=0.05, stackdir='center',dotsize=2.5,position=position_dodge(0.75))
+
+# בצעו את המבחן
+t_test_result <- t.test(x = reaction_time_eng, y = reaction_time_heb, alternative = , var.equal=, paired = )
+
+# לסיום הדפיסו את התוצאה
+
+
+```
+
+```{r two_samp_t_ex-solution}
+# נרצה לחשב מה הוא הערך הקריטי
+set.seed(234)
+# נקבע את הפרמטרים של המדגם
+sample_n <- 50
+# נדמה את זמני התגובה של כל קבוצה
+sample_rt_heb <- 1.8 
+sample_rt_eng <- 2
+# סטיית התקן של הקבוצה בדוגמה זאת נניח שוויון שונויות
+sample_sd_heb <- 0.3
+sample_sd_eng <- 2.8
+
+# נדמה שני מדגמים בעלי התפלגות נורמלית  
+reaction_time_heb <- rnorm(sample_n, mean = sample_rt_heb, sd = sample_sd_heb)
+reaction_time_eng <- rnorm(sample_n, mean = sample_rt_eng, sd = sample_sd_eng)
+
+# נציג את הנתונים 
+stroop_data_heb <- data.frame(Condition = "Hebrew", Reaction_Time = reaction_time_heb)
+stroop_data_eng <- data.frame(Condition = "English", Reaction_Time = reaction_time_eng)
+stroop_data = rbind(stroop_data_heb,stroop_data_eng )
+
+two_samp_t_plot <- ggplot(stroop_data, aes(x = Condition, y = Reaction_Time)) +
+    geom_boxplot(fill="pink") +
+    geom_hline(yintercept = 2, linetype = "dashed", linewidth=2, color = "red") +
+    labs(title = "Two-Sample t-test: Reaction Time", y = "Reaction Time (seconds)", x = "") +
+    theme_minimal()
+two_samp_t_plot + geom_dotplot(binaxis='y', binwidth=0.05, stackdir='center',dotsize=0.5,position=position_dodge(0.75))
+
+# בצעו את המבחן
+t_test_result <- t.test(x = reaction_time_eng, y = reaction_time_heb, alternative = "greater", var.equal = FALSE, paired = FALSE)
+
+# לסיום הדפיסו את התוצאה
+print(t_test_result)
+
+```
+
+```{r two_samp_t_ex-check}
+
+grade_this_code(correct = "מצויין!", incorrect = "הקוד שלך עוד לא מדוייק. האם שינית את סטיית התקן של הסימולציה? האם בדקתם היטב את הפרמטרים של מבחן הt?")
+
+# add questions to check t, p ... TBD
+```
+
 
 ## מבחן t למדגמים תלויים
+ועכשיו הגענו לרגע הגדול בו נתחיל לבחון את אפקט הסטרופ. אפקט סטרופ מובהק הינו מצב בו יש הבדל מובהק בין טריאלים תואמים ללא תואמים, כך שבטריאלים הלא תואמים זמן התגובה ארוך יותר.  
+עבור דוגמה זאת הנתונים כבר מוכנים ומאוכסנים בדאטה פריים שנקרא paired_data. בטבלה זאת נמצא את נתוניהם של 30 המשתתפים, בתנאי התואם (Congruent) ובתנאי הלא תואם (Incongruent) יחד עם מספר מזהה של הנבדק.  
+כדי לבדוק האם יש אפקט סטרופ ברמת הקבוצה נצטרך הפעם להשתמש במבחן t למדגמים מזווגים, שכן לכל נבדק יש נתונים בשני התנאים.  
+השינוי העיקרי במבחן מזווג לעומת מבחן לדגימות בלתי תלויות הוא שיש תלות בין שתי הקבוצות. בואו נראה איך זה נראה.
+
+```{r}
+paired_scatter_plot <- ggplot(paired_data, aes(x = Congurent, y = Incongurent))+ geom_point(alpha = 0.8) + geom_smooth(method = "lm", color = "blue", se = FALSE) + 
+  labs(title = "Scatter Plot: Congurent vs Incongurent Trials", x = "Congurent", y = "Incongurent") + theme_minimal()
+paired_scatter_plot 
+
+```
+
+באיור זה ניתן לראות שיש קשר ברור בין זמני התגובה בשני התנאים. כך שמשתתפים שהיו מהירים יותר בתנאי התואם נטו להיות מהירים יותר גם בתנאי הלא תואם.  
+לכן, כאשר נרצה לבצע מבחן t המשווה בין התנאים נצטרך לקחת את זה בחשבון.  
+עכשיו בואו נציג את ההבדלים בין התנאים. 
+
+```{r}
+long_paired_data <- paired_data %>%
+  pivot_longer(cols = c(Congurent, Incongurent), 
+               names_to = "Condition", 
+               values_to = "ReactionTime")
+
+paired_boxplot <- ggplot(long_paired_data, aes(x = Condition, y = ReactionTime, fill = Condition)) +
+  geom_boxplot(alpha = 0.7) +
+  labs(title = "Boxplot: Congurent vs Incongurent Trials",
+       x = "Condition", 
+       y = "Reaction Time") +
+  theme_minimal() 
+paired_boxplot
+```
+
+עכשיו כשברור לנו איך נראים ההבדלים בין הקבוצות אפשר לגשת לעניינים ולבצע את המבחן. זכרו שכדי להריץ את המבחן יש לשנות את האופרטור paired לTRUE (אחרת יתבצע מבחן לדגימות בלתי תלויות).  כמו כם, שימו לב שהפעם העמודות הרלוונטיות ישלפו מתוך הטבלה שכבר קיימת בסביבת העבודה שלכם.
+
+```{r}
+t_test_result <- t.test(x = paired_data$Congurent, y = paired_data$Incongurent, paired = TRUE)
+
+print(t_test_result)
+```
+
+`תרגיל`  
+אפשר לראות במבחן t לדגימות תלויות מבחן t למדגם בודד אשר בוחן את ההשוואה בין הפרשי הקבוצות להשערת האפס (שההבדל בין הקבוצות שווה ל0).   
+בואו ננסה לבצע את המבחן כך, השתמשו בטבלה paired_dataת ייצרו עמודה חדשה אשר מכילה את הפרשי זמני התגובה בין התנאי התואם ללא תואם. בצעו מבחן t למדגם בודד וצרו איור של ההפרשים. 
+
+## תצפיות קיצוניות
+האם נרצה חלק על זה? סינון תצפיות וההשפעה שיכולות להיות לתצפיות קיצוניות על מבחן t? 
+צריך את זה לתרגיל המסכם, אבל אולי זה לא קשור?
+
+## תרגיל מסכם
+ברור לנו שלאורך כל הלומדה רק חיכיתם לעבוד עם נתונים אמיתיים והנה הגיע הרגע. כעת תעבדו על נתונים ממדגם אמיתי שהתפרסם על מטלת הסטרופ.  
+הורידו את הקובץ stroop_data וטענו את מבנה הנתונים לRstudio.  
+הדאטה מכיל נתוני טריאלים בודדים של משתתפים במטלת הסטרופ. הדאטה מכיל את העמודות הבאות:
+session id  - מספר אנונימי המקושר לכל משתתף  
+trial - הצעד בניסוי  
+text - המילה שהוצגה
+color - צבע המילה שהוצגה  
+congruent - האם התנאי היה תואם או לא תואם  
+response - מה הייתה התגובה של הנבדק  
+correct - האם התגובה של הנבדק הייתה נכונה  
+response_time - זמן התגובה במילי שניות (מאית השניה)  
+
+לאחר שטענתם את הנתונים ענו על השאלות הבאות:  
+
+```{r final_q_1, echo = FALSE}
+
+question_text(
+  "כמה משתתפים יש במחקר?",
+  answer("3337", correct = TRUE),
+  answer("3337.0", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="נכון מאוד", 
+  incorrect = "נסו שוב"
+)
+
+```
+
+```{r final_q_2, echo = FALSE}
+
+question_text(
+  "מהו חציון זמן התגובה הכולל בשניות?",
+  answer("0.590", correct = TRUE),
+  answer("0.59", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="כל הכבוד!", 
+  incorrect = "האם הכנסתם את החציון בשניות?"
+)
+
+```
+
+```{r final_q_3, echo = FALSE}
+
+question_text(
+  "כמה צעדים בניסוי הכילו תשובה שגויה?",
+  answer("7505", correct = TRUE),
+  answer("7505.0", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="מעולה!!", 
+  incorrect = "לא בדיוק, חשבו שוב."
+)
+
+```
+
+
+כתבו קוד שמבצע את הפעולות הבאות:
+הקפידו לכתוב קוד מסודר אשר מכיל הערות המפרטות על איזה שאלה אתם עונים כעת.
+
+1. סננו את כל התגובות השגויות מן הנתונים וצעדים בהם זמן התגובה היה יותר מ1500 מילישניות.
+2. צרו טבלה חדשה (sum_stroop_data)   אשר מכילה שני ערכים עבור כל נבדק, זמן התגובה הממוצע בטריאלים התואמים וזמן התגובה בטריאלים הלא תואמים  
+3. הציגו את גרף הפיזור המתאר את הקשר הלינארי בין זמני התגובה בשני התנאים 
+```{r final_q_4, echo = FALSE}
+question("האם הגרף מציג מגמה לינארית ברורה?",
+         answer("חד משמעית כן", correct = TRUE),
+         answer("ממש לא", message = "בטוח? בדקו את התשובה."),
+         answer("לא ברורלי", message = "אז זאת ההזדמנות להבין. לאחר הסינונים הגרף היה אמור להיראות כמו מקבץ של נקודות שנמצאות כמעט כולן על האלכסון, כך שתגובה ארוכה בתנאי אחד מצביעה על סיכוי גבוה לתשובה ארוכה גם בתנאי השני. זוהי המהות של קשר לינארי. "),
+allow_retry = TRUE
+)
+```
+
+4. הציגו גרף קופסא אשר מציג את הנתונים הקבוצתיים בשני התנאים ואת ההפרש בין שני התנאים  
+5.1 בצעו מבחן t למדגמים תלויים עם ההשערה החד זנבית המתאימה ובדקו את אפקט הסטרופ בדגימה הנוכחית
+
+```{r final_q_5, echo = FALSE}
+
+question_text(
+  "מהו ערך הt שהתקבל (הכניסו מספר עם שתי ספרות לאחר הנקודה העשרונות)?",
+  answer("-51.38", correct = TRUE),
+  answer("51.38", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="כל הכבוד! קיבלתם ערך tמכובד ", 
+  incorrect = "וודאו שהשתמשתם בפרמטרים הנכונים ונסו שוב."
+)
+
+```
+
+```{r final_q_6, echo = FALSE}
+
+question_text(
+  "מה ערך הp-value שהתקבל (הכניסו מספר מקוצר עם שתי ספרות לאחר הנקודה העשרונית)?",
+  answer("2.2e-16", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="נכון מאוד!", 
+  incorrect = "האם הכנסתם את החציון בשניות?"
+)
+
+```
+
+```{r final_q_7, echo = FALSE}
+question("האם ניתן לדחות ?",
+         answer("חד משמעית כן", correct = TRUE),
+         answer("ממש לא", message = "בטוח? בדקו את התשובה."),
+         answer("לא ברורלי", message = "אז זאת ההזדמנות להבין. לאחר הסינונים הגרף היה אמור להיראות כמו מקבץ של נקודות שנמצאות כמעט כולן על האלכסון, כך שתגובה ארוכה בתנאי אחד מצביעה על סיכוי גבוה לתשובה ארוכה גם בתנאי השני. זוהי המהות של קשר לינארי. "),
+allow_retry = TRUE
+)
+```
+
+5.2 בצעו את המבחן שנית כדי לחשב רווח הסמך ברמת בטחון של 99%.
+
+```{r final_q_8_1, echo = FALSE}
+
+question_text("מהו ההפרש המינילי של זמני התגובה לפי רווח הסמך (עם שתי ספרות לאחר הנקודה העשרונית)",
+  answer("-48.20", correct = TRUE),
+  answer("-48.21", correct = TRUE),
+  answer("43.60", correct = TRUE),
+  answer("43.61", correct = TRUE),
+  allow_retry = TRUE,
+  correct="נכון מאוד!", 
+  incorrect = "האם התחשבתם בהשערה וברמת הבטחון הנכונה?"
+)
+
+```
+
+```{r final_q_8_2, echo = FALSE}
+
+question_text("מהו הערך העליון של רווח הסמך (הכניסו מספר עם שתי ספרות לאחר הנקודה העשרונית)?",
+  answer("48.20", correct = TRUE),
+  answer("48.21", correct = TRUE),
+  answer("-43.60", correct = TRUE),
+  answer("-43.61", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="נכון מאוד!", 
+  incorrect = "האם הכנסתם את החציון בשניות?"
+)
+
+```
+
+6. לחוקר במחלקה הייתה השערה שלצבע אדום יש משמעות ביולוגית ולכן לדעתו הקליטה של צבע זה מהירה יותר והוא אמור לייצר אפקט סטרופ גדול יותר. בדקו את ההשערה שלו על ידי השוואה של הפרשי זמני התגובה בטריאלים שהוצגו באדום לכלאה שלא. השתמשו בהשערה החד זנבית המתאימה.
+
+```{r final_q_9, echo = FALSE}
+
+question_text(
+  "מהו ערך הt שהתקבל (הכניסו מספר עם שתי ספרות לאחר הנקודה העשרונות)?",
+  answer("-4.47", correct = TRUE),
+  answer("-4.46", correct = TRUE),
+  answer("4.46", correct = TRUE),
+  answer("4.47", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="מצויין! ", 
+  incorrect = "וודאו שהשתמשתם בפרמטרים הנכונים ונסו שוב."
+)
+
+```
+
+```{r final_q_10, echo = FALSE}
+
+question_text(
+  "מה ערך הp-value שהתקבל (הכניסו מספר מקוצר עם שתי ספרות לאחר הנקודה העשרונית)?",
+  answer("8.21e-06", correct = TRUE),
+  answer("8.20e-06", correct = TRUE),
+  allow_retry = TRUE,
+    
+  correct="נכון מאוד!", 
+  incorrect = "האם הכנסתם את החציון בשניות?"
+)
+
+```
+
+```{r final_q_11, echo = FALSE}
+question("מה היא המסקנה שניתן להסיק על סמך מבחן זה בלבד ?",
+         answer("אפקט הסטרופ נמצא כקטן יותר ", correct = TRUE),
+         answer("ממש לא", message = "בטוח? בדקו את התשובה."),
+         answer("לא ברורלי", message = "אז זאת ההזדמנות להבין. לאחר הסינונים הגרף היה אמור להיראות כמו מקבץ של נקודות שנמצאות כמעט כולן על האלכסון, כך שתגובה ארוכה בתנאי אחד מצביעה על סיכוי גבוה לתשובה ארוכה גם בתנאי השני. זוהי המהות של קשר לינארי. "),
+allow_retry = TRUE
+)
+```
+
+
+העתיקו את הקוד שלכם מהסטודיו לתיבה הזאת והגישו:
+```{r submit_final, echo = FALSE}
+  question_text(
+    "Please enter the code here",
+    incorrect = "Excercise was submitted!",
+    correct = "Excercise was submitted!",
+    answer(text = "asd",message="DFGDF"),
+    answer(text = "",correct = TRUE),
+    rows = 10,
+    trim = FALSE, allow_retry = TRUE
+  )
+```
+
+
+## הגשת התרגיל
+  סיימת? מעולה! עכשיו הגיע הזמן להגיש את התרגיל.  
+  יש ללחוץ על הכפתור:  Generate  
+  להעתיק את הטקסט שמופיע בחלון למטה ולהגישו במודל  
+  בהצלחה!
+
+```{r context="server"}
+learnrhash::encoder_logic()
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui()
+```
+
