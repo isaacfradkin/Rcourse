@@ -1,0 +1,168 @@
+---
+title: "Lesson 14: Bayes factor" 
+author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: false
+
+
+description: >
+ <div style='direction: rtl;'>
+ 
+ </div>
+       
+runtime: shiny_prerendered  
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+
+```{=html}
+<style>
+h1, h2, h3, h4, h5, h6 {
+  direction: rtl;
+}
+p {
+  direction: rtl;
+}
+.text-block1 {
+  direction: rtl;       /* Set text direction to right-to-left */
+  text-align: right;
+  background-color: #e7f3fe; /* Light grey background */
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd; /* Light border */
+  margin: 10px 0; /* Space around the block */
+}
+</style>
+
+```
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+library(Rcourse)
+library(ggplot2)
+library(tidyverse)
+
+knitr::opts_chunk$set(error = TRUE)
+gradethis::gradethis_setup()
+```
+
+```{r prepare-df1}
+
+```
+
+
+## מבוא
+
+ביחידה זו נלמד להשתמש בפונקציות מהחבילה `BayesFactor` על מנת לבצע ניתוחים בייסיאניים.
+
+החבילה מאפשרת לבצע מגוון ניתוחים המקבילים למבחנים הסטטיסטיים הרגילים. אני נתמקד בשתי משפחות של ניתוחים: מבחני t ומתאמים.
+
+
+חבילה זו אינה מותקנת בR כברירת מחדל, ולכן נצטרך להתקין אותה על ידי הרצת שורת הקוד הבאה:
+
+```{r install, eval=FALSE}
+install.packages("BayesFactor")
+```
+
+לחלופין, נוכל להתקין את החבילה גם דרך חלונית התקנת החבילות באופן הבא:
+
+*
+
+לאחר שהתקנו אותה, נייבא את החבילה:
+
+```{r load}
+library(BayesFactor)
+```
+
+
+## מבחני t
+
+נתחיל במספר דוגמאות למבחני t"רגילים" והמקבילה הבייסייאנית שלהם.
+
+
+### מבחן t לתוחלת מדגם בודד
+
+* נתונים
+
+* מבחן t
+
+* בייספקטור
+
+
+### מבחן t למדגמים בלתי תלויים
+
+
+```{r ttest-data}
+data("sleep")
+
+```
+
+```{r ttest}
+# Separate data by group
+group1 <- sleep$extra[sleep$group == 1]
+group2 <- sleep$extra[sleep$group == 2]
+
+t.test(group1,group2)
+
+# Bayesian t-test
+bf <- ttestBF(x = group1, y = group2, r = 0.5, posterior = T, iterations = 1000)
+print(bf)
+plot(bf)
+
+ggplot(sleep, aes(x = as.factor(group), y = extra)) +
+  geom_boxplot(fill = c("#E69F00", "#56B4E9")) +
+  labs(x = "Group", y = "Extra Sleep", title = "Boxplot of Sleep Data") +
+  theme_minimal()
+
+
+r = 1
+x <- seq(-10, 10, length.out = 1000) 
+y <- dcauchy(x, location = 0, scale = r)
+yy = cut(y, breaks = seq(-10,11,1), labels = seq(-10,10,1))
+
+ggplot(data.frame(yy =yy, xx=  seq(-10,11,1)), aes(x = xx, y = yy  ))+
+  geom_col()
+
+
+
+r = 0.707  # Scale parameter for Cauchy distribution
+x = seq(-10, 10, length.out = 100)  # Create x values
+d = dcauchy(x, location = 0, scale = r)  # Calculate Cauchy PDF values
+
+df = data.frame(x = x, d = d) %>%
+  mutate(perc = d / sum(d))
+
+df2 = data.frame(x = 0, perc = 0.1)
+
+ggplot(df, aes(x = x, y = perc))+
+  geom_line(col = "blue")+
+  geom_col(data = df2, fill = "red")
+
+
+```
+
+
+
+
+
+## מתאמים
+
+
+## הגשה
+  עברו על הקובץ וודאו שהגשתם את כל התרגילים ועניתם על כל השאלות
+  
+  במידה וכל התשובות שלכם תקינות יש ללחוץ על הכפתור:  Generate, להעתיק את הטקסט שמופיע בחלון למטה ולהגישו במודל  
+  בהצלחה!
+
+```{r context="server"}
+learnrhash::encoder_logic()
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui()
+```
