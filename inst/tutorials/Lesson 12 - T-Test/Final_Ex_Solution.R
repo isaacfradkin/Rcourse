@@ -1,13 +1,26 @@
+### Final ex soultion for lesson 11 - internal file
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(readr)
+# import data
+stroop_data <- read_csv("csv files/stroop_data.csv")
+# calculate new columns
+stroop_data = stroop_data %>% mutate(correct = stroop_data$response == stroop_data$color,
+                                      congruent = stroop_data$text == stroop_data$color)
+stroop_data$congruent = as.factor(stroop_data$congruent)
+levels(stroop_data$congruent) = c("Incongruent", "Congruent")
+stroop_data$correct = as.factor(stroop_data$correct)
 
 #q1
-len(unique(stroop_data$session_id))
+length(unique(stroop_data$session_id))
 #q2
 summary(stroop_data)
 # q3
 sum(stroop_data$correct==0)
 
 # step 1
-new_stroop_data = filter(stroop_data, stroop_data$correct==1 & stroop_data$response_time<1500)
+new_stroop_data = filter(stroop_data, stroop_data$correct==TRUE & stroop_data$response_time<=1500)
 
 # step 2
 sum_stroop_data =new_stroop_data %>% group_by(session_id, congruent) %>% summarise(mean_rt =  mean(response_time))
@@ -41,7 +54,7 @@ box_plot <- ggplot(long_stroop_data, aes(x = Condition, y = RT)) +
   ) +
   theme_minimal() +
   theme(legend.position = "none")
-
+box_plot
 # step 5
 t_test_result <- t.test(x = wide_stroop_data$Congruent, y = wide_stroop_data$Incongruent, alternative = "less", paired = TRUE)
 
@@ -64,7 +77,7 @@ wide_red_stroop_data$red_stroop_effect = wide_red_stroop_data$Incongruent_TRUE -
 wide_red_stroop_data$no_red_stroop_effect = wide_red_stroop_data$Incongruent_FALSE - wide_red_stroop_data$Congruent_FALSE
 
 
-t_test_red_result <- t.test(x = wide_red_stroop_data$red_stroop_effect, y = wide_red_stroop_data$no_red_stroop_effect, alternative = "greater", paired = TRUE)
+t_test_red_result <- t.test(x = wide_red_stroop_data$red_stroop_effect, y = wide_red_stroop_data$no_red_stroop_effect, alternative = "less", paired = TRUE)
 
 print(t_test_red_result)
 
@@ -80,7 +93,7 @@ box_plot <- ggplot(long_red_stroop_data, aes(x = Color, y = RT)) +
   labs(
     title = "Boxplot of Reaction Times and Differences",
     x = "Color",
-    y = "Reaction Time (RT)"
+    y = "Reaction Time Differnce(RT)"
   ) +
   theme_minimal() +
   theme(legend.position = "none")
