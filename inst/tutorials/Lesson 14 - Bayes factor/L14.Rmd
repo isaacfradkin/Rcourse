@@ -48,11 +48,35 @@ library(ggplot2)
 library(tidyverse)
 
 knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
 gradethis::gradethis_setup()
+
+
+set.seed(123456)
+sleep_df = data.frame(sleep = rnorm(100, 6.5, 2))
+
+bus_waiting_times = rnorm(20, 17, 3)
+
+sample1 = rnorm(50,5,1)
+sample2 = rnorm(50,4,1)
+
+df_samples = data.frame(group = rep(c(1,2), each = 50),
+                        value = c(sample1,sample2))
+
 ```
 
-```{r prepare-df1}
+```{r prepare-america_sleep_df}
+set.seed(123456)
+america_sleep_df = data.frame(subject = 1:70,
+                              sleep = rnorm(70, mean = 7, sd = 0.5) %>% round(1))
 
+
+```
+
+
+```{r prepare-tomatoes}
+set.seed(123456)
+tomatoes = rnorm(40, 4.5,0.8)
 ```
 
 
@@ -71,86 +95,542 @@ install.packages("BayesFactor")
 
 לחלופין, נוכל להתקין את החבילה גם דרך חלונית התקנת החבילות באופן הבא:
 
-*
+@ תמונה של ייבוא באמצעות packages
 
-לאחר שהתקנו אותה, נייבא את החבילה:
+לאחר שהתקנו אותה, נייבא אותה באמצעות הפקודה:
 
 ```{r load}
 library(BayesFactor)
 ```
 
-
-## מבחני t
-
-נתחיל במספר דוגמאות למבחני t"רגילים" והמקבילה הבייסייאנית שלהם.
+ונוכל להשתמש בפונקציות הכלולות בה.
 
 
-### מבחן t לתוחלת מדגם בודד
-
-* נתונים
-
-* מבחן t
-
-* בייספקטור
+## מבוא לBayes factor
 
 
-### מבחן t למדגמים בלתי תלויים
+
+נניח שאנחנו מעוניינים לבחון האם תוחלת השעות שסטודנטים ישנים במהלך השבוע שונה מ7 שעות.
+
+אספנו מדגם של 100 סטודנטים ומדדנו את מספר השעות שהם ישנים ביום אקראי במהלך השבוע. להלן היסטוגרמה של המדגם שקיבלנו:
+
+```{r, echo = F}
+ggplot(sleep_df, aes(x = sleep))+
+  geom_histogram(fill = "lightblue")+                    # plot histogram
+  geom_vline(xintercept = 7, col = "red", linetype = 2)+ # add vertical line at sleep = 7
+  annotate("text", x = 7.5, y = 10, label = "7 hours", col = "red")+ # add text
+  labs(title = "Hours of sleep ", x = "Hours", y = "Frequency")+ # organize labels
+  theme_minimal() # change theme
+```
+
+אם היינו רוצים לבחון את שאלה זו באמצעות מבחן t היינו יכולים לעשות זאת באמצעות מבחן t לתוחלת בודדת, באופן הבא:
+
+```{r}
+t.test(sleep_df$sleep, mu = 7)
+```
+
+המסקנה מניתוח זה היא שממוצע שעות השינה של הסטודנטים במדגם (6.53) שונה מ7 באופן מובהק סטטיסטית. המשמעות של תוצאה זו היא שמאוד לא סביר לדגום את המדגם שקיבלנו אם ממוצע שעות השינה האמיתי אכן היה 7 שעות.
+@ להמיר לשאלה
+
+כעת נחזור על הניתוח באמצעות מבחן בייסיאני. הפעם אנחנו לא מעוניינים לבדוק מה הסיכוי לקבל את התוצאות האלו בהינתן השערת האפס - אלא לבחון את היחס בין סיכוי זה לסיכוי לדגום את המדגם שקיבלנו תחת השערה אלטרנטיבית כלשהי.
+
+הפקודה שעורכת את מבחן זה נקראת `ttestBF` והשימוש בה נראה כך:
+
+```{r}
+ttestBF(x = sleep_df$sleep, mu = 7)
+```
+
+המסקנה שאנחנו יכולים להסיק מתוצאות אלו היא שהההשערה האלטרנטיבית שלנו סבירה פי 1.506 מאשר השערת האפס. 
+
+אנחנו נסביר בהמשך הלומדה של משמעות שאר הנתונים המופיעים בפלט, אך נתחיל בלהתמקד בערך `r=0.707`.
 
 
-```{r ttest-data}
-data("sleep")
+
+## ההשערה האלטרנטיבית
+
+
+הערך `r=0.707` קובע לאיזו השערה אלטרנטיבית אנחנו משווים את השערת האפס שלנו.
+
+באופן יותר ספציפי, המשתנה r, שנקרא סקאלה (scale) מתאר את מידת הפיזור של התפלגות גדלי האפקט תחת ההשערה האלטרנטיבית שלנו.
+
+
+בדוגמה שלנו, שנוגעת לשעות השינה של סטודנטים, השערת האפס היא שתוחלת שעות השינהה שלהם היא 7 שעות, או במונחים של גודל אפקט: שגודל האפקט עבור ההפרש של התוחלת מ7 הוא 0.
+
+כזכור - גודל אפקט מודד את הסטייה של התוחלת האמיתית מהשערת האפס במונחים של סטיות תקן, ולכן גודל אפקט של 0 משמעו שהתוחלת זהה לזו שמצויינת על ידי השערת האפס.
+
+ההשערה האלטרנטיבית שלנו תהיה שגודל האפקט הוא לא בהכרח 0, ושההסתברות לכל גודל אפקט מתוארת על ידי ההתפלגות הבאה:
+
+
+```{r, echo = F}
+
+
+set.seed(155)
+df = data.frame( x = rnorm(100, 6.5, 2))
+sd_est = sd(df$x)
+
+r = 0.707
+mu = 7
+
+
+# Define a sequence of x values
+x_vals <- seq(-10, 10, length.out = 1000)
+
+# Define a data frame with multiple r values
+r= 0.707
+data <- data.frame(
+  ES = x_vals,
+  sleep = x_vals * sd_est + mu,
+  density = dcauchy(x_vals, scale = r)
+)
+
+
+ggplot(data, aes(x = ES, y = density, color = factor(r), fill = factor(r))) +
+  geom_area(alpha = 0.5, col = NA ) +  # Line for each density curve
+  labs(
+    title = "Cauchy Distributions for Effect Sizes",
+    x = "Effect Size",
+    y = "Density",
+    fill = "r = "
+  ) +
+  lims(x = c(-5,5))+
+  scale_fill_manual(values = c("lightblue"))+ # second color of default
+  theme_minimal()
 
 ```
 
-```{r ttest}
-# Separate data by group
-group1 <- sleep$extra[sleep$group == 1]
-group2 <- sleep$extra[sleep$group == 2]
+כלומר - גודל האפקט יכול להיות 0, אבל יכול להיות גם 1, -2, 3.5 וכו'.
 
-t.test(group1,group2)
+ההתפלגות בה השתמשנו כדי להגדיר את ההשערה האלטרנטיבית נקראת התפלגות קושי (Cauchy distribution). זו התפלגות סימטרית שנראת קצת כמו התפלגות נורמלית - אבל בניגוד להתפלגות נורמלית היא מייחסת הסתברות גבוהה יותר לערכים קיצוניים. לא ניכנס כאן לסיבות שהתפלגות זו נבחרה או לדקויות שמאפיינות אותה, אך מקובל להשתמש בה כדי לייצג את ההשערה האלטרנטיבית במבחנים בייסיאניים.
 
+בדומה להתפלגות נורמלית התפלגות קושי מוגדרת על ידי שני פרמטרים - מיקום (location) הקובע את מיקום מרכז ההתפלגות וסקלה (scale) הקובע את רוחב ההתפלגות. במקרה שלנו המיקום תמיד יהיה 0 והסקלה שנבחרה הפעם, ומיוצגת על ידי האות r היא 0.707.
+
+ערכי r שונים יבטאו השערות אלטרנטיביות שונות: ככל שהערך גבוה יותר ההשערה היא שיתכן וגודל האפקט מאוד גדול, ואילו ערכים נמוכים יותר יביעו השערה אלטרנטיבית לפיה גודל האפקט הוא ככל הנראה קטן יותר. הערך שמהווה את ברירת המחדל עבור r ברוב הניתוחים הוא 0.707, שכן בערך זה התפלגות הקושי מייחסת הסתברות של 50% לכך שגודל האפקט הוא בין -1 ל1.
+
+כדי להמחיש את המשמעות של התפלגות זו נמיר את גדלי האפקט לערכים גולמיים המבטאים את **תוחלת** שעות השינה תחת H1: 
+
+```{r, echo=FALSE}
+
+# Create the plot
+ggplot(data, aes(x = sleep, y = density, color = factor(r), fill = factor(r))) +
+  geom_area(alpha = 0.5, col = NA ) +  # Line for each density curve
+ # geom_jitter(data =df, aes(x = x, y = 0.2), width = 0, height = 0.2)+
+  geom_vline(xintercept = 7, linetype = 2, color = "black")+
+  annotate(x = 9, y = 0.5, label = "7 hours", col = "black", geom= "text")+
+  labs(
+    title = "Cauchy Distributions for Mean Hours of Sleep",
+    x = "Mean hours of sleep",
+    y = "Density",
+    fill = "r = "
+  ) +
+  lims(x = c(0,20))+
+  scale_fill_manual(values = c("lightblue"))+ # second color of default
+  theme_minimal()
+
+```
+
+כך שההסתברות לדגום **תצפיות** שונות תחת $H_0$ ותחת $H_1$ (בהתבסס על סטיית התקן שנמדדה במדגם) תהיה כזו:
+
+```{r, echo=FALSE}
+
+mu = 7
+sd = 0.5
+x_vals <- seq(-10, 10, length.out = 1000)
+
+
+compute_H1 <- function(x, prior_scale = 0.707, integration_range = 10, grid_points = 500) {
+  
+  
+  ES_range <- seq(-integration_range, integration_range, length.out = grid_points)
+  ES_density <- dcauchy(ES_range, location = 0, scale = prior_scale)
+  
+  # Compute the integrated density for each value of x
+  H1_density <- sapply(x, function(xi) {
+    # xi : constant value
+    # mu : vector of possible ESs
+    sum( dnorm(xi, mean = ES_range, sd = 1) * ES_density ) # the sd is 1 because we are working on the ES scale
+  })
+  
+  # Normalize the result
+  H1_density <- H1_density / sum(H1_density)
+  
+  return(H1_density)
+}
+
+
+data <- data.frame(
+  x = x_vals,
+  sleep = x_vals * sd + mu,
+  H0 = dnorm(x_vals, mean = 0, sd = sd),
+  H1 = compute_H1(x_vals, prior_scale = 0.5)
+) %>%
+  
+  mutate(H0 = H0/sum(H0))
+
+
+
+ggplot(data, aes(x = sleep)) +
+  geom_area(aes(y = H0, fill = "H0"), alpha = 0.3) +
+  geom_area(aes(y = H1, fill = "H1"), alpha = 0.7) +
+  labs(
+    title = "H0 and H1 Distributions",
+    x = "Hours of sleep",
+    y = "Density",
+    fill = "Hypothesis"
+  ) +
+  scale_fill_manual(values = c( "black","lightblue"))+ # second color of default
+  theme_minimal()
+
+```
+
+המבחן הבייסיאני יעבור על כל התצפיות שלנו, יבחן את ההסתברות לקבל כל אחת ממהתצפיות תחת H1 וH0 ויסכום את כל התוצאות לכדי מסקנה בדבר היחס בין ההסתברויות שהנתונים שלנו הגיעו מכל אחת מההתפלגויות הנ"ל.
+
+
+### חזרה לתוצאות המבחן
+
+נחזור כעת לתוצאות הניתוח הבייסיאני:
+
+
+```{r}
 # Bayesian t-test
-bf <- ttestBF(x = group1, y = group2, r = 0.5, posterior = T, iterations = 1000)
-print(bf)
-plot(bf)
+bf = ttestBF(x = sleep_df$sleep, mu = 7, r = 0.707)
 
-ggplot(sleep, aes(x = as.factor(group), y = extra)) +
-  geom_boxplot(fill = c("#E69F00", "#56B4E9")) +
-  labs(x = "Group", y = "Extra Sleep", title = "Boxplot of Sleep Data") +
+print(bf)
+```
+
+במקרה שלנו, התוצאות מראות שהנתונים סבירים יותר תחת ההשערה האלטרנטיבית (לפיה גודל האפקט אינו 0, אלא מתפלג לפי קושי עם סקאלה של 0.707) פי 1.5 מאשר תחת השערת האפס. כלומר, יש סיכוי יותר גבוה לקבל את הנתונים שקיבלנו אם גודל האפקט הוא לא 0 מאשר אם הוא כן.
+
+התוספת `±0.02%` מציינת את רמת הדיוק של ההערכה זו.
+
+השורה הבאה מציינת את השערת האפס מולה השוואנו את ההשערה האלטרנטיבית שלנו. במקרה זה - השערה לפיה התוחלת הינה 7.
+
+השורה האחרונה בפלט מתארת את סוג המבחן שנעשה - מבחן BF לתוחלת מדגם בודד מסוג JZS (לא נפרט כאן את המשמעות של נתון זה)
+
+**מה נעשה עם התוצאה שקיבלנו?**
+
+כדי להחליט שאנחנו מקבלים את ההשערה האלטרנטיבית על פני השערת האפס לא מספיק להראות שהיא סבירה יותר - אלא צריך לעבור רף כלשהו של סבירות שנקבע מראש.
+
+נהוג להשתמש ברף של פי 3, כך שאם הBF שקיבלנו גדול מערך ה נוכל לקבל את ההשערה האלטרנטיבית ואם לא, למשל אם קיבלנו BF של 1.5, נוכל להגיד שההשערה האלטרנטיבית אמנם נראית טיפה יותר סבירה בהינתן הנתונים שלנו, אבל התוצאות לא מספיק מובהקות כדי שנוכל להסיק מהן מסקנות.
+
+
+### קבלת השערת האפס
+
+היתרון העיקרי של שימוש בBF לעומת סטטיסטיקה פריקווינטיסטית (מבחנים הנשענים על חישוב p value) הוא בכך שBF מאפשר לנו גם לקבל תוצאה נוספת - המאששת את השערת האפס ודוחה את ההשערה אלטרנטיבית. 
+
+
+במידה ורצינו לבחון את המידה בה הראיות תומכות בהשערת האפס יכולנו להדפיס את התוצאה שקיבלנו בצורה הבא:
+
+```{r}
+
+bf = ttestBF(x = sleep_df$sleep, mu = 7, r = 0.707)
+
+print(1/bf)
+```
+
+פעולה זו לא משנה את התוכן של הניתוח - אבל מציג אותו בצורה ההפוכה: פי כמה השערת האפס סביר יותר מההשערה האלטרנטיבית שציינו.
+
+במקרה הזה היא סבירה פי 0.66, כלומר - סבירה פחות, אבל יש מקרים בהם נקבל נתונים שתומכים בהשערת האפס ומובילים אותנו לקבל אותה. הרף לקבלת השערת האפס הוא זהה - סבירות של פי 3 לפחות.
+
+
+`תרגיל`
+
+חוקר אחר אסף מדגם של סטודנטים מאוניברסיטה בארה"ב כדי לבחון האם הם ישנים בממוצע יותר מ7 שעות בלילה. חשבו את הBF עבור השערה הזו (קבעו את r=0.707) ודווחו את המסקנות שלכם מהניתוח.
+
+
+```{r BF_sleep, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-america_sleep_df"}
+
+print(head(america_sleep_df))
+
+# חשבו את ציון ה
+# BF
+
+ 
+```
+
+
+
+```{r q_1, echo = FALSE}
+
+question(
+  "<div style='direction: rtl;'>
+  מה המסקנה העולה מהניתוח לגבי תוחלת שעות השינה באוניברסיטה האמריקאית?
+  </div>",
+  answer("התוחלת גדולה מ7"),
+  answer("התוחלת שונה מ7"),
+  answer("לא ניתן לקבוע שהתוחלת שונה מ7"),
+  answer("התוחלת הינה 7", correct = TRUE),
+  allow_retry = TRUE,
+  
+  correct="מעולה! אם נדייק טיפה יותר: המסקנה היא שיותר סביר שהתוחלת היא 7 מאשר שהיא לא, תחת ההשערה האלנטרנטיבית ששימשה אותנו בבדיקה זו", 
+  incorrect = "נסו שוב"
+)
+
+```
+
+
+## חשיבות ערך הסקאלה
+
+על אף שמומלץ להשאיר את ערך הסקאלה של ההשערה האלטרנטיבית בברית המחדל (0.707), במקרים בהם יש לנו סיבה לדייק את ההשערה האלטרנטיבית נוכל לשנות את ערך זה בהתאם.
+
+למשל - ייתכן שאנחנו משערים שגודל האפקט באוכלוסייה הוא מאוד קטן. בהתאם, נוכל לקבוע את ערך הסקאלה כקטן יותר מ0.707 - למשל ב0.5.
+
+התרשים שלפניכם מציג את המשמעות של שינוי ערך זה עבור התפלגות גדלי האפקט המשוערים תחת H1:
+
+```{r, echo = F}
+
+# Define a sequence of x values
+x_vals <- seq(-5, 5, length.out = 1000)
+
+# Define a data frame with multiple r values
+r_values = c(0.3,0.5,0.707,1)
+data <- data.frame()
+
+for (r in r_values){
+  data = bind_rows(data,
+                   data.frame(
+                     r =r,
+                     ES = x_vals,
+                     density = dcauchy(x_vals, location = 0, scale = r)))
+}
+
+data = data %>%
+  group_by(r) %>%
+  mutate(r = factor(r),
+        # density = density /sum(density)
+  )
+
+# Create the plot
+ggplot(data, aes(x = ES, y = density, col = r)) +
+  geom_line() +  
+  labs(
+    title = "Cauchy Distributions for Different r Values",
+    x = "Effect Size",
+    y = "Density",
+    fill = "r = "
+  ) +
   theme_minimal()
 
 
-r = 1
-x <- seq(-10, 10, length.out = 1000) 
-y <- dcauchy(x, location = 0, scale = r)
-yy = cut(y, breaks = seq(-10,11,1), labels = seq(-10,10,1))
 
-ggplot(data.frame(yy =yy, xx=  seq(-10,11,1)), aes(x = xx, y = yy  ))+
-  geom_col()
+```
+
+בהתאם, שינוי ערך הסקאלה ישפיע גם על תוצאות הניתוח.
+
+נוכל להמחיש זאת באמצעות חיבור של תוצאות הניתוח עבור מספר מבחני BF שונים באמצעות הפקודה `c()`. פקודה זו בדרך כלל משמשת ליצירת פקטורים, אך כשמשתמים בה על אובייקטים המתקבלים מניתוחי BF היא מחברת אותם יחד לפלט אחד:
+
+```{r}
+bf1 = ttestBF(x = sleep_df$sleep, mu = 7, r = 0.707)
+bf2 = ttestBF(x = sleep_df$sleep, mu = 7, r = 0.5)
+bf3 = ttestBF(x = sleep_df$sleep, mu = 7, r = 0.3)
+
+bf = c(bf1,bf2,bf3)
+
+print(bf)
+```
+
+במקרה שלנו - הפלט מראה שככל שההשערה האלטרנטיבית שלנו מניחה גדלי אפקט קטנים יותר , כך הסיכויים שלה אל מול השערת האפס משתפרים.
+
+מצד שני: ככל שערך זה קטן, גם המשמעות של השערת האפס נהיית פחות מעניינת - שכן היא מניחה גדלי אפקט קטנים יותר ויותר ובעצם הולכת ונהיית דומה להשערת האפס. 
+
+
+## מבחני t נוספים
 
 
 
-r = 0.707  # Scale parameter for Cauchy distribution
-x = seq(-10, 10, length.out = 100)  # Create x values
-d = dcauchy(x, location = 0, scale = r)  # Calculate Cauchy PDF values
+### מבחן חד זנבי
 
-df = data.frame(x = x, d = d) %>%
-  mutate(perc = d / sum(d))
 
-df2 = data.frame(x = 0, perc = 0.1)
+נניח שאנחנו מעוניינים לבחון האם זמן ההמתנה הממוצע לקו 517 בתחנת הר הצופים הוא **יותר** מ15 דקות.
 
-ggplot(df, aes(x = x, y = perc))+
-  geom_line(col = "blue")+
-  geom_col(data = df2, fill = "red")
+המבחן המתאים יהיה חד זנבי ולכן  מבחן הt ישמש אותנו לבחינת השערה כזו יראה כך:
 
+```{r}
+
+t.test(bus_waiting_times, mu = 15, alternative = "greater")
+
+```
+
+
+בניתוח BF נתאים את הפקודה למבחן חד זנבי באמצעות התוספת הבאה:
+```{r}
+ttestBF(x = bus_waiting_times, mu = 15, nullInterval=c(0,Inf))
+
+```
+
+התוספת `nullInterval=c(0,Inf)` מנחה את הפונקציה לחלק את ההתפלגות של H1 לשני טווחים -טווח אחד שתחום בין שני הערכים שציינו בפקודה (במקרה שלנו: `c(0,Inf)`  כלומר - כל הערכים בין אפס לאינסוף) וטווח נוסף המכיל את כל הערכים שלא כלולים בטווח הראשון (במקרה שלנו : כל הערכים הקטנים מ0).
+
+הפונקציה תשווה את שתי ההתפלגויות של H1 שהתקבלו מהחלוקה הזו ותחשב את הBF של כל אחד מהם מול H0.
+
+בתוצאות שאנחנו קיבלנו אפשר לראות שסביר פי 16.4 שזמן ההמתנה גבוה מ15 דקות מאשר שהוא שווה ל15 דקות, ואילו מאוד לא סביר שזמן ההמתנה קטן מ15 דקות.
+
+
+`תרגיל`
+הוקטור `tomatoes` מכיל את ממוצע כמות פרוסות העגבנייה בסנדוויצ'ים שנדגמו בימים שונים מבית קפה מסוים.
+
+בדקו באמצעות BF האם תוחלת כמות פרוסות העגבנייה קטן מ5 באופן מובהק סטטיסטית.
+השאירו את פרמטר הסקאלה בערך ברירת המחדל (`r=0.707`).
+
+
+```{r tomatoes_data, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-tomatoes"}
+
+ggplot(data.frame(tomatoes = tomatoes), aes( x = tomatoes))+
+  geom_histogram(fill = "red")+
+  theme_minimal()
+
+ttestBF(x = tomatoes, mu = 5, nullInterval=c(0,Inf))
+
+```
+
+
+```{r one_sided_Q, echo = FALSE}
+
+question_text(
+  "<div style='direction: rtl;'>
+ פי כמה יותר סביר שתוחלת כמות הפרוסות קטן מ5, ביחס להשערת האפס לפיה התוחלת היא 5?
+  </div>",
+  answer("4.7716", correct = T),
+ answer("4.771", correct = T),
+ answer("4.772", correct = T),
+ answer("4.77", correct = T),
+ answer("4.7", correct = T),
+ answer("4.8", correct = T),
+ answer("2.412648", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("2.41264", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("2.41265", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("2.4126", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("2.412", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("2.41", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("2.4", correct = F, message = "האם ביצעתם מבחן חד זנבי?"),
+ answer("0.05369606", correct = F, message = "שימו לב שההשערה היא על כך שתוחלת כמות הפרוסות תהיה *קטנה* מ5"),
+ answer("0.053", correct = F, message = "שימו לב שההשערה היא על כך שתוחלת כמות הפרוסות תהיה *קטנה* מ5"),
+ answer("0.05", correct = F, message = "שימו לב שההשערה היא על כך שתוחלת כמות הפרוסות תהיה *קטנה* מ5"),
+  allow_retry = TRUE,
+  
+  correct="נהדר!", 
+  incorrect = "נסו שוב"
+)
 
 ```
 
 
 
+### הפרש מדגמים בלתי תלויים
+
+המעבר מחישוב BF למדגם יחיד לחישוב עבור מדגמים בלתי תלויים או מזווגים הוא מאוד פשוט.
+
+עד כה הזנו לפונקציה את המדגם שלנו באמצעות הארגומנט `x`. כשנרצה לבצע מבחן עבור הפרשי שני מדגמים נזין את המדגם השני בתור הארגומנט `y`.
+
+למשל:
+
+```{r}
+ttestBF(x = sample1, y = sample2)
+```
+
+פקודה זו תשווה את המידה בה יותר סביר שהפרש התוחלות שונה מאפס מאשר שהוא שווה לאפס. כמו בפונקציה עבור מבחני t ניתן להזין את הנתונים גם באמצעות פורמולה:
+
+
+```{r}
+# סידרנו את אותם הנתונים מההדגמה הקודמת בתוך טבלה
+# המכילה עמודה אחת לערכים ועמודה נוספת לקבוצה אליה כל דגימה שייכת
+head(df_samples)
+
+ttestBF(formula = value ~ group, data = df_samples)
+```
+
+### מבחן למדגמים מזווגים
+
+המעבר ממבחן למדגמים בלתי תלויים למדגמים מזווגים נעשה באופן זהה לפונקציות עבור מבחניt:
+
+```{r}
+ttestBF(x = sample1, y = sample2, paired = TRUE)
+```
 
 
 ## מתאמים
+
+השימוש בפונקציות האחרות שכלולות בחבילה הוא די דומה, אבל עם שינוי קל שנוגע להשערה האלטרנטיבית. בעוד גודל האפקט של מבחן t יכול להיות כל מספר שהוא, גודל האפקט עבור מתאם מוגבל בין הערכים -1 ל1.
+
+בהתאם לכך, ההתפלגות של גדלי האפקט תחת ההשערה האלטרנטיבית וערכי הסקאלה יהיו שונים.
+
+במתאמים, ברירת המחדל עבור ערך הסקאלה (שממלאת תפקיד אחר, שכן כבר לא מדובר בהתפלגות קושי) היא $1/3$ והתפלגות גדלי האפקט תחת ערכי סקאלה שונים נראית כך:
+
+```{r, echo = F}
+x =seq(0,1,0.01)
+rs = c(1/ sqrt(27), 1/3, 1/sqrt(3))
+
+beta = data.frame()
+
+for(r in rs){
+  temp = data.frame(x = x,
+                    v = x*2-1,
+                    r = r %>% round(2),
+                    d = dbeta(x, 1/r, 1/r))%>%
+  mutate(d = d/ sum(d))
+  
+  beta = bind_rows(beta,temp)
+}
+
+
+ggplot(beta,aes(x = v, y = d, col = factor(r)))+
+  geom_line()+
+  theme_minimal()
+
+```
+
+כשהשערת האפס היא שגודל האפקט הינו 0 - משמע, שהמתאם בין המשתנים אפסי.
+
+### בדיקת מובהקות מתאמים
+
+לצורך המחשה, נשתמש בנתונים מפוברקים אודות הקשר בין מידת החיבה של אנשים כלפי תחרות האורוויזיון וכמות הדקות שהקדישו לצפייה בתכנים הקשורים לתחרות ביום של הגמר. 
+
+
+```{r}
+x = rnorm(100,7,0.5)
+eurovision = data.frame(love = x,
+                        watch = exp(rnorm(100,4,1) + x) %>% sqrt())
+
+
+ggplot(eurovision, aes(x = love, y = watch))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  theme_minimal()
+
+correlationBF(eurovision$love, eurovision$watch)
+
+```
+
+
+כדי לבחון את מובהקות המתאם בין שני המשתנים נוכל לבצע מבחן לבחינת מובהקות מתאם:
+
+```{r}
+cor.test(eurovision$love, eurovision$watch)
+```
+
+נראה שהקשר בין המשתנים הוא לא מבוטל ($r_p = 0.3$) ושונה מ0 באופן מובהק סטטטיסטית ($p=0.0018$).
+
+נחזור על המבח באמצעות מבחן BF בעזרת הפונקציה `correlationBF`:
+
+```{r}
+correlationBF(eurovision$love, eurovision$watch)
+```
+
+התוצאות מדווחוץת לנו שההשערה לפיה ערך הסקאלה של ההתפלגות המתארת את גדלי האפקט היא $1/3$ סבירה יותר מההשערה לפיה המתאם הינו 0 פי 22.5. שימו לב שהערך של `r` בפלט אינו מתייחס למקדם המתאם ($r_p$) אלא לערך שקובע את מידת הפיזור של ההשערה האלטרנטיבית.
+
+
+גם במקרה הזה נוכל לשנות את ערך הסקאלה כדי לבטא השערות המניחות גודל אפקט קטן או גדול יותר ו/או לערוך מבחנים חד זנביים באותו האופן בדיוק כפי שעשינו במבחני t.
+
+
+## תרגיל
+
+
+@ תרגיל פשוט על מבחן t לתוחלת בודדת
+
+@ תרגיל על הפשר בין מדגמים בלתי תלויים
+
+@ מזווגים
+
+@ קורולציה - חד זנבי
+
+@ מקרה שבו H1 קצוני יותר סביר יותר מH1 קיצוני פחות
 
 
 ## הגשה
