@@ -35,16 +35,6 @@ library(tidyr)
 library(ggcheck)
 
 
-set.seed(123)
-single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN
-
-single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN
-
-single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN
-single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN
-
-single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))
-
 knitr::opts_chunk$set(error = TRUE)
 
 ```
