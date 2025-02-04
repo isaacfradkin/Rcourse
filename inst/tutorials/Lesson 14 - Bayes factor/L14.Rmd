@@ -9,7 +9,7 @@ output:
 
 description: >
  <div style='direction: rtl;'>
- 
+ בשיעור זה נלמד להשתמש בחבילת BayesFactor לטובת ביצוע מבחנים בייסיאניים.
  </div>
        
 runtime: shiny_prerendered  
