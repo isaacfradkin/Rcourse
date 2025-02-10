@@ -35,6 +35,7 @@ library(tidyr)
 library(ggcheck)
 
 
+tutorial_options()
 knitr::opts_chunk$set(error = TRUE)
 
 ```
@@ -45,6 +46,10 @@ knitr::opts_chunk$set(error = TRUE)
 
 ### היכרות עם הנתונים
 בחלק זה אנחנו נעבוד עם סיכום של נתוני מדגם אמיתי אשר בחן את הקשר בין מרכיבים שונים של אושר - למשל, סיפוק מהחיים, השראה, כמות הרגשות הטובים, כמות הרגשות הרעים, גאווה, עניין, שיעמום, בטחון עצמי, לחץ, אופטימיות. כל אלה נדגמו על בסיס יומי לאורך תקופה. הציון בכל אחד ממדדי האושר מתבסס על דירוג בין 1-100. בנתונים שלנו (income_wellbeing)נמצאים הממוצעים של תשובות המשתתפים מקובצים לפי רמת ההכנסה (באלפי דולרים לשנה), כך שכל תצפית היא בעצם ממוצע של בתוך משתתף (על פני מספר הפעמים שנדגם) ובין המשתתפים השונים באותה רמת הכנסה. (houshold_income). בנוסף יש לנו מספר נתונים דמוגרפיים ונתונים על היחס של המשתתפים לכסף.
+
+מקורות:
+High income improves evaluation of life but not emotional well-being
+Experienced well-being rises with income, even above $75,000 per year
 
 ```{r}
 # נתבונן בנתונים
@@ -291,16 +296,27 @@ linear_model_2021 <- lm(experienced_wellbeing~household_income, data=single_subj
 linear_model_2021 <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = "na.omit" )
 
 # נדפיס את התוצאה
+# ניתן להדפיס קבועים ספציפיים
 linear_model_2021$coefficients[1]
 linear_model_2021$coefficients[2]
 
+# כדי לקבל תוצאה מפורטת נשתמש בפונקציה
+summary(linear_model_2021)
+
+
+
 ```
 
-מעולה קיבלנו את המשוואה שמתארת את הקשר הלינארי בין הכנסה לאושר ואת הקבועים שלה. הקטור coefficients מכיל במקום הראשון את הקבוע ובמקום השני את השיפוע (במקרה זה 0.0004) כלומר על כל דולר נוסף שנוסף להכנסה השנתית נצפה לתוצאה גבוה יותר ב0.0004 בשאלון. זה נראה מעט, אבל שימו לב להבדלים בסקאלה, הכנסה שנתית לעומת שאלון מ0-100.  
+מעולה קיבלנו את המשוואה שמתארת את הקשר הלינארי בין הכנסה לאושר ואת הקבועים שלה.
+הקטור coefficients מכיל במקום הראשון את הקבוע ובמקום השני את השיפוע.  
+על ידי שימוש בsummary() אנחנו מקבלים מידע על המודל שהרצנו, על השיירים (Residuals) אשר מספקים לנו אומדן על הסטייה הממוצעת של התצפיות מהקו הישר, ופירוט על הקבועים שחושבו עבור המודל. הקבוע הראשון נקרא תמיד Intercept והקבוע השני נקרא תמיד בשם של המשתנה הבלתי תלוי במודל, במקרה שלנו כנסה.  
+אני בטוחה שאתם שואלים את עצמכם מה המשמעות של השיפוע כאן. הערך שלו מוצג בצורה מקוצרת, אבל בעצם הוא שווה ל0.0004. במבט ראשון נראה שזה ערך קטן מאוד, אבל בעצם מדובר על עליה של 0.0004 ברמת האושר על כל דולר שנוסף להכנסה השנתית, כפי שנמדדת על ידי השאלון בסולם של בין 1-100.  
+בנוסף לערכים שכל קבוע מקבל (טור Estimate) אנחנו גם מקבלים הערכה של סטיית התקן, ערך הt (שוב המובהקות של המודל מתבססת על מבחן t, הרחבה בנושא זה תהיה בלומדה הבאה) וערך המובהקות (p value). אנחנו מקבלים את הערך המחושב יחד עם סימון מובהקות בצורת כוכביות. כאן קיבלנו א*** שזאת דרגת המובהקות הגבוהה ביותר.  
 
-מה עוד?####
+בנוסף לכך אנחנו מקבלים את נתונים לגבי השיירים (Residuals), סטיית התקן שלהם ודרגות החופש, את R בריבוע ואת הגרסה המתוקנת שלו ומבחן סטטיסטי שלא ניכנס לתוצאות שלו.  
 
-בואו נראה איך זה נראה
+עכשיו נראה איך הנתונים נראים בתצוגה גרפית:  
+
 ```{r}
 # נצייר את זה
 ggplot(single_subject_wellbeing_2021, aes(x = household_income, y =experienced_wellbeing)) + geom_point() + geom_smooth(method = "lm")
@@ -370,7 +386,7 @@ b <- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k$co
 
 ```
 
-```{r outlier_ex_1-check}
+```{r final_ex_1-check}
 grade_this_code(correct = "כן!", incorrect=" לא")
 ```
 
@@ -394,7 +410,7 @@ ggcorrplot(corr_matrix, lab = TRUE)
 
 ```
 
-```{r outlier_ex_2-check}
+```{r final_ex_2-check}
 
 ```
 
@@ -403,13 +419,45 @@ ggcorrplot(corr_matrix, lab = TRUE)
 בודדו את ה20% המאושרים ביותר וה20% בעלי האושר הנמוך ביותר בכל מדגם בנפרד. התאימו מודל לינארי לכל קבוצה בנפרד. 
 סכמו את התוצאות בוקטור.
 ```{r final_ex_3, exercise=TRUE, exercise.eval = FALSE}
+# איך נמצא את ה20% הנמוכים והגבוהים ביותר?
+# נשתמש בפונקציה כמו בדוגמה כאן
+# הפונקציה מקבלת וקטור ואחוז ומחשבת את הערך שנמצא באחוזון המובקש
+cutoff_2010_unhappy <- quantile(single_subject_wellbeing_2010$household_income, 0.2)
+cutoff_2010_unhappy
+# חשבו את החתך לכל שאר התנאים
 
+# צרו מודל לינארי לכל מקרה
+linear_model_2010_unhappy <- 
+linear_model_2010_happy <- 
+linear_model_2021_unhappy <- 
+linear_model_2021_happy <- 
 
+# נארוז את כל הערכי השיפוע בוקטור
+b_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])
+
+# נדפיס
+b_vec
 ```
 
 ```{r final_ex_3-solution}
+# נשתמש בפונקציה כמו בדוגמה כאן
+cutoff_2010_unhappy <- quantile(single_subject_wellbeing_2010$household_income, 0.2)
+# חשבו את החתך לכל שאר התנאים
+cutoff_2010_happy <-quantile(single_subject_wellbeing_2010$household_income, 0.8)
+cutoff_2021_unhappy <- quantile(single_subject_wellbeing_2021$household_income, 0.2)
+cutoff_2021_happy <-quantile(single_subject_wellbeing_2021$household_income, 0.8)
+# מודלים
+linear_model_2010_unhappy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = "na.omit", subset = household_income< cutoff_2010_unhappy)
 
+linear_model_2010_happy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = "na.omit", subset = household_income> cutoff_2010_happy )
 
+linear_model_2021_unhappy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = "na.omit", subset = household_income< cutoff_2021_unhappy )
+
+linear_model_2021_happy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = "na.omit",subset = household_income> cutoff_2021_happy)
+
+b_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])
+
+b_vec
 ```
 
 ```{r outlier_ex_3-check}

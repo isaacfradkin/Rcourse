@@ -139,7 +139,7 @@ p {
 דמוגרפיים ונתונים על היחס של המשתתפים לכסף.</p>
 <pre class="r"><code># נתבונן בנתונים
 head(income_wellbeing)</code></pre>
-<pre><code>## Error in head(income_wellbeing): object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## [1] &quot;income_wellbeing&quot;</code></pre>
 </div>
 </div>
 <div id="section-קורלציה" class="section level2">
@@ -169,13 +169,13 @@ head(income_wellbeing)</code></pre>
 # האם יש קשר בין סיפוק מהחיים ואושר?
 # היינו מצפים לקשר חיובי בואו נראה
 cor1 = cor(x=income_wellbeing$experienced_wellbeing, y=income_wellbeing$life_satisfaction)</code></pre>
-<pre><code>## Error in is.data.frame(y): object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## Error in income_wellbeing$life_satisfaction: $ operator is invalid for atomic vectors</code></pre>
 <pre class="r"><code>cor1</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;cor1&#39; not found</code></pre>
 <pre class="r"><code># קיבלנו ערך גבוה מאוד. נראה כי אכן אלה תופעות קשורות.
 # עכשיו נבחן את הקשר בין רגשות חיובים לשליליים
 cor2 = cor(x=income_wellbeing$good, y=income_wellbeing$bad)</code></pre>
-<pre><code>## Error in is.data.frame(y): object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## Error in income_wellbeing$bad: $ operator is invalid for atomic vectors</code></pre>
 <pre class="r"><code>cor2</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;cor2&#39; not found</code></pre>
 <pre class="r"><code># עכשיו קיבלנו ערך גבוה מאוד ושלילי
@@ -206,7 +206,7 @@ print(main_cor)</code></pre>
 השאלון</p>
 <pre class="r"><code># ניצור טבלה חדשה רק עם שאלות השאלון
 well_being_df &lt;- select(income_wellbeing, -household_income, -money_importance, -money_is_succes, -workweek, -p_of_male, -p_married, -education_level,-age)</code></pre>
-<pre><code>## Error in select(income_wellbeing, -household_income, -money_importance, : object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## Error in UseMethod(&quot;select&quot;): no applicable method for &#39;select&#39; applied to an object of class &quot;character&quot;</code></pre>
 <pre class="r"><code># נחשב את טבלת הקורלציות
 well_being_corr_matrix &lt;- cor(well_being_df)</code></pre>
 <pre><code>## Error in is.data.frame(x): object &#39;well_being_df&#39; not found</code></pre>
@@ -281,11 +281,11 @@ print(demo_corr_matrix)</code></pre>
 <p>נחזור לדוגמה שהתחלנו איתה:</p>
 <pre class="r"><code># תזכורת
 cor1 = cor(x=income_wellbeing$experienced_wellbeing, y=income_wellbeing$life_satisfaction)</code></pre>
-<pre><code>## Error in is.data.frame(y): object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## Error in income_wellbeing$life_satisfaction: $ operator is invalid for atomic vectors</code></pre>
 <pre class="r"><code># ועכשיו לבדיקת המובהקות
 
 cor_test_1 = cor.test(x=income_wellbeing$experienced_wellbeing, y=income_wellbeing$life_satisfaction)</code></pre>
-<pre><code>## Error in cor.test(x = income_wellbeing$experienced_wellbeing, y = income_wellbeing$life_satisfaction): object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## Error in income_wellbeing$experienced_wellbeing: $ operator is invalid for atomic vectors</code></pre>
 <pre class="r"><code># נדפיס את התוצאה
 cor_test_1</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;cor_test_1&#39; not found</code></pre>
@@ -310,7 +310,7 @@ cor_test_1$p.value &lt; sig_level</code></pre>
 <pre class="r"><code># נתחיל ישר מבחינת המובהקות, שכן חישוב הקורלציה כלול בה
 
 cor_test_3 = cor.test(x=income_wellbeing$stressed, y=income_wellbeing$inspired)</code></pre>
-<pre><code>## Error in cor.test(x = income_wellbeing$stressed, y = income_wellbeing$inspired): object &#39;income_wellbeing&#39; not found</code></pre>
+<pre><code>## Error in income_wellbeing$stressed: $ operator is invalid for atomic vectors</code></pre>
 <pre class="r"><code># נדפיס את התוצאה
 cor_test_3</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;cor_test_3&#39; not found</code></pre>
@@ -387,17 +387,35 @@ linear_model_2021 &lt;- lm(experienced_wellbeing~household_income, data=single_s
 linear_model_2021 &lt;- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = &quot;na.omit&quot; )</code></pre>
 <pre><code>## Error in is.data.frame(data): object &#39;single_subject_wellbeing_2021&#39; not found</code></pre>
 <pre class="r"><code># נדפיס את התוצאה
+# ניתן להדפיס קבועים ספציפיים
 linear_model_2021$coefficients[1]</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;linear_model_2021&#39; not found</code></pre>
 <pre class="r"><code>linear_model_2021$coefficients[2]</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;linear_model_2021&#39; not found</code></pre>
+<pre class="r"><code># כדי לקבל תוצאה מפורטת נשתמש בפונקציה
+summary(linear_model_2021)</code></pre>
+<pre><code>## Error in summary(linear_model_2021): object &#39;linear_model_2021&#39; not found</code></pre>
 <p>מעולה קיבלנו את המשוואה שמתארת את הקשר הלינארי בין הכנסה לאושר ואת
 הקבועים שלה. הקטור coefficients מכיל במקום הראשון את הקבוע ובמקום השני
-את השיפוע (במקרה זה 0.0004) כלומר על כל דולר נוסף שנוסף להכנסה השנתית
-נצפה לתוצאה גבוה יותר ב0.0004 בשאלון. זה נראה מעט, אבל שימו לב להבדלים
-בסקאלה, הכנסה שנתית לעומת שאלון מ0-100.</p>
-<p>מה עוד?####</p>
-<p>בואו נראה איך זה נראה</p>
+את השיפוע.<br />
+על ידי שימוש בsummary() אנחנו מקבלים מידע על המודל שהרצנו, על השיירים
+(Residuals) אשר מספקים לנו אומדן על הסטייה הממוצעת של התצפיות מהקו הישר,
+ופירוט על הקבועים שחושבו עבור המודל. הקבוע הראשון נקרא תמיד Intercept
+והקבוע השני נקרא תמיד בשם של המשתנה הבלתי תלוי במודל, במקרה שלנו
+כנסה.<br />
+אני בטוחה שאתם שואלים את עצמכם מה המשמעות של השיפוע כאן. הערך שלו מוצג
+בצורה מקוצרת, אבל בעצם הוא שווה ל0.0004. במבט ראשון נראה שזה ערך קטן
+מאוד, אבל בעצם מדובר על עליה של 0.0004 ברמת האושר על כל דולר שנוסף
+להכנסה השנתית, כפי שנמדדת על ידי השאלון בסולם של בין 1-100.<br />
+בנוסף לערכים שכל קבוע מקבל (טור Estimate) אנחנו גם מקבלים הערכה של סטיית
+התקן, ערך הt (שוב המובהקות של המודל מתבססת על מבחן t, הרחבה בנושא זה
+תהיה בלומדה הבאה) וערך המובהקות (p value). אנחנו מקבלים את הערך המחושב
+יחד עם סימון מובהקות בצורת כוכביות. כאן קיבלנו א*** שזאת דרגת המובהקות
+הגבוהה ביותר.</p>
+<p>בנוסף לכך אנחנו מקבלים את נתונים לגבי השיירים (Residuals), סטיית התקן
+שלהם ודרגות החופש, את R בריבוע ואת הגרסה המתוקנת שלו ומבחן סטטיסטי שלא
+ניכנס לתוצאות שלו.</p>
+<p>עכשיו נראה איך הנתונים נראים בתצוגה גרפית:</p>
 <pre class="r"><code># נצייר את זה
 ggplot(single_subject_wellbeing_2021, aes(x = household_income, y =experienced_wellbeing)) + geom_point() + geom_smooth(method = &quot;lm&quot;)</code></pre>
 <pre><code>## Error in ggplot(single_subject_wellbeing_2021, aes(x = household_income, : object &#39;single_subject_wellbeing_2021&#39; not found</code></pre>
@@ -455,7 +473,7 @@ data-lines="0" data-pipe="|&gt;">
 linear_model_2010_above75k &lt;- lm()
 
 b &lt;- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k$coefficients[2])</code></pre>
-<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 <div class="tutorial-exercise-support" data-label="final_ex_1-solution"
 data-completion="1" data-diagnostics="1" data-startover="1"
@@ -466,38 +484,6 @@ linear_model_2010_above75k &lt;- lm(experienced_wellbeing~household_income, data
 
 b &lt;- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k$coefficients[2])</code></pre>
 </div>
-<pre class="r"><code>grade_this_code(correct = &quot;כן!&quot;, incorrect=&quot; לא&quot;)</code></pre>
-<pre><code>## function (check_env) 
-## {
-##     if (is_empty_code(check_env[[&quot;.user_code&quot;]])) {
-##         return(grade_code_is_empty())
-##     }
-##     check_env[[&quot;.__correct&quot;]] &lt;- correct
-##     check_env[[&quot;.__incorrect&quot;]] &lt;- incorrect
-##     check_env[[&quot;.__action&quot;]] &lt;- action
-##     grade &lt;- with_options(list(gradethis.allow_partial_matching = allow_partial_matching, 
-##         gradethis.maybe_code_feedback = TRUE), grade_this({
-##         .message &lt;- code_feedback()
-##         if (is.null(.message)) {
-##             if (&quot;pass&quot; %in% get(&quot;.__action&quot;)) {
-##                 pass(get(&quot;.__correct&quot;))
-##             }
-##         }
-##         else {
-##             if (&quot;fail&quot; %in% get(&quot;.__action&quot;)) {
-##                 fail(get(&quot;.__incorrect&quot;), hint = FALSE)
-##             }
-##         }
-##         invisible(NULL)
-##     })(check_env))
-##     if (is.null(grade)) {
-##         return(invisible(NULL))
-##     }
-##     class(grade) &lt;- c(&quot;gradethis_graded_this_code&quot;, class(grade))
-##     grade
-## }
-## &lt;bytecode: 0x000001e6ad8497c8&gt;
-## &lt;environment: 0x000001e6ad8420f0&gt;</code></pre>
 <p><code>תרגיל 2</code> אחת ההשערות הייתה שההסבר הוא בעצם רמת החשיבות
 שהמשתתפים מייחסים לכסף. יש לנו את הנתונים הללו. חשבו את טבלת הקורלציות
 לפי הנתונים המקוריים שלנו בין אושר (experienced_wellbeing) רמת כנסה
@@ -507,7 +493,7 @@ b &lt;- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k
 <div class="tutorial-exercise" data-label="final_ex_2"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
-<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 <div class="tutorial-exercise-support" data-label="final_ex_2-solution"
 data-completion="1" data-diagnostics="1" data-startover="1"
@@ -529,12 +515,47 @@ ggcorrplot(corr_matrix, lab = TRUE)</code></pre>
 <div class="tutorial-exercise" data-label="final_ex_3"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code># איך נמצא את ה20% הנמוכים והגבוהים ביותר?
+# נשתמש בפונקציה כמו בדוגמה כאן
+# הפונקציה מקבלת וקטור ואחוז ומחשבת את הערך שנמצא באחוזון המובקש
+cutoff_2010_unhappy &lt;- quantile(single_subject_wellbeing_2010$household_income, 0.2)
+cutoff_2010_unhappy
+# חשבו את החתך לכל שאר התנאים
+
+# צרו מודל לינארי לכל מקרה
+linear_model_2010_unhappy &lt;- 
+linear_model_2010_happy &lt;- 
+linear_model_2021_unhappy &lt;- 
+linear_model_2021_happy &lt;- 
+
+# נארוז את כל הערכי השיפוע בוקטור
+b_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])
+
+# נדפיס
+b_vec</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 <div class="tutorial-exercise-support" data-label="final_ex_3-solution"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0" data-pipe="|&gt;">
+<pre class="text"><code># נשתמש בפונקציה כמו בדוגמה כאן
+cutoff_2010_unhappy &lt;- quantile(single_subject_wellbeing_2010$household_income, 0.2)
+# חשבו את החתך לכל שאר התנאים
+cutoff_2010_happy &lt;-quantile(single_subject_wellbeing_2010$household_income, 0.8)
+cutoff_2021_unhappy &lt;- quantile(single_subject_wellbeing_2021$household_income, 0.2)
+cutoff_2021_happy &lt;-quantile(single_subject_wellbeing_2021$household_income, 0.8)
+# מודלים
+linear_model_2010_unhappy &lt;- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = &quot;na.omit&quot;, subset = household_income&lt; cutoff_2010_unhappy)
 
+linear_model_2010_happy &lt;- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = &quot;na.omit&quot;, subset = household_income&gt; cutoff_2010_happy )
+
+linear_model_2021_unhappy &lt;- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = &quot;na.omit&quot;, subset = household_income&lt; cutoff_2021_unhappy )
+
+linear_model_2021_happy &lt;- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = &quot;na.omit&quot;,subset = household_income&gt; cutoff_2021_happy)
+
+b_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])
+
+b_vec</code></pre>
 </div>
 <pre class="r"><code>grade_this_code(correct = &quot;מעולה, 0 היא אכן לא תשובה שיכולה להתקבל, בגלל שהתשובה הנמוכה ביותר בשאלון היא 1 ולכן אלה ערכים שאינם נכונים&quot;, incorrect=&quot;עוד לא הגעת לתשובה. רמז - הערכים הקיצוניים הם אלה שלא יכולים להתקבל בשאלון (והם דווקא נמוכים)&quot;)</code></pre>
 <pre><code>## function (check_env) 
@@ -566,8 +587,8 @@ data-lines="0" data-pipe="|&gt;">
 ##     class(grade) &lt;- c(&quot;gradethis_graded_this_code&quot;, class(grade))
 ##     grade
 ## }
-## &lt;bytecode: 0x000001e6ad8497c8&gt;
-## &lt;environment: 0x000001e6b2aa3468&gt;</code></pre>
+## &lt;bytecode: 0x000002909f054708&gt;
+## &lt;environment: 0x000002909f049cf8&gt;</code></pre>
 <p>
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
@@ -578,17 +599,8 @@ library(dplyr)
 library(tidyr)
 library(ggcheck)
 
-
-set.seed(123)
-#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN
-
-#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN
-
-#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN
-#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN
-
-#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))
-
+income_wellbeing = data("income_wellbeing")
+tutorial_options()
 knitr::opts_chunk$set(error = TRUE)
 
 </script>
@@ -624,18 +636,13 @@ output$`tutorial-exercise-cor_ex-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "cor_ex", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(ggplot2)", 
-"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "", 
-"set.seed(123)", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN", 
-"", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN", 
-"#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))", 
-"", "knitr::opts_chunk$set(error = TRUE)", ""), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "cor_ex", code = "main_cor <-\n", opts = list(
-        label = "\"cor_ex\"", exercise = "TRUE", exercise.eval = "FALSE"), 
-        engine = "r")), code_check = NULL, error_check = NULL, 
-    check = structure(c("grade_result(pass_if(~identical(.result,", 
+"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "income_wellbeing = data(\"income_wellbeing\")", 
+"tutorial_options()", "knitr::opts_chunk$set(error = TRUE)", 
+""), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "cor_ex", code = "main_cor <-\n", 
+        opts = list(label = "\"cor_ex\"", exercise = "TRUE", 
+            exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
+    error_check = NULL, check = structure(c("grade_result(pass_if(~identical(.result,", 
     "                     cor(x=income_wellbeing$good, y=income_wellbeing$bad))),", 
     "  ", "    correct=\"כל הכבוד!\", ", "  incorrect = \"נסו שוב!\"", 
     ")"), chunk_opts = list(label = "cor_ex-check")), solution = structure(c("main_cor = cor(x=income_wellbeing$good, y=income_wellbeing$bad)", 
@@ -676,15 +683,10 @@ output$`tutorial-exercise-cor_mat_ex-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "cor_mat_ex", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(ggplot2)", 
-"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "", 
-"set.seed(123)", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN", 
-"", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN", 
-"#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))", 
-"", "knitr::opts_chunk$set(error = TRUE)", ""), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "cor_mat_ex", code = "demo_df <- \n  \ndemo_corr_matrix <-\n\nggcorrplot(demo_corr_matrix, lab = TRUE)  \n\nprint(demo_corr_matrix)", 
+"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "income_wellbeing = data(\"income_wellbeing\")", 
+"tutorial_options()", "knitr::opts_chunk$set(error = TRUE)", 
+""), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "cor_mat_ex", code = "demo_df <- \n  \ndemo_corr_matrix <-\n\nggcorrplot(demo_corr_matrix, lab = TRUE)  \n\nprint(demo_corr_matrix)", 
         opts = list(label = "\"cor_mat_ex\"", exercise = "TRUE", 
             exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
     error_check = NULL, check = structure(c("grade_result(pass_if(~identical(.result,", 
@@ -723,25 +725,25 @@ learnr:::store_exercise_cache(structure(list(label = "cor_mat_ex", global_setup 
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "cor_mat_q", question = structure("מה הביקורת כלפי המחקר שיכולה לעלות מנתונים אלה?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_499eae3", 
+"character")), answers = list(structure(list(id = "lnr_ans_c68d0d1", 
     option = "ייתכן וכסף לא באמת מקושר לאושר בפני עצמו", 
     value = "ייתכן וכסף לא באמת מקושר לאושר בפני עצמו", 
     label = structure("ייתכן וכסף לא באמת מקושר לאושר בפני עצמו", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = structure("נכון מאוד, ולכן אסור לנו לשכוח שקורלציה היא לא סיבתיות. החוקרים, מסיבותיהם הטובות והנכונות משערים שהקשר החשוב והמרכזי הינו רמת ההכנסה, אבל הטבלה מדגימה לנו היטב שיכולים להיות גורמים נוספים.", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_8731ebd", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_13d8870", 
     option = "הדגימה שנעשתה במחקר איננה מקרית", 
     value = "הדגימה שנעשתה במחקר איננה מקרית", 
     label = structure("הדגימה שנעשתה במחקר איננה מקרית", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure("האמת שזה מדגם הכולל אלפי אנשים מכל שכבות האוכלוסיה. הטבלה לא מדגימה לנו שאין דגימה מקרית בהכרח אלא שיש קשר חזק בין המשתנה של ההכנסה לכל שאר המשתנים הדמוגרפיים", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_53f29cc", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_cce4cca", 
     option = "שנדגמו במדגם בעיקר גברים", 
     value = "שנדגמו במדגם בעיקר גברים", 
     label = structure("שנדגמו במדגם בעיקר גברים", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure("לא בדיוק, אנחנו יכולים רק ללמוד שככל שההכנסה הייתה גבוהה היו יותר גברים בקבוצה. זה כנראה משקף הטיה שקיימת באוכלוסיה ולא במדגם.", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_25a93d7", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_45f1f5f", 
     option = "כל התשובות נכונות", value = "כל התשובות נכונות", 
     label = structure("כל התשובות נכונות", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure("לא נכון, יש רק תשובה אחת שקשורה לבעיה המרכזית במחקר.", html = TRUE, class = c("html", 
@@ -753,7 +755,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "cor_mat_q-answer", question = "cor_mat_q"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1715678041.20108, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1329086902.3811, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
@@ -761,19 +763,19 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "cor_test_q", question = structure("מה היא הקורלציה בין לחץ להשראה?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_1f34ca4", 
+"character")), answers = list(structure(list(id = "lnr_ans_7c650a7", 
     option = "-0.019 ", value = "-0.019 ", label = structure("-0.019", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure("זהו ערך הטי, אתם עוד לא ממש יודעים מהו אולי, חכו לשיעור הבא כדי להבין לגמרי", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_18477a4", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_3034050", 
     option = "0.984", value = "0.984", label = structure("0.984", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure("זהו ערך הפי, הוא מראה לנו האם המבחן מובהק כאשר הוא קטן מרמת המובהקות שבחרנו. כאן קיבלנו ערך גבוהה ולכן לא נוכל לדחות את השערת האפס", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_a114a2d", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_9b37a6c", 
     option = "-0.516", value = "-0.516", label = structure("-0.516", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = structure("קרוב אבל לא, זהו הגבול התחתון של רווח הסמך. שימו לב לערך העליון שהינו חיובי, כלומר רווח הסמך כולל את אפס דבר התומך בכך שלא ניתן לדחות את השערת האפס.", html = TRUE, class = c("html", 
     "character")), type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_1c735f1", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_4181304", 
     option = "-0.005", value = "-0.005", label = structure("-0.005", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
 "tutorial_quiz_answer"))), button_labels = list(submit = structure("<span data-i18n=\"button.questionsubmit\">Submit Answer<\u002fspan>", html = TRUE, class = c("html", 
@@ -783,7 +785,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "cor_test_q-answer", question = "cor_test_q"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = TRUE, seed = 1049288499.51139, 
+    random_answer_order = FALSE, allow_retry = TRUE, seed = 1558885696.77409, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
@@ -799,15 +801,10 @@ output$`tutorial-exercise-cor_test_ex-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "cor_test_ex", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(ggplot2)", 
-"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "", 
-"set.seed(123)", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN", 
-"", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN", 
-"#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))", 
-"", "knitr::opts_chunk$set(error = TRUE)", ""), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "cor_test_ex", code = "main_cor_test <-\nprint(main_cor_test$p.value)", 
+"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "income_wellbeing = data(\"income_wellbeing\")", 
+"tutorial_options()", "knitr::opts_chunk$set(error = TRUE)", 
+""), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "cor_test_ex", code = "main_cor_test <-\nprint(main_cor_test$p.value)", 
         opts = list(label = "\"cor_test_ex\"", exercise = "TRUE", 
             exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
     error_check = NULL, check = structure(c("grade_result(pass_if(~identical(.result,", 
@@ -852,18 +849,14 @@ output$`tutorial-exercise-final_ex_1-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "final_ex_1", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(ggplot2)", 
-"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "", 
-"set.seed(123)", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN", 
-"", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN", 
-"#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))", 
-"", "knitr::opts_chunk$set(error = TRUE)", ""), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "final_ex_1", code = "linear_model_2010_below75k <- lm()\nlinear_model_2010_above75k <- lm()\n\nb <- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k$coefficients[2])", 
+"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "income_wellbeing = data(\"income_wellbeing\")", 
+"tutorial_options()", "knitr::opts_chunk$set(error = TRUE)", 
+""), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "final_ex_1", code = "linear_model_2010_below75k <- lm()\nlinear_model_2010_above75k <- lm()\n\nb <- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k$coefficients[2])", 
         opts = list(label = "\"final_ex_1\"", exercise = "TRUE", 
             exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
-    error_check = NULL, check = NULL, solution = structure(c("linear_model_2010_below75k <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = \"na.omit\" )", 
+    error_check = NULL, check = structure("grade_this_code(correct = \"כן!\", incorrect=\" לא\")", chunk_opts = list(
+        label = "final_ex_1-check")), solution = structure(c("linear_model_2010_below75k <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = \"na.omit\" )", 
     "", "linear_model_2010_above75k <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = \"na.omit\" )", 
     "", "b <- c(linear_model_2010_below75k$coefficients[2], linear_model_2010_above75k$coefficients[2])", 
     ""), chunk_opts = list(label = "final_ex_1-solution")), tests = NULL, 
@@ -904,17 +897,14 @@ output$`tutorial-exercise-final_ex_2-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "final_ex_2", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(ggplot2)", 
-"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "", 
-"set.seed(123)", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN", 
-"", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN", 
-"#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))", 
-"", "knitr::opts_chunk$set(error = TRUE)", ""), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "final_ex_2", code = "\n", opts = list(label = "\"final_ex_2\"", 
-        exercise = "TRUE", exercise.eval = "FALSE"), engine = "r")), 
-    code_check = NULL, error_check = NULL, check = NULL, solution = structure(c("filt_df <- select(income_wellbeing, experienced_wellbeing, household_income, money_importance, money_is_succes, workweek)", 
+"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "income_wellbeing = data(\"income_wellbeing\")", 
+"tutorial_options()", "knitr::opts_chunk$set(error = TRUE)", 
+""), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "final_ex_2", code = "\n", opts = list(
+        label = "\"final_ex_2\"", exercise = "TRUE", exercise.eval = "FALSE"), 
+        engine = "r")), code_check = NULL, error_check = NULL, 
+    check = structure("", chunk_opts = list(label = "final_ex_2-check")), 
+    solution = structure(c("filt_df <- select(income_wellbeing, experienced_wellbeing, household_income, money_importance, money_is_succes, workweek)", 
     "", "# נחשב את טבלת הקורלציות", "corr_matrix <- cor(filt_df)", 
     "print(corr_matrix)", "", "", "ggcorrplot(corr_matrix, lab = TRUE)", 
     ""), chunk_opts = list(label = "final_ex_2-solution")), tests = NULL, 
@@ -954,19 +944,24 @@ output$`tutorial-exercise-final_ex_3-output` <- renderUI({
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "final_ex_3", global_setup = structure(c("library(learnr)", 
 "library(gradethis)", "library(Rcourse)", "library(ggplot2)", 
-"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "", 
-"set.seed(123)", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing>=100] = NaN", 
-"", "#single_subject_wellbeing_2010$experienced_wellbeing[single_subject_wellbeing_2010$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing>=100] = NaN", 
-"#single_subject_wellbeing_2021$experienced_wellbeing[single_subject_wellbeing_2021$experienced_wellbeing<=10] = NaN", 
-"", "#single_subject_wellbeing_2021$age = sample(c(18:70), replace=TRUE, size=length(single_subject_wellbeing_2021$experienced_wellbeing))", 
-"", "knitr::opts_chunk$set(error = TRUE)", ""), chunk_opts = list(
-    label = "setup", include = FALSE)), setup = NULL, chunks = list(
-    list(label = "final_ex_3", code = "\n", opts = list(label = "\"final_ex_3\"", 
-        exercise = "TRUE", exercise.eval = "FALSE"), engine = "r")), 
-    code_check = NULL, error_check = NULL, check = NULL, solution = structure(c("", 
-    ""), chunk_opts = list(label = "final_ex_3-solution")), tests = NULL, 
-    options = list(eval = FALSE, echo = TRUE, results = "markup", 
+"library(dplyr)", "library(tidyr)", "library(ggcheck)", "", "income_wellbeing = data(\"income_wellbeing\")", 
+"tutorial_options()", "knitr::opts_chunk$set(error = TRUE)", 
+""), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "final_ex_3", code = "# איך נמצא את ה20% הנמוכים והגבוהים ביותר?\n# נשתמש בפונקציה כמו בדוגמה כאן\n# הפונקציה מקבלת וקטור ואחוז ומחשבת את הערך שנמצא באחוזון המובקש\ncutoff_2010_unhappy <- quantile(single_subject_wellbeing_2010$household_income, 0.2)\ncutoff_2010_unhappy\n# חשבו את החתך לכל שאר התנאים\n\n# צרו מודל לינארי לכל מקרה\nlinear_model_2010_unhappy <- \nlinear_model_2010_happy <- \nlinear_model_2021_unhappy <- \nlinear_model_2021_happy <- \n\n# נארוז את כל הערכי השיפוע בוקטור\nb_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])\n\n# נדפיס\nb_vec", 
+        opts = list(label = "\"final_ex_3\"", exercise = "TRUE", 
+            exercise.eval = "FALSE"), engine = "r")), code_check = NULL, 
+    error_check = NULL, check = NULL, solution = structure(c("# נשתמש בפונקציה כמו בדוגמה כאן", 
+    "cutoff_2010_unhappy <- quantile(single_subject_wellbeing_2010$household_income, 0.2)", 
+    "# חשבו את החתך לכל שאר התנאים", "cutoff_2010_happy <-quantile(single_subject_wellbeing_2010$household_income, 0.8)", 
+    "cutoff_2021_unhappy <- quantile(single_subject_wellbeing_2021$household_income, 0.2)", 
+    "cutoff_2021_happy <-quantile(single_subject_wellbeing_2021$household_income, 0.8)", 
+    "# מודלים", "linear_model_2010_unhappy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = \"na.omit\", subset = household_income< cutoff_2010_unhappy)", 
+    "", "linear_model_2010_happy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2010, na.action = \"na.omit\", subset = household_income> cutoff_2010_happy )", 
+    "", "linear_model_2021_unhappy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = \"na.omit\", subset = household_income< cutoff_2021_unhappy )", 
+    "", "linear_model_2021_happy <- lm(experienced_wellbeing~household_income, data=single_subject_wellbeing_2021, na.action = \"na.omit\",subset = household_income> cutoff_2021_happy)", 
+    "", "b_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])", 
+    "", "b_vec"), chunk_opts = list(label = "final_ex_3-solution")), 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
         tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
         comment = NA, highlight = FALSE, size = "normalsize", 
         background = "#F7F7F7", strip.white = TRUE, cache = 0, 
@@ -985,9 +980,19 @@ learnr:::store_exercise_cache(structure(list(label = "final_ex_3", global_setup 
         max.print = 1000, exercise.timelimit = 60, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, stage = NULL, ..., \n    solution_eval_fn = NULL) \n{\n    (utils::getFromNamespace(\"check_exercise\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, stage = stage, ...)\n}", 
         exercise.error.check.code = "gradethis_error_checker()", 
         label = "final_ex_3", exercise = TRUE, exercise.eval = FALSE, 
-        code = c("", ""), out.width.px = 624, out.height.px = 384, 
+        code = c("# איך נמצא את ה20% הנמוכים והגבוהים ביותר?", 
+        "# נשתמש בפונקציה כמו בדוגמה כאן", 
+        "# הפונקציה מקבלת וקטור ואחוז ומחשבת את הערך שנמצא באחוזון המובקש", 
+        "cutoff_2010_unhappy <- quantile(single_subject_wellbeing_2010$household_income, 0.2)", 
+        "cutoff_2010_unhappy", "# חשבו את החתך לכל שאר התנאים", 
+        "", "# צרו מודל לינארי לכל מקרה", 
+        "linear_model_2010_unhappy <- ", "linear_model_2010_happy <- ", 
+        "linear_model_2021_unhappy <- ", "linear_model_2021_happy <- ", 
+        "", "# נארוז את כל הערכי השיפוע בוקטור", 
+        "b_vec = c(linear_model_2010_unhappy$coefficients[2], linear_model_2010_happy$coefficients[2], linear_model_2021_unhappy$coefficients[2], linear_model_2021_happy$coefficients[2])", 
+        "", "# נדפיס", "b_vec"), out.width.px = 624, out.height.px = 384, 
         params.src = "final_ex_3, exercise=TRUE, exercise.eval = FALSE", 
-        fig.num = 0L, exercise.df_print = "paged"), engine = "r", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r", 
     version = "4"), class = c("r", "tutorial_exercise")))
 </script>
 </p>
