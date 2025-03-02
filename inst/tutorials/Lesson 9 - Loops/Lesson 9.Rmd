@@ -92,6 +92,33 @@ for (i in 1:5){
 social_sleep  = social_sleep  %>% mutate(sleep = round(sleep,1),
                                          social = round(social))
 } # social sleep
+
+
+{
+exercises_df = data.frame(exercises = c("loops_ex1", "loops_ex2", "loops_q1", "loops_q2", "loops_ex3", "loops_q3",
+                                        "functions_q1", "functions_exercise", "functions_q2", "no_return",
+                                        "summary_q1", "summary_q2"),
+                          hebrew = c("לולאות: יצירת לולאה", "לולאות: תרגיל נוסף","לולאות: שאלה 1", "לולאות: שאלה 2","לולאות: מתאם בין שינה וחברתיות","לולאות: הטלת קובייה",
+                                     "פונקציות: שאלה 1", "פונקציות: כתיבת פונקציה", "פונקציות: שאלה 2", "פונקיות: תיקון פונקציה",
+                                     "תרגיל מסכם: שאלה 1" , "תרגיל מסכם: שאלה 2"
+                                     ))
+
+
+check_hash_code   = function(hash){
+    exercises = exercises_df$exercises
+    response_table = learnrhash::decode_obj(hash)
+    if (length(response_table)==0){return("Invalid hash code")}
+    correct = response_table %>% filter(label %in% exercises, correct) %>% pull(label)
+    incorrect = setdiff(exercises, correct)
+    if (length(incorrect) == 0){return("Great work! Hash code is valid")}
+    else{
+      hebrew = exercises_df  %>% filter(exercises %in% incorrect) %>%pull(hebrew)
+      print("The following exercises are missing or incorrect:")
+      print(hebrew)
+    }
+
+} 
+}# hash checker
 ```
 
 ```{r prepare-social_sleep}
@@ -195,16 +222,50 @@ for (i in c("a","b","c")){
 בסבב השלישי התוכנה תציב ב`i` את האיבר השלישי בוקטור - "c", ותדפיס "c".
 
 לאחר שסיימה לעבור על כל הערכים בוקטור, הלולאה תסתיים והתוכנה תעבור לבצע
-את קטע הקוד הבא שביקשנו ממנה להריץ).
+את קטע הקוד הבא שביקשנו ממנה להריץ.
 
 `תרגיל`
+
+צרו לולאה המדפיסה את המספרים בין 1 ל5, אחד בכל סבב.
+
+```{r loops_ex1, exercise=TRUE, exercise.eval = FALSE}
+
+ 
+```
+
+```{r loops_ex1-solution}
+for (i in 1:5){
+  print(i)
+}
+ 
+```
+
+```{r loops_ex1-check}
+
+grade_this({
+  
+  print(.evaluate_result[[2]])
+  
+printed_string = "[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n"
+
+  if (identical(.evaluate_result[[2]],
+                printed_string)) {
+    pass("מעולה")
+  }
+  fail("נסו שוב")
+})
+
+```
+
+
+`תרגיל נוסף`
 
 השלימו את הקוד בלולאה הבאה כך שידווח על הציונים של כל משתתף. בכל חזרה של
 הלולאה אנחנו נרצה שהיא תיגש לשורה אחרת בטבלה שלנו (לפי מספר הסבב), תשלוף
 את השם ואת הציון של הנבדק שאותה שורה מייצגת ותדפיס דיווח על הציון של
 אותו הנבדק.
 
-```{r loops_ex1, exercise=TRUE, exercise.eval = FALSE}
+```{r loops_ex2, exercise=TRUE, exercise.eval = FALSE}
 
 data = data.frame(name = c("David","Pnina","Yossi","Rina"),
                   score = c(80,90,70,85))
@@ -222,7 +283,7 @@ for (i in 1:nrow(data)){
  
 ```
 
-```{r loops_ex1-solution}
+```{r loops_ex2-solution}
 
 data = data.frame(name = c("David","Pnina","Yossi","Rina"),
                   score = c(80,90,70,85))
@@ -240,13 +301,11 @@ for (i in 1:nrow(data)){
  
 ```
 
-```{r loops_ex1-check}
+```{r loops_ex2-check}
 
 grade_this({
   
 printed_string = "[1] \"David Scored 80 points\"\n[1] \"Pnina Scored 90 points\"\n[1] \"Yossi Scored 70 points\"\n[1] \"Rina Scored 85 points\"\n"
-
-
 
   if (identical(.evaluate_result[[4]],
                 printed_string)) {
@@ -262,6 +321,7 @@ printed_string = "[1] \"David Scored 80 points\"\n[1] \"Pnina Scored 90 points\"
 בשורה המתאימה בכל סבב של הלולאה.
 
 ::: extra_functions
+**העשרה**  
 הפונקציות `paste` ו`paste0` משמשות כדי לחבר יחד מחרוזות (מילים, אותיות).
 בדוגמה הקודמת הפונקציה משלבת את שם הנבדק והציון שלו לכדי משפט קוהרנטי.
 
@@ -269,23 +329,55 @@ printed_string = "[1] \"David Scored 80 points\"\n[1] \"Pnina Scored 90 points\"
 מחברת ואילו `paste0` לא מוסיפה רווחים
 :::
 
-### דוגמא נוספת
+### עריכת אובייקטים באמצעות לולאות
 
-בדרך כלל נרצה שהלולאות יעשו יותר מאשר רק לשלוף ולהדפיס ערכים. התבוננו
-בלולאה הבאה ונסו להבין את מטרתה:
+בדרך כלל נרצה שהלולאות יעשו יותר מאשר רק לשלוף ולהדפיס ערכים. נוכל להיעזר בהן כדי לייצר, לערוך ולייצא אובייקטים.
+
+למשל, כך תראה לולאה המחשבת את סדרת פיבונאצ'י - סדרת מספרים בה כל מספר הוא סכומם של שני המספרים הקודמים.
+
+```{r fibonacci,exercise=TRUE, exercise.eval = FALSE}
+n = 10 # אורך הסדרה הרצויה
+
+fibonacci = c(1,1)
+
+#  נבצע מספר חזרות כאורך הסדרה הרצוי
+#  מאחר והתחלנו עם וקטור באורך 2, נתחיל את הלולאה בערך 3
+for (i in 3:n){ 
+  # עבור כל מספר מ3 ועד לאורך הרצוי, נחשב:
+  
+  last = fibonacci[i-1]          # את הערך האחרון בוקטור עד כה
+  before_last = fibonacci[i-2]   # את הערך שלפניו
+  new_number = last + before_last # ונחשב בעזרתם את הערך הבא
+  
+  # נוסיף את הערך הבא לוקטור במיקום המתאים (3, ואז 4, ואז 5 וכו')
+  fibonacci[i] = new_number
+}
+
+# אחרי שסיימנו את הלולאה - נדפיס את הוקטור שקיבלנו
+print(fibonacci) 
+```
+
+
+נוכל להיעזר בלולאות גם כדי לבצע ניתוחים על הנתונים שלנו, למשל:
 
 ```{r loop_example_3,eval=FALSE}
+# נניח שקיימת טבלה טעונה בשם
+# data
+# המכילה ציונים עבור נבדקים שונים בשלושה שאלונים
+
 Questionaires = c("anxiety","depression","stress")
  
 for (q in Questionaires){
-  fitlered_data = data %>% filter(Questionaire == q)               # filter data
-  plot = ggplot(fitlered_data, aes(x = score)) + geom_histogram()  # create plot
+  fitlered_data = data %>% filter(Questionaire == q)    # filter data
+  plot = ggplot(fitlered_data, aes(x = score)) +        # create plot
+    geom_histogram()  
    
-  filename = paste0(q, ".png")                                     # create filename
-  ggsave(filename, plot)                                           # save plot as image
+  filename = paste0(q, ".png")                          # create filename
+  ggsave(filename, plot)                                # save plot as image
 }
  
 ```
+
 
 ```{r loops_q1, echo = FALSE}
 question("<div style='direction: rtl;'>
@@ -310,39 +402,17 @@ question("<div style='direction: rtl;'>
 שימו לב שאפשר להשתמש בכל שם שנרצה עבור האובייקט שמשתנה בכל סבב של
 הלולאה. במקרה הנ"ל קראנו לו `q` והשתמשנו בו תחת שם זה לאורך הלולאה.
 
+
 ### שמירת תוצרי הלולאה
 
-לעיתים קרובות נרצה לשמור את תוצרי הלולאה באובייקט כלשהו. נוכל לעשות זאת
-באמצעות הגדרת אובייקט חדש שאליו נוסיף את הערכים שחישבנו בכל סבב של
-הלולאה.
+בדוגמה בה חישבנו את סדרת פיבונאצ'י נעזרנו בהשמה לוקטור במיקום `i` כדי לשמור את הערכים שחישבנו בכל סבב של הלולאה.
 
-נמחיש באמצעות מספר דוגמאות:
+נוכל להיעזר בשיטה זו גם כדי לשמור תוצרים שחושביו מתוך הנתונים שלנו. למשל:
 
-הוספת התוצאה לסוף הוקטור באמצעות הפונקציה `c()`
 
-```{r loops_save_example,  exercise=TRUE, exercise.eval = FALSE}
+```{r loops_save_example_1,  exercise=TRUE, exercise.eval = FALSE}
 # וקטור ריק
-results = c()
-
-subjects = df$subject %>% unique() # וקטור המכיל את שמות / מספרי הנבדקים
-                                   # כשכל שם מופיע רק פעם אחת
-for (subj in subjects){
-  subj_data = df %>% filter(subject == subj) # שליפת נתוני הנבדק
-  subj_mean = subj_data %>%                  # חישוב הציון הממוצע
-    pull(score) %>%
-    mean() 
-  
-  results = c(results, subj_mean)  # הוספת ממוצע הנבדק לוקטור התוצאות
-}
-
-print(results)
-```
-
-הוספת תוצאות לוקטור באמצעות השמה לאינדקס ספציפי - `results[i]`.
-
-```{r loops_save_example_2,  exercise=TRUE, exercise.eval = FALSE}
-# וקטור ריק
-results = c()
+means = c()
 
 subjects = df$subject %>% unique() # וקטור המכיל את שמות / מספרי הנבדקים
                                    # כשכל שם מופיע רק פעם אחת
@@ -352,15 +422,70 @@ for (i in 1:length(subjects)){
     pull(score) %>%
     mean() 
   
-  results[i] =  subj_mean  # הוספת ממוצע הנבדק לוקטור התוצאות
+  means[i] =  subj_mean  # הוספת ממוצע הנבדק לוקטור התוצאות
+}
+
+print(means)
+```
+
+כאן, השורה `means[i] =  subj_mean` מבצעת את ההשמה ומוסיפה את הממוצע של הנבדק לוקטור התוצאות.
+
+
+נוכל לעשות פעולה דומה באמצעות הפקודה `c()`.  
+הפעם, אנחנו לא נעזרים בהשמה לאינדקס `i` אלא מצרפים את הוקטור שייצרנו עד כה יחד עם הערך החדש ובכך מייצרים וקטור הכולל גם אותו.
+
+
+```{r loops_save_example_2,  exercise=TRUE, exercise.eval = FALSE}
+# וקטור ריק
+means = c()
+
+subjects = df$subject %>% unique() # וקטור המכיל את שמות / מספרי הנבדקים
+                                   # כשכל שם מופיע רק פעם אחת
+for (subj in subjects){
+  subj_data = df %>% filter(subject == subj) # שליפת נתוני הנבדק
+  subj_mean = subj_data %>%                  # חישוב הציון הממוצע
+    pull(score) %>%
+    mean() 
+  
+  means = c(means, subj_mean)  # הוספת ממוצע הנבדק לוקטור התוצאות
+}
+
+print(means)
+```
+
+התוצאה זהה, והשיטה המומלצת היא דווקא זו של השמה לפי אינדקס.   
+הראנו לכם את שיטה זו בעיקר כי היא עוזרת לנו להבין איך לפעול כשנרצה לשמור תוצאות לטבלה.
+
+במקרים בהם אנחנו רוצים לשמור מספר תוצאות בכל סבב  של הלולאה אנחנו יכולים לייצר מספר וקטורים ריקים שונים, ולשמור בכל אחד תוצאה אחרת (למשל וקטור נפרד לממוצעים, סטיות תקן, ערך מינמום וכו'), אבל לפעמים יהיה יותר יעיל לשמור את התוצאות יחד בטבלה - שאליה נוסיף את התוצאות שלנו בכל סבב של הלולאה.
+
+```{r loops_save_example_3,  exercise=TRUE, exercise.eval = FALSE}
+# טבלה ריקה
+results = data.frame()
+
+subjects = df$subject %>% unique() # וקטור המכיל את שמות / מספרי הנבדקים
+                                   # כשכל שם מופיע רק פעם אחת
+for (subj in subjects){
+  subj_data = df %>% filter(subject == subj) # שליפת נתוני הנבדק
+  subj_summary = subj_data %>%                  # חישוב מדדים שונים
+    summarise(mean = mean(score),            # הסיכום ייצר טבלה עם שורה בודדת
+              sd = sd(score),                # הכוללת את מספר הנבדק ועמודה עבור כל מדד
+              n = n(),
+              min = min(score),
+              max = max(score))
+  
+  results = bind_rows(results, subj_summary)  # הוספת שורה לטבלה
 }
 
 print(results)
 ```
 
-הוספת התוצאות לטבלה באמצעות `bind_rows`
 
-```{r loops_save_example_3,eval=FALSE}
+את טבלה זו יכולנו לייצר גם באמצעות שימוש בפונקציה `group_by`, אבל יהיו מקרים בהם ניהיה חייבים להיעזר בלולאות.
+
+למשל:
+
+
+```{r loops_save_example_4,eval=FALSE}
 
 data_file_names = c("data_1", "data_2", "data_3")
 
@@ -414,21 +539,30 @@ r = cor(x = vector1, y = vector2)
 # והתוצה היא מספר בין -1 ל1
 ```
 
-```{r loops_ex2, exercise=TRUE, exercise.eval = FALSE}
+```{r loops_ex3, exercise=TRUE, exercise.eval = FALSE}
 
 subjects = c("Yocheved","Alfred","Dilan","Shoshkeh", "Noam")
 
 correlations = c()
 
 # כתבו כאן את הלולאה
+# נרצה לעבור על הערכים בין 1 ל5
 for (__________){
   
-  # שליפת הנתונים של הנבדק
+  # שם הנבדק שנחשב עבורו את המתאם בסבב זה
+  subj = 
   
-  # חישוב המתאם
+  #  שליפת הנתונים של הנבדק מתוך הטבלה 
+  # social_sleep
+  social_sleep_subj = 
+  
+  # חישוב המתאם בין העמודות
+  # sleep ו social
+  r =  
   
   # הוספת הערך שחושב לוקטור
   # correlations
+    
 }
 
 
@@ -441,7 +575,7 @@ ggplot(data.frame( name = subjects,
 
 ```
 
-```{r loops_ex2-solution}
+```{r loops_ex3-solution}
 
 subjects = c("Yocheved","Alfred","Dilan","Shoshkeh", "Noam")
 
@@ -463,7 +597,7 @@ ggplot(data.frame( name = subjects,
   ylab("Correlation")
 ```
 
-```{r loops_ex2-check}
+```{r loops_ex3-check}
 
 grade_this({
 if (identical(user_object_get("correlations"),
@@ -647,7 +781,7 @@ mystery_function( celsius = c(150, 175, 200, 225, 250))
 
 ```
 
-```{r functions_q4, echo = FALSE}
+```{r functions_q1, echo = FALSE}
 
 question(
   "<div style='direction: rtl;'>
@@ -669,7 +803,7 @@ question(
 
 כתבו פונקציה המקבלת וקטור של מספרים ומחזירה אותו בתור ציוני תקן.
 
-```{r func_exercise,exercise=TRUE, exercise.eval = FALSE }
+```{r functions_exercise,exercise=TRUE, exercise.eval = FALSE }
 Z_score_function = # כתבו את הפונקציה כאן
   # הפונקציה צריכה לקבל וקטור 
   # לחשב את הממוצע וסטיית התקן שלו
@@ -690,7 +824,7 @@ print(z_test_vector)
   
 ```
 
-```{r func_exercise-solution}
+```{r functions_exercise-solution}
 Z_score_function = function(vec){
   z = (vec - mean(vec)) / sd(vec)
   
@@ -705,7 +839,7 @@ z_test_vector = Z_score_function(test_vector)
 print(z_test_vector)
 ```
 
-```{r func_exercise-check}
+```{r functions_exercise-check}
 grade_this({
 if (identical(user_object_get("z_test_vector"),
                  solution_object_get("z_test_vector"))){
@@ -736,7 +870,7 @@ mystery_function_2( x = 1:10, value = 5)
 
 ```
 
-```{r functions_q5, echo = FALSE}
+```{r functions_q2, echo = FALSE}
 
 question(
   "<div style='direction: rtl;'>
@@ -927,17 +1061,17 @@ if (identical(test, vec)){
 **3) הניתוח עצמו**: ביצוע מבחנים סטטיסטיים ויצירת תרשימים
 
 שיטה זו תאפשר לנו לעבוד על קובץ נפרד כל פעם, מבלי שנצטרך לכתוב או להריץ
-מחדש את הקבצים הקודמים בכל פעם.
+מחדש את הקבצים הקודמים בכל פעם.  
+  
+     
 
-#### אבל איך נעביר את המידע בין הקבצים?
+### איך נעביר את המידע בין הקבצים?
+  
 
-במקום להריץ באופן ידני כל קובץ נוכל לשמור את הטבלאות, האובייקטים
-והפונקציות שיצרנו בקובץ קוד אחד ולייבא אותם בקלות לקובץ הבא.
-
-**1) טעינת קובץ קוד:** נשתנש בפקודה `source` כדי לקרוא לקובץ קוד אחד
-מתוך קובץ אחר. השימוש הנפוץ ביותר בפקוה זו הוא כדי להריץ קובץ המכיל רק
+**1) טעינת קובץ קוד:** נשתמש בפקודה `source` כדי לקרוא לקובץ קוד אחד
+מתוך קובץ אחר. השימוש הנפוץ ביותר בפקודה זו הוא כדי להריץ קובץ המכיל רק
 הגדרה של פונקציות, ובכך לייבא את הפונקציות לסביבת העבודה שלנו. לדוגמה:
-`source(name_of_file.R")`.
+`source("name_of_file.R")`. נתרגל את השימוש בשיטה זו בסוף היחידה.
 
 **2) שמירת קבצי CSV:** את שיטה זו למדנו בסמסטר קודם, והיא כוללת לייצא את
 טבלאות הנתונים שעברו סינון ועיבוד ו/או את טבלאות הסיכום כקבצי CSV -
@@ -950,8 +1084,10 @@ if (identical(test, vec)){
 `readRDS("name_of_file.rds")`. פקודות אלו מתאימות לכל אובייקט בR, מכל
 סוג שהוא. הוא נשמר בפורמט ייעודי של R ומיובא בצורה זהה לאובייקט המקורי.
 
-#### ניקוי סביבת העבודה ושמירת אובייקטים
 
+### ניקוי סביבת העבודה ושמירת אובייקטים
+
+ 
 כדי לשמור על סביבת העבודה שלנו נקייה נוכל להשתמש בפקודה
 `rm(list = ls())`. פקודה זו תמחק את כל האובייקטים שנמצאים בסביבת העבודה
 שלנו, ותשאיר אותה ריקה ונקייה.
@@ -960,45 +1096,40 @@ if (identical(test, vec)){
 שבראש חלונית שסביבת העבודה (Environment).
 
 נכלול את שורת קוד זו בתחילת קבצי הR שלנו כדי לשמור על סביבת העבודה שלנו
-נקייה ומסודרת.
+נקייה מאובייקטים שנוצרו לפני הרצת הקובץ.
+
 
 ## ייצוא תוצאות
 
-השלב האחרון בתהליך עיבוד הנתונים כולל את ייצוא התוצאות. לאחר שהפקנו את
+
+השלב האחרון בתהליך עיבוד הנתונים (והנושא האחרון ביחידה זו) כולל את ייצוא התוצאות. לאחר שהפקנו את
 התרשימים, ייצרנו את טבלאות הסיכום וביצענו את המבחנים הסטטיסטיים - נרצה
 לייצא אותם לטובת דיווח או שיתוף.
 
-אפשר לייצא את התוצאות באופן ידני - יל ידי הרצת הקבצים והעתקת התוצאות
+אפשר לייצא את התוצאות באופן ידני - על ידי הרצת הקבצים והעתקת התוצאות
 והתרשימים לקובץ חיצוני כלשהו אחד אחד, אבל נוכל לעשות זאת גם בצורה נוחה
 יותר:
 
 **1) באמצעות פקודות המייצאות את התוצאות:**
 
-את הטבלאות נוכל לשמור כקבצי CSV באמצעות הפקודה `write.csv`
-
 את התרשימים נוכל לשמור באמצעות פונקציות כמו `ggsave` המייצאות את
-התרשימים כקובץ תמונה
+התרשימים כקובץ תמונה.
 
-ואת הניתוחים הסטטיסטיים נוכל לייצא כטבלאות דיווח באמצעות מערך של
-פונקציות המסדרות את התוצאות בטבלאות ושומרות אותן כקבצי וורד. קישור
-לדוגמא. <https://rempsyc.remi-theriault.com/articles/t-test>
+את התוצאות של הניתוחים הסטטיסטיים נוכל ייצא באמצעות פונקציות המאפשרות לייצר בטבלאות מסודרות עבור ניתוחים שונים. אנחנו לא נתמקד בהן בקורס הזה, אבל לטובת הסקרנים - הנה קישור לדוגמה: <https://rempsyc.remi-theriault.com/articles/t-test>
 
 **2) באמצעות Rmarkdown:**
 
 Rmarkdown הוא כלי המאפשר לנו לייצר מסמכים ודוחות ישירות מתוך R. הוא מכיל
-קטעי קוד שמשובצים בתוך מסמך טקטס, ומאפשר לנו להציג את הקוד, הפלטים
-והתרשימים שאנחנו מייצרים באופן מסודר ובליווי הסברים מילוליים.
+קטעי קוד שמשובצים בתוך מסמך טקסט, ומאפשר לנו להציג את הקוד, הפלטים
+והתרשימים שאנחנו מייצרים יחד באופן מסודר ובליווי הסברים מילוליים.
 
-כדי לייצר קובץ Rmarkdown נלחץ על כפתור יציר ת קובץ חדש שבפינה השמאלית
-עליונה של Rstudio ונבחר באופציה של מסמף Rmarkdown.
 
-כשנסיים לייצר את הקובץ נוכל להפיק אותו באמצעות פעולה הנקראת "Knit",
-ולקבל קובץ חדש המכיל את הטקסט והתוצאות שלנו. בצורה זו ניתן לייצר קבצי
-וורד, PDF או קבצי html המכילים את התוצאות שלנו. בפורמט html נוכל אפילו
-לכלול טבלאות ותרשימים אינטראקטיביים.
+תוכלו לייצר קובץ כזה באמצעות תפריט יצירת קובץ חדש:
 
-בתרגיל המסכם תפגשו דוגמה לקובץ שכזה, המדגים שימוש בכלים שנלמדו ביחידה
-זו.
+![](images/create_rmarkdown.JPG){width="200"}
+
+גם בו לא נתמקד בקורס, אבל נתנסה בו בתרגיל של יחידה זו.
+
 
 למידע נוסף על Rmarkdown ואופן השימוש בו תוכלו להשתמש במדריכים אינטרנטיים
 רבים שקיימים ברשת. לדוגמה:
@@ -1017,7 +1148,7 @@ Rmarkdown הוא כלי המאפשר לנו לייצר מסמכים ודוחות
 ![](images/Rstudio%20logo.png){width="100"}
 
 כדי לתרגל את הנושאים שנלמדו ביחידה זו נבצע ניתוח הכולל שימוש בלולאות קוד
-ופונקציות. ניתוח זה לא יהיה מורכב מדי, אך כדי לתרגל ניהול ניתוחים
+ופונקציות. ניתוח זה לא יהיה מורכב, אך כדי לתרגל ניהול ניתוחים
 מורכבים יותר נבצע אותו באמצעות מספר קבצים נפרדים, כפי שלמדנו ביחידה.
 
 הורידו מהמודל את שלושת קבצי הקוד ואת שלושת קבצי הנתונים שבתיקיית "יחידה
@@ -1025,36 +1156,90 @@ Rmarkdown הוא כלי המאפשר לנו לייצר מסמכים ודוחות
 
 הוראות לתרגיל לפי קבצים:
 
--   "9_functions":
+**"9_functions":**
 
-    -   צרו פונקציה המקבלת וקטור ומחזירה וקטור באותו האורך בו הערכים הקיצוניים (בעלי ציון תקן הגדול מ 2.5) הוחלפו בערכים חסרים
+צרו פונקציה המקבלת וקטור ומחזירה וקטור באותו האורך בו הערכים הקיצוניים (בעלי ציון תקן הגדול מ 2.5) הוחלפו בערכים חסרים
 
-    -   וודאו שהיא עובדת בצורה תקינה ושמרו את הקובץ המעודכן
+וודאו שהיא עובדת בצורה תקינה ושמרו את הקובץ המעודכן
 
--   "9_main_analysis":
+**"9_main_analysis":**
 
-    -   ייבאו את קובץ הפונקציות באמצעות הפקודה `source`
+ייבאו את קובץ הפונקציות באמצעות הפקודה `source`
+  
+צרו לולאה המייבאת ומאחדת את את שלושת קבצי הנתונים. הקבצים כולם בעלי מבנה זהה, כך שניתן לחבר אותם זה לזה על ידי הפקודה `bind_rows`.
 
-    -   צרו לולאה המייבאת ומאחדת את את שלושת קבצי הנתונים. הקבצים כולם
-        בעלי מבנה זהה, כך שניתן לחבר אותם זה לזה על ידי הפקודה
-        `bind_rows`.
 
-    -   היעזרו בפונקציה שייבאתם כדי להוסיף לטבלה עמודה המכילה את ציוני הנבדקים כאשר הערכים הקיצוניים הוחלפו בערכים חסרים
-    
-    -   צרו טבלה המסכמת את הציון הממוצע עבור כל נבדק
+הנתונים מתארים את ציוניהם של נבדקים ב5 מימדי אישיות מקובלים (Big 5: E, A, O, C, N), בנוסף לכמות הילדים שהיו להוריהם (birthn) ולמיקום שלהם בסדר הילודה (birthpos: 1 מתאר אח בכור, 2 מתאר אח שני וכו').
 
-    -   שמרו את טבלת הסיכום כקובץ RDS
+  
+היעזרו בפונקציה שייבאתם כדי להחליף את כל הערכים הקיצוניים בכל אחת מ5 מימדי האישיות בערכים חסרים.
 
--   "9_report_results":
+קבצו יחד את חמשת עמודות ציוני הbig 5 כך שהטבלה תהיה בפורמט ארוך.
 
-    -   ייבאו את קובץ הRDS שייצרתם באמצעות הפקודה `readRDS`
+ הטבלה הסופית אמורה להכיל את העמודות הבאות:
+ 
+  `id`: מספר הנבדק
+  `birthpos`: מיקום בסדר ילודה
+  `birthn`: מספר האחים במשפחה
+  `measure`: המדד הרלוונטי מתוך הbig 5
+  `score`: הציון הממוצע במדד הרלוונטי מתוך הbig 5
 
-    -   הפיקו את הקובץ באמצעות כפתור ה"Knit"
 
-    -   בדקו את הקובץ שנוצר (הוא יימצא בתיקיית העבודה שלכם) והעלו אותו, יחד
-        עם שלושת קבצי הקוד לתיבת ההגשה של יחידה זו.
+שמרו את הטבלה כקובץ RDS.
+
+
+**"9_report_results":**
+
+פתחו את הקובץ ומצאו את גוש הקוד עם ההערה "# ייבוא כאן את קובץ הRDS שיצרתם"
+  
+הוסיפו בחלונית זו שורת קוד שתייבא את קובץ הRDS שייצרתם באמצעות הפקודה `readRDS`.שמרו את הטבלה המיובאת בשם "long_data".
+
+אין צורך באף עריכה נוספת.
+  
+  
+הפיקו את הקובץ באמצעות לחיצה על כפתור ה"Knit" המופיע במרכז סרגל הכלים.
+  
+בדקו את הקובץ שנוצר (הוא יימצא בתיקיית העבודה שלכם) והעלו אותו, יחד עם שלושת קבצי הקוד, לתיבת ההגשה של יחידה זו.
+
+
+עיינו בקובץ הדיווח שנוצר וענו על השאלה הבאה:
+
+```{r summary_q1, echo = FALSE}
+
+question_text(
+  "<div style='direction: rtl;'>
+  כמה תצפיות קיצוניות זוהו במדד הנעימות (Agreeableness)?
+  </div>",
+  answer("10", correct = TRUE),
+  allow_retry = TRUE,
+  
+  correct="מעולה!", 
+  incorrect = "נסו שוב"
+)
+
+```
+
+```{r summary_q2, echo = FALSE}
+
+question_text(
+  "<div style='direction: rtl;'>
+  מהו ציון הנעימות (Agreeableness) הממוצע עבור אחים בכורים?
+  
+  עגלו ל2 מקומות לאחר הנקודה העשרונית.
+  </div>",
+  answer("3.95", correct = TRUE),
+  answer("3.94", correct = TRUE),
+  allow_retry = TRUE,
+  
+  correct="מעולה!", 
+  incorrect = "נסו שוב"
+)
+
+```
+
 
 בהצלחה!
+
 
 ## הגשה
 
@@ -1071,3 +1256,13 @@ learnrhash::encoder_logic()
 ```{r encode, echo=FALSE}
 learnrhash::encoder_ui()
 ```
+
+
+הדביקו את קוד הhash בתוך הגרשיים בפונקצייה הבאה כדי לוודא שעניתם על כל השאלות והתרגילים בלומדה.
+
+```{r hash_check,  exercise = TRUE, exercise.eval = FALSE}
+
+check_hash_code("")
+
+```
+

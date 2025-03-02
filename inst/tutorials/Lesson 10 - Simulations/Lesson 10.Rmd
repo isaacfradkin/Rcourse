@@ -51,6 +51,35 @@ knitr::opts_chunk$set(warning = FALSE)
 gradethis::gradethis_setup()
 
 set.seed(123456)
+
+
+{
+exercises_df = data.frame(exercises = c("q1", "q2a_hanna",
+                                        "ex2_sampling_dist_normal", "q3_sampling_dist_normal",
+                                        "analytic_sample_dist_exercise","analytic_s_dist_exercise2",
+                                        "q4_uniform", "q5_sampling_from_vector"),
+                          hebrew = c("בינומית: שאלה 1", "בינומית: תרגיל", 
+                                     "נורמלית: שאלה 1", "נורמלית: תרגיל 1", 
+                                     "נורמלית: תרגיל 2"  ,  "נורמלית: תרגיל 3",
+                                     "אחידה: שאלה", "דגימה מוקטור: שאלה"
+                                     ))
+
+
+check_hash_code   = function(hash){
+    exercises = exercises_df$exercises
+    response_table = learnrhash::decode_obj(hash)
+    if (length(response_table)==0){return("Invalid hash code")}
+    correct = response_table %>% filter(label %in% exercises, correct) %>% pull(label)
+    incorrect = setdiff(exercises, correct)
+    if (length(incorrect) == 0){return("Great work! Hash code is valid")}
+    else{
+      hebrew = exercises_df  %>% filter(exercises %in% incorrect) %>%pull(hebrew)
+      print("The following exercises are missing or incorrect:")
+      print(hebrew)
+    }
+
+} 
+}# hash checker
 ```
 
 
@@ -196,7 +225,7 @@ ggplot(df, aes(x = num_heads))+ # המחשה חזותית
 
 ```
 
-### בירור ערכי סף על פי הסתברות
+### בירור ערכים קריטיים
 
 אנחנו יכולים גם לבצע את התהליך ההפוך - ולבדוק מה כמות הטלות ה"עץ"
 שהסיכוי לקבל מספר הקטן ממנה מתאים להסתברות מסוימת, למשל - 5%.
@@ -204,12 +233,12 @@ ggplot(df, aes(x = num_heads))+ # המחשה חזותית
 ```{r value_from_p_example}
 num_heads = rbinom(n = 10000, size = 100, prob = 0.5)
 
-df = data.frame(num_heads = num_heads)
-
 num_heads_5_percent = quantile(num_heads, probs = 0.05) # פונקציה זו מחזירה לנו את האחוזון ה5 של וקטור התוצאות שלנו
 
-print(paste0("There is a 5% chance to get less than ",num_heads_5_percent," heads in 100 coin flips"))
+print(paste0("There is approximately a 5% chance to get less than ",num_heads_5_percent," heads in 100 coin flips"))
 
+# יצירת תרשים להמחשה
+df = data.frame(num_heads = num_heads)
 ggplot(df, aes(x = num_heads))+
   geom_histogram( binwidth = 1, aes(fill = num_heads < num_heads_5_percent))+
   labs(fill = "Less than 5 percent")+
@@ -218,6 +247,10 @@ ggplot(df, aes(x = num_heads))+
 
 ```
 
+בצורה הזו נוכל לברר את מספר הטלות ה"עץ" שנזדקק לקבל פחות ממנה כדי שהתוצאות שלנו יצביעו על תוצאה מובהקת סטטיסטית. 
+  
+  
+    
 `תרגיל`
 
 ![](images/Rstudio logo.png){width="100"}
@@ -247,20 +280,6 @@ question_text(
 
 ```
 
-```{r q2b_hanna, echo = FALSE}
-question("<div style='direction: rtl;'>
-מה המשמעות של תוצאה זו?
-</div>",
-         
-         answer("המטבע כנראה הוגן", message = "אמנם לא הוכחנו שהמטבע לא הוגן, אבל גם לא הראינו שהוא הוגן"),
-         answer("לא בלתי סביר שהמטבע הוגן",correct = TRUE),
-         answer("המטבע אינו הוגן",  message = "לא הראינו שהוא אינו הוגן. להפך - נראה שלא מאוד נדיר לקבל תוצאות כאלו אפילו אם המטבע הוגן"),
-        
-         allow_retry = TRUE,
-         
-         
-  correct="תשובה נכונה. הסיכוי לקבל תוצאה כזו אם המטבע היה הוגן הוא אמנם לא מאוד גבוה, אבל גם לא נמוך במיוחד. כלומר - לא בלתי סביר שהמטבע אכן הוגן")
-```
 
 ### פתרון אנליטי
 
@@ -268,17 +287,27 @@ question("<div style='direction: rtl;'>
 
 פונקציה זו מקבלת מאיתנו תוצאה מסויימת (כמות ה"עץ" שקיבלנו), את מספר ההטלות הכולל ואת הסיכוי הכללי של המטבע לנחות על "עץ" - ומחזירה את הסיכוי לקבל את התוצאה הזו או נמוך ממנה במידה והמטבע אכן היה מאופיין בסיכוי לנחות על "עץ" כפי שהזנו.
 
+החישוב כאן לא נשען על סימולציה - אלא על משוואה מוכרת להתפלגות הבינומית:
+
+$$
+P(X = x) = \binom{n}{x} p^x (1 - p)^{n - x}
+$$
+משוואה זו מתארת את הסיכוי לקבל "עץ" בדיוק x פעמים בהינתן n הטלות של מטבע עם סיכוי p לנחות על "עץ".
+כדי לחשב את הסיכוי לקבל כמות מסויימת של "עץ" **או פחות** התוכנה סוכמת את הסיכויים לקבל "עץ" עבור x ועבור כל המספרים הקטנים ממנו.
+
 למשל, אם נרצה לבחון את הסיכוי לקבל 10 "עץ" או פחות מתוך 30 הטלות של מטבע הוגן, נוכל לחשב זאת בצורה הבאה:
 
 ```{r pbinom,  exercise=TRUE, exercise.eval = FALSE}
-pbinom(q = 10,
-       size = 30,
-       prob = 0.5)
+pbinom(q = 10,      # x - כמות ה"עץ" שאנחנו רוצים לחשב את הסיכוי לקבל אותה או פחות ממנה
+       size = 30,   # n - כמות ההטלות
+       prob = 0.5)  # p - הסיכוי לקבל "עץ" בכל הטלה
 ```
 
-משמע, יש סיכוי של 0.05% לקבל 10 עץ או פחות.
+משמע, יש סיכוי של 0.05% לקבל 10 "עץ" או פחות.
 
 מאחר ששיטה זו לא נשענת על דגימה עם רכיב של אקראיות - היא תהיה מדויקת יותר מהתוצאות שנקבל בסימולציה.
+
+בסימוציות עם חזרות רבות - ההבדל יהיה זניח, אבל החישוב על סמך המשוואה יאפשר לנו לבצע את החישוב בצורה מהירה יותר. 
 
 ## התפלגות נורמלית
 
@@ -302,7 +331,8 @@ many_samples = rnorm(n = 100, mean = 8, sd = 2)
 מה הסיכוי לדגום באקראי אדם בגובה 140 ס"מ או פחות מתוך אוכלוסיה בה הגבהים
 מתפלגים נורמלית עם ממוצע 150 וס"ת 10?
 
-`תרגיל` השלימו את הקוד הבא כדי לענות על השאלה הנ"ל.
+`תרגיל` 
+השלימו את הקוד הבא כדי לענות על השאלה הנ"ל.
 דגמו 10,000 אנשים מתוך ההתפלגות שצוינה והיעזרו בקוד על מנת לבחון את הסיכוי לדגום אדם בגובה 140 ס"מ או פחות. 
 
 ```{r ex1_normal_p_value, exercise=TRUE, exercise.eval = FALSE}
@@ -313,7 +343,7 @@ population_distribution = rnorm(n = ____,
 height = 140      # הגובה שאנחנו רוצים לברר את הסיכוי לקבל ערך שווה או נמוך ממנו
 p_sample_140_or_under = mean(population_distribution<= height)
 
-print(paste0("The chance of sampling a person with a height of ",height," or less is ", round(p_sample_140_or_under *100),"%"))
+print(paste0("The chance of sampling a person with a height of ",height," or less is approximately ", round(p_sample_140_or_under *100),"%"))
 
 ggplot(data.frame(height = population_distribution),
        aes(x = height))+ # המחשה חזותית
@@ -321,13 +351,12 @@ ggplot(data.frame(height = population_distribution),
   labs(fill = "Less than 140")+ # נשנה את כותרת המקרא
   scale_fill_manual(values = c("lightblue","pink")) # נקבע את הצבעים בהם נעשה שימוש
 
-
 ```
 
 ### פתרון אנליטי
 
-כמו בהתפלגות בינומית - גם במקרה הזה ישנה פונקציה שמאפשרת לנו לעשות את הבדיקה הזו בצורה
-ישירה יותר, מבלי להידרש לדגימה.
+כמו בהתפלגות בינומית - גם במקרה הזה ישנה פונקציה המאפשרת לנו לעשות את הבדיקה הזו בצורה
+ישירה יותר, מבלי להידרש לדגימה אקראית.
 
 פונקציה זו נקראת `pnorm` והיא בוחנת את הסיכוי לקבל ערך נמוך מערך מסוים
 מתוך התפלגות נורמלית עם ממוצע וס"ת נתונים. למשל, את התוצאה מהתרגיל
@@ -384,7 +413,7 @@ for (i in 1:iterations){   # קביעת מספר החזרות בהתאם לער�
 p_value_less_than_7 = sum(means < 7) / iterations  # חישוב אחוז התצפיות הקטנות מ7
 
 # הדפסת התוצאות כמשפט
-print(paste0("The probability of randomly sampling a sample of size 20 with a mean less than 7 from this population is: ", p_value_less_than_7*100," %"))
+print(paste0("The probability of randomly sampling a sample of size 20 with a mean less than 7 from this population is approximately: ", p_value_less_than_7*100," %"))
 
 
 # הצגת התוצאות כהיסטוגרמה
@@ -408,9 +437,9 @@ ggplot(data.frame(means), aes(x = means)) +
 היעזרו בסימולציה בת 10,000 חזרות.
 
 ```{r ex2_sampling_dist_normal, exercise=TRUE, exercise.eval = FALSE}
-happiness = c(3.9, 2.2, 3.4, 2.4, 2.6, 2.7,5.7, 2.9, 2.9, 3.8
-              1.1, 2.3, 0.8, 2.5, 2.9, 3, 2.8, 2.6, 0.2, 2.6,
-              1.6, 1.6, 3.2, 3.7, 5,2.8, 2.7, 2.3, 2.2, 2.4)
+happiness = c(3.9, 5, 3.5, 2.5, 2.6, 4.2, 5, 2.9, 2.9, 3.8,
+              4.1, 2.5, 4.5, 2.5, 2.9, 3, 4.5, 2.6, 2.6, 3.9,
+              3.2, 3.5, 3.4, 3.9, 5,4.1, 2.7, 2.3, 3.8, 2.4)
 
 
 
@@ -432,9 +461,9 @@ for (i in 1:iterations){
   means = c(means, sample_mean)
 }
 
-p_value_less_than_3.5 = sum(means < mean(happiness)) / iterations
+p_value= sum(means < mean(happiness)) / iterations
 
-print(paste0("The probability of randomly sampling a sample of size 30 with a mean less than 3.5 from this population is: ", p_value_less_than_3.5*100," %"))
+print(paste0("The probability of randomly sampling a sample of size 30 with a mean less than 3.5 from this population is approximately: ", p_value*100," %"))
 
 ggplot(data.frame(means), aes(x = means)) +
   geom_histogram(bins = 30, fill = "lightblue", color = "black")+
@@ -506,7 +535,7 @@ ggplot(data.frame(means), aes(x = means)) +
 בהתאם, אנחנו יכולים להשתמש בפונקציה `pnorm` גם כדי לבחון את הסיכוי לקבל ממוצע כלשהו מתוך התפלגות הדגימה.
 
 `תרגיל`
-חשבו את הסיכוי לאסוף מתוך אוכלוסייה בה ציון הדכאוניות מתפלג נורמלית עם תוחלת 20 וס"ת 5 מדגם בן 40 נבדקים עם ציון דכאוניות ממוצע של 18 מתוך.
+חשבו את הסיכוי לאסוף מתוך אוכלוסייה בה ציון הדכאוניות מתפלג נורמלית עם תוחלת 20 וס"ת 5 מדגם בן 40 נבדקים עם ציון דכאוניות ממוצע של 18.
 
 ```{r analytic_sample_dist_exercise, exercise = TRUE, exercise.eval = FALSE}
 p_value = pnorm(q = _____,     # הממוצע שהתקבל במדגם
@@ -532,7 +561,7 @@ grade_this({
 ```
 
 
-לחלופין, נוכל להשתמש בפוקנציה `qnorm` כדי לחשב את ערך הסף שמתאים לp value מסויים, כך שכל ממוצע שקטן ממנו יהיה מובהק יותר מערך הp value שציינו.
+לחלופין, נוכל להשתמש בפוקנציה `qnorm` כדי לחשב את הערך הקריטי שמתאים לp value מסויים, כך שכל ממוצע שקטן ממנו יהיה מובהק יותר מערך הp value שציינו.
 
 
 ```{r analytic_s_dist_exercise2,  exercise = TRUE, exercise.eval = FALSE}
@@ -598,7 +627,7 @@ grade_this({
 sample_vec = runif(n = 30, min = 1, max = 2 )
 ```
 
-פתרו את התרגיל בRstudio וענו על השאלה הבאה:
+פתרו את התרגיל בRstudio (באמצעות לולאה עם 10,000 חזרות) וענו על השאלה הבאה:
 
 ```{r q4_uniform, echo = FALSE}
 
@@ -631,7 +660,10 @@ question_text(
 ```{r sample_example}
 three_rolls = sample(x= 1:6,      # וקטור המכיל את המספרים בין 1 ל6
                      size = 3,    # כמות הדגימות שנרצה לדגום
-                     replace = T) # משתנה השולט בהאם הדגימה תהיה עם או ללא החזרה
+                     prob = rep(x = 1/6,times = 6), # הסיכוי לדגום כל אחד מהערכים בוקטור
+                     # במקרה הזה לא היינו חייבים לציין את הסיכויים - שכן ברירת המחדל
+                     # היא סיכויים שווים לכל ערך
+                     replace = T) # משתנה השולט בהאם הדגימה תהיה עם או בלי החזרה
                                   # במידה ונדגום ללא החזרה - לא נוכל לקבל פעמיים את
 print(three_rolls)                # אותה התוצאה, ולכן ביקשנו כאן דגימה עם החזרה
 ```
@@ -640,7 +672,7 @@ print(three_rolls)                # אותה התוצאה, ולכן ביקשנו
 
 ![](images/Rstudio logo.png){width="100"}
 
-בנו התפלגות דגימה עבור הערך המקסימלי מתוך הטלה של ארבעה קוביות.
+בנו התפלגות דגימה (על סמך 10,000 חזרות) עבור הערך המקסימלי מתוך הטלה של ארבעה קוביות.
 
 היעזרו בפונציה `max` כדי לחלץ מתוך וקטור את הערך המקסימלי.
 
@@ -745,7 +777,7 @@ print(paste0("Power = ",round(percent_significant,2))) # דיווח
 תוצאות מובהקות סטטיסטית ויראה שהם אכן נמוכים יותר בתכונה זו מאוכלוסיית
 הסטודנטים הכללית.
 
-### תרגיל
+### תרגיל רשות
 
 ![](images/Rstudio logo.png){width="100"}
 
@@ -782,12 +814,14 @@ question_text(
   answer("0.67", correct = TRUE),
   allow_retry = TRUE,
   
-           
   correct="מעולה!", 
   incorrect = "נסו שוב"
 )
 
 ```
+
+התרגיל הינו תרגיל רשות, כלומר - ניתן להגיש את היחידה גם מבלי לענות על השאלה הנ"ל.
+
 
 ## הגשה
 
@@ -804,3 +838,14 @@ learnrhash::encoder_logic()
 ```{r encode, echo=FALSE}
 learnrhash::encoder_ui()
 ```
+
+
+הדביקו את קוד הhash בתוך הגרשיים בפונקצייה הבאה כדי לוודא שעניתם על כל השאלות והתרגילים בלומדה.
+
+```{r hash_check,  exercise = TRUE, exercise.eval = FALSE}
+
+check_hash_code("")
+
+```
+
+
