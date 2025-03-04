@@ -1,0 +1,12 @@
+name: Lesson6
+title: Lesson6
+username: isaacfradkin
+account: isaacfradkin
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13709997
+bundleId: 9646940
+url: https://isaacfradkin.shinyapps.io/Lesson6/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

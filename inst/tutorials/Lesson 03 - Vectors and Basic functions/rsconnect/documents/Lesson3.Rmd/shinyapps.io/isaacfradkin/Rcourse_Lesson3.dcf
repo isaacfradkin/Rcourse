@@ -1,0 +1,12 @@
+name: Rcourse_Lesson3
+title: Rcourse_Lesson3
+username: isaacfradkin
+account: isaacfradkin
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13168536
+bundleId: 9286247
+url: https://isaacfradkin.shinyapps.io/Rcourse_Lesson3/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

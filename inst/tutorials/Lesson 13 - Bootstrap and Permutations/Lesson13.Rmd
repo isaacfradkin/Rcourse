@@ -1230,38 +1230,45 @@ question_text(
 
 
 ```{r survey_q1, echo = FALSE}
-question("דרג/י את רמת הקושי של החומר המועבר ביחידה לדעתך",
-         answer("(1) קל מאוד",  correct=TRUE, message ="תשובתך התקבלה. "),
-         answer("(2) קל", message = "תשובתך התקבלה."),
-         answer("(3) בינוני", message = "תשובתך התקבלה."),
-         answer("(4) מאתגר" ,message = "תשובתך התקבלה."),
-         answer("(5) מאתגר מאוד",  message = "תשובתך התקבלה."),
+question("דרג/י את רמת הקושי של החומר המועבר ביחידה לדעתך",type="single",
+         answer("(1) קל מאוד",  correct=TRUE, message ="!שמחים לשמוע שהיה לך קל"),
+         answer("(2) קל",  correct=TRUE, message = "!שמחים לשמוע שהיה לך קל"),
+         answer("(3) בינוני",  correct=TRUE, message = "מקווים שלמרות האתגר את/ה מרגיש/ה שלמדת"),
+         answer("(4) מאתגר",  correct=TRUE ,message = "מקווים שלמרות האתגר את/ה מרגיש/ה שלמדת"),
+         answer("(5) מאתגר מאוד",  correct=TRUE,  message = "מקווים שלמרות האתגר את/ה מרגיש/ה שלמדת"),
+         correct = "",
+         incorrect = "",
          allow_retry = TRUE
 )
 ```
 
 
 ```{r survey_q2, echo = FALSE}
-question("עד כמה הלומדה העבירה את החומר בצורה ברורה?",
-         answer("(1) ברור מאוד",  correct=TRUE,message ="תשובתך התקבלה. "),
-         answer("(2) ברור",  message = "תשובתך התקבלה."),
-         answer("(3) בינוני", message = "תשובתך התקבלה."),
-         answer("(4) לא ברור",  message = "תשובתך התקבלה."),
-         answer("(5) לא הבנתי כלום",  message = "תשובתך התקבלה."),
+question("עד כמה הלומדה העבירה את החומר בצורה ברורה?",type="single",
+         answer("(1) ברור מאוד",  correct=TRUE,message ="!שמחים לשמוע"),
+         answer("(2) ברור",  correct=TRUE,  message ="!שמחים לשמוע"),
+         answer("(3) בינוני",  correct=TRUE, message = "תודה על המשוב הכנה והמועיל. נשמח אם תפרט/י למטה"),
+         answer("(4) לא ברור",  correct=TRUE,  message = "תודה על המשוב הכנה והמועיל. נשמח אם תפרט/י למטה"),
+         answer("(5) לא הבנתי כלום",  correct=TRUE,  message = "תודה על המשוב הכנה והמועיל. נשמח אם תפרט/י למטה"),
+         correct = "",
+         incorrect = "",
          allow_retry = TRUE
 )
 ```
 
 
 ```{r survey_q3, echo = FALSE}
-question("איזה נושא בלומדה היה הכי קשה לדעתך?",
-         answer("המבוא", correct=TRUE, message ="תשובתך התקבלה. "),
-         answer("בוטסטראפ",  message = "תשובתך התקבלה."),
-         answer("כל מבחני הפרמוטציות", message = "תשובתך התקבלה."),
-         answer("מבחן פרמוטציות לשני מדגמים",  message = "תשובתך התקבלה."),
-         answer("מבחן פרמוטציות למדגמים תלויים",  message = "תשובתך התקבלה."),
-         answer(" מבחן פרמוטציות עם ערך ייחוס", message = "תשובתך התקבלה."),
-         answer("מבחן פרמוטציות לקשר לינארי", message = "תשובתך התקבלה."),
+question("אילו נושאים בלומדה היו קשים במיוחד?",type="learnr_checkbox",
+         answer("המבוא", correct=TRUE),
+         answer("בוטסטראפ", correct=TRUE),
+         answer("כל מבחני הפרמוטציות", correct=TRUE),
+         answer("מבחן פרמוטציות לשני מדגמים", correct=TRUE),
+         answer("מבחן פרמוטציות למדגמים תלויים", correct=TRUE),
+         answer(" מבחן פרמוטציות עם ערך ייחוס", correct=TRUE),
+         answer("מבחן פרמוטציות לקשר לינארי", correct=TRUE),
+         correct = "תשובתך התקבלה. תודה על הפירוט",
+         try_again = "תשובתך התקבלה. תודה על הפירוט",
+         incorrect = "תשובתך התקבלה. תודה על הפירוט",
          allow_retry = TRUE
 )
 ```

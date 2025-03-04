@@ -33,7 +33,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(ggcheck)
-library(reader)
+
 
 
 tutorial_options()
@@ -41,12 +41,6 @@ knitr::opts_chunk$set(error = TRUE)
 
 ```
 
-
-```{r}
-income_wellbeing <- read.csv("income_wellbeing.csv")
-single_subject_wellbeing_2010 <- read.csv("single_subject_wellbeing_2010.csv")
-single_subject_wellbeing_2021 <- read.csv("single_subject_wellbeing_2021.csv")
-```
 ## מבוא
 
 היום אנחנו נלמד כיצד לבחון מגמות לינאריות בנתונים שלנו. תזכורת, מגמה לינארית מתארת מצב בו הקשר בין שני משתנים (למשל רמת העושר והכנסה) יכולה להיות מתוארת על ידי קו ישר (למשל, ככל שההכנסה גבוהה יותר כך גם רמת העושר). המבחנים בהם נעסוק היום יעזרו לנו להבין עד עד כמה מתקיים קשר לינארי בין שני משתנים והאם קשר זה מובהק.
