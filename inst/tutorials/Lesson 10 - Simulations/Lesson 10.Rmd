@@ -54,12 +54,14 @@ set.seed(123456)
 
 
 {
-exercises_df = data.frame(exercises = c("q1", "q2a_hanna",
-                                        "ex2_sampling_dist_normal", "q3_sampling_dist_normal",
+exercises_df = data.frame(exercises = c("q1", "q2a_hanna", 
+                                        "ex1_normal_p_value",
+                                        "q3_sampling_dist_normal",
                                         "analytic_sample_dist_exercise","analytic_s_dist_exercise2",
                                         "q4_uniform", "q5_sampling_from_vector"),
                           hebrew = c("בינומית: שאלה 1", "בינומית: תרגיל", 
-                                     "נורמלית: שאלה 1", "נורמלית: תרגיל 1", 
+                                     "נורמלית: תרגיל 1",
+                                     "נורמלית: שאלה 1", 
                                      "נורמלית: תרגיל 2"  ,  "נורמלית: תרגיל 3",
                                      "אחידה: שאלה", "דגימה מוקטור: שאלה"
                                      ))
@@ -126,8 +128,10 @@ check_hash_code   = function(hash){
 להלן דוגמה:
 
 ```{r coin_flip_example, exercise=TRUE, exercise.eval = FALSE}
-coin_flip = rbinom(n = 1, size = 1, prob = 0.5) # פונקציה שתחזיר לנו 1 או 0, בהסתברות של 0.5
+# פונקציה שתחזיר לנו 1 או 0, בהסתברות של 0.5
+coin_flip = rbinom(n = 1, size = 1, prob = 0.5) 
 
+# נדפיס את התוצאה
 print(ifelse(coin_flip==1, "Heads","Tails") )
 ```
 
@@ -139,6 +143,7 @@ print(ifelse(coin_flip==1, "Heads","Tails") )
 מתוך כל ההטלות שערכנו.
 
 ```{r coin_flip_example2,  exercise=TRUE, exercise.eval = FALSE}
+# נטיל 100 מטבעות ונספור את כמות הפעמים שקיבלנו עץ
 num_heads = rbinom(n = 1, size = 100, prob = 0.5)
 
 print(num_heads)
@@ -160,7 +165,8 @@ print(num_heads)
 תוצאות, כשכל ערך בוקטור מבטא את מספר העצים שהתקבל בסימולציה נפרדת של 100 הטלות מטבע.
 
 ```{r coin_flip_sample_dist}
-num_heads = rbinom(n = 50, size = 100, prob = 0.5)
+# נבצע 50 חזרות, שכל אחת מהן כוללת 100 הטלות
+num_heads = rbinom(n = 50, size = 100, prob = 0.5) 
 
 print(num_heads)
 ```
@@ -172,8 +178,10 @@ print(num_heads)
 התוצאות בצורה גרפית באמצעות היסטוגרמה.
 
 ```{r coin_flip_sample_dist_2}
+# נבצע 10,000 חזרות, שכל אחת מהן כוללת 100 הטלות
 num_heads = rbinom(n = 10000, size = 100, prob = 0.5)
 
+# נשמור את התוצאות בטבלה לצורך הפקת התרשים
 df = data.frame(num_heads = num_heads)
 
 ggplot(df, aes(x = num_heads))+
@@ -209,19 +217,22 @@ question("<div style='direction: rtl;'>
 הסיכוי לדגום באופן אקראי פחות מ40 פעמים "עץ" מתוך 100 הטלות מטבע.
 
 ```{r p_value_example}
+# נבצע 10,000 חזרות, שכל אחת מהן כוללת 100 הטלות
 num_heads = rbinom(n = 10000, size = 100, prob = 0.5)
-df = data.frame(num_heads = num_heads)
 
+# נחשב את אחוז החזרות בהן קיבלנו פחות מ40 "עץ" מתוך 100 הטלות
 p_value = sum(num_heads < 40) / 10000
 
+# ננסח את המסקנה כמשפט מלא
 print(paste0("The probability of sampling less than 40 'heads' out of 100 coin flips of a fair coins is approximately ", round(p_value*100),"%"))
 
-ggplot(df, aes(x = num_heads))+ # המחשה חזותית
-  geom_histogram( bins = 40, aes(fill = num_heads < 40))+ # נצבע בצבע אחר את התרשים עבור ערכים הקטנים מ40
+# המחשה חזותית
+df = data.frame(num_heads = num_heads)
+
+ggplot(df, aes(x = num_heads))+ 
+  geom_histogram( bins = 40, aes(fill = num_heads < 40), color = "black")+ # נצבע בצבע אחר את התרשים עבור ערכים הקטנים מ40
   labs(fill = "Less than 40")+ # נשנה את כותרת המקרא
   scale_fill_manual(values = c("lightblue","pink")) # נקבע את הצבעים בהם נעשה שימוש
-
-
 
 ```
 
@@ -231,9 +242,12 @@ ggplot(df, aes(x = num_heads))+ # המחשה חזותית
 שהסיכוי לקבל מספר הקטן ממנה מתאים להסתברות מסוימת, למשל - 5%.
 
 ```{r value_from_p_example}
+# 
 num_heads = rbinom(n = 10000, size = 100, prob = 0.5)
 
-num_heads_5_percent = quantile(num_heads, probs = 0.05) # פונקציה זו מחזירה לנו את האחוזון ה5 של וקטור התוצאות שלנו
+# פונקציה זו מחזירה לנו את האחוזון ה5 של וקטור התוצאות שלנו
+num_heads_5_percent = quantile(num_heads, probs = 0.05) 
+
 
 print(paste0("There is approximately a 5% chance to get less than ",num_heads_5_percent," heads in 100 coin flips"))
 
@@ -271,6 +285,7 @@ question_text(
   </div>",
   answer("0.09", correct = TRUE),
   answer("0.1", correct = TRUE),
+  answer("0.10", correct = TRUE),
   answer("0.11", correct = TRUE),
   
   allow_retry = TRUE,
@@ -341,17 +356,36 @@ population_distribution = rnorm(n = ____,
                                 sd = ____)
 
 height = 140      # הגובה שאנחנו רוצים לברר את הסיכוי לקבל ערך שווה או נמוך ממנו
-p_sample_140_or_under = mean(population_distribution<= height)
+p_sample_height_or_under = mean(population_distribution<= height)
 
-print(paste0("The chance of sampling a person with a height of ",height," or less is approximately ", round(p_sample_140_or_under *100),"%"))
+print(paste0("The chance of sampling a person with a height of ",height," or less is approximately ", round(p_sample_height_or_under *100),"%"))
 
 ggplot(data.frame(height = population_distribution),
        aes(x = height))+ # המחשה חזותית
-  geom_histogram( bins = 40, aes(fill = height <= 140))+ # נצבע בצבע אחר את התרשים עבור ערכים הקטנים מ40
+  geom_histogram( bins = 40, aes(fill = height <= 140), col = "black")+ # נצבע בצבע אחר את התרשים עבור ערכים הקטנים מ40
   labs(fill = "Less than 140")+ # נשנה את כותרת המקרא
   scale_fill_manual(values = c("lightblue","pink")) # נקבע את הצבעים בהם נעשה שימוש
 
 ```
+
+```{r ex1_normal_p_value-solution}
+population_distribution = rnorm(n = 10000,
+                                mean = 150,
+                                sd = 10)
+```
+
+```{r ex1_normal_p_value-check}
+
+grade_this({
+if (abs(user_object_get("p_sample_height_or_under") - 0.15895) < 0.014 ){
+     pass("עבודה מצוינת!")
+   } else {
+     fail("ישנה טעות בקוד. נסו שוב")
+   }
+})
+
+```
+
 
 ### פתרון אנליטי
 
@@ -430,13 +464,13 @@ ggplot(data.frame(means), aes(x = means)) +
 
 `תרגיל`
 
-אספתם מדגם של ציוני שמחת החיים עבור 30 אנשים. בדקו מה
+אספתם מדגם של ציונים בשאלון שמחת החיים עבור 30 אנשים. בדקו מה
 הסיכויים לקבל מדגם בעל ממוצע הזהה לממוצע שהתקבל ממדגם זה מתוך האוכלוסייה
 של מדינה בה ציוני שמחת החיים מתפלגים נורמלית עם ממוצע 3.5 וס"ת 1.
 
 היעזרו בסימולציה בת 10,000 חזרות.
 
-```{r ex2_sampling_dist_normal, exercise=TRUE, exercise.eval = FALSE}
+```{r ex2_sampling_dist_normal, exercise=TRUE, exercise.eval = FALSE, rows=20}
 happiness = c(3.9, 5, 3.5, 2.5, 2.6, 4.2, 5, 2.9, 2.9, 3.8,
               4.1, 2.5, 4.5, 2.5, 2.9, 3, 4.5, 2.6, 2.6, 3.9,
               3.2, 3.5, 3.4, 3.9, 5,4.1, 2.7, 2.3, 3.8, 2.4)
@@ -535,7 +569,7 @@ ggplot(data.frame(means), aes(x = means)) +
 בהתאם, אנחנו יכולים להשתמש בפונקציה `pnorm` גם כדי לבחון את הסיכוי לקבל ממוצע כלשהו מתוך התפלגות הדגימה.
 
 `תרגיל`
-חשבו את הסיכוי לאסוף מתוך אוכלוסייה בה ציון הדכאוניות מתפלג נורמלית עם תוחלת 20 וס"ת 5 מדגם בן 40 נבדקים עם ציון דכאוניות ממוצע של 18.
+חשבו את הסיכוי לאסוף מתוך אוכלוסייה בה ציון רמת הדיכאון מתפלג נורמלית עם תוחלת 20 וס"ת 5 מדגם בן 40 נבדקים עם ציון רמת דיכאון ממוצע של 18.
 
 ```{r analytic_sample_dist_exercise, exercise = TRUE, exercise.eval = FALSE}
 p_value = pnorm(q = _____,     # הממוצע שהתקבל במדגם
@@ -561,7 +595,7 @@ grade_this({
 ```
 
 
-לחלופין, נוכל להשתמש בפוקנציה `qnorm` כדי לחשב את הערך הקריטי שמתאים לp value מסויים, כך שכל ממוצע שקטן ממנו יהיה מובהק יותר מערך הp value שציינו.
+לחלופין, נוכל להשתמש בפוקנציה `qnorm` כדי לחשב את הערך הקריטי שמתאים לp value מסויים, כך שכל ממוצע שקטן ממנו יהיה מובהק יותר מערך המובהקות שציינו.
 
 
 ```{r analytic_s_dist_exercise2,  exercise = TRUE, exercise.eval = FALSE}
@@ -590,6 +624,10 @@ grade_this({
 
 ```
 
+
+שתי פונקציות אלו והסימולציות המדמות אותן מאפשרות לנו לבצע בדיקת השערות באצעות מבחן Z למדגם יחיד - נבדוק את הסיכוי לקבל את ממוצע המדגם שלנו מתוך התפלגות דגימה המתאימה להשערת האפס שלנו ואם הסיכוי נמוך מערך רף כלשהו שקבענו (אלפא) נוכל לקבוע שמאוד לא סביר לקבל את התוצאות שלנו אם H0 הייתה נכונה - ולכן אנו מסיקים שהיא ככל הנראה איננה נכונה. 
+
+למשל- בדוגמה הנ"ל, אם היינו דוגמים 40 הנבדקים ומוצאים שממוצע רמת הדיכאוניות שלהם היה 18 - יכולנו להסיק שתוחלת רמת הדיכאוניות באוכלוסייה ממנה דגמנו אינה 20 (בהינתן ההנחה שסטיית התקן של רמת הדיכאוניות הינה 5).
 
 
 ## התפלגויות נוספות
@@ -714,7 +752,8 @@ question_text(
   
 ### עריכת מבחן בודד
   
-לפני שניגש לסימולציה נתחיל בלערוך מבחן בודד, כפי שעשינו מוקדם יותר ביחידה.
+לפני שניגש לסימולציה נתחיל בלערוך מבחן בודד, כפי שעשינו מוקדם יותר ביחידה באמצעות הפונקציה `pnorm`.
+
 
 המבחן שנערוך, הנקרא מבחן Z לתוחלת מדגם בודד, בוחן את הסיכוי לקבל מדגם בעל ממוצע מסוים במידה ודגמנו מאוכלוסייה עם ממוצע וס"ת מוגדרים - ואם הסיכוי לקבל תוצאה כזו קטן מדי (לרוב - קטן מ0.05) נסיק שהקבוצה שדגמנו ממנה כנראה אינה שייכת לאוכלוסייה זו.
 
@@ -738,16 +777,17 @@ print(p_value)
 
 ערך הp value שקיבלנו קטן מ0.05 ולכן נוכל לדחות את השערת האפס. כלומר - אם נקבל ממוצע נוירורטיות של 2.5 ממדגם של 30 סטודנטים לפסיכולוגיה, נוכל להסיק שרמת הנוירוטיות של סטודנטים לפסיכולוגיה קטנה מ3, בהינתן שסטיית התקן של רמת הנוירוטיות באכולוסייה הינה 1.
 
-### דגימה מתוך H1
+### דגימה מתוך ההשערה האלטרנטיבית
 
 בפועל, גם אם המצב האמיתי בעולם הוא שהתוחלת של הנוירוטיות של סטודנטים לפסיכולוגיה היא באמת 2.5 - עדיין מאוד סביר שבדגימה אקראית כלשהי נקבל מדגם עם ממוצע גבוה יותר , כך שייתכן שנקבל מדגם שלא יאפשר לנו לדחות את השערת האפס.
 
 כדי להבין את הסיכויים לכך נערוך סימולציה: 
 
-אנחנו נדמה את התהליך בו אנחנו דוגמים מדגם של 30 ערכים מתוך אוכלוסייה שכזו (עם תוחלת נוירוטיות השווה ל2.5), ונבחן האם המדגם שלנו אפשר לנו לדחות את השערת האפס.
+נדמה את התהליך בו אנחנו דוגמים מדגם של 30 ערכים מתוך אוכלוסייה שכזו (המקיימת את ההשערה האלטרנטיבית, ולכן תוחלת הנוירוטיות בה שווה ל2.5), ונבחן האם המדגם שלנו אפשר לנו לדחות את השערת האפס.
  
 נחזור על התהליך מספר רב של פעמים ונבחן בכמה אחוז מהמקרים המדגם שקיבלנו היה עם ממוצע נמוך מספיק.
 
+התוצאה שנקבל תאפשר לנו להעריך את הסיכוי שלנו לדחות את השערת האפס על סמך מדגם בגודל 30, במידה והמצב האמיתי בעולם הוא שהתוחלת הינה 2.5.
 
 ```{r power_example}
 sample_size = 30   # גודל המדגם
@@ -773,7 +813,7 @@ print(paste0("Power = ",round(percent_significant,2))) # דיווח
 
 כלומר - אם המצב בעולם הוא שתכונת הנוירוטיות אצל סטודנטים לפסיכולוגיה אכן
 מתפלגת נורמלית עם ממוצע 2.5 וס"ת 1, אז
-ב`r round(percent_significant*100)` אחוז מהמקרים מדגם בגודל 30 יניב
+בכ`r round(percent_significant*100)` אחוז מהמקרים מדגם בגודל 30 יניב
 תוצאות מובהקות סטטיסטית ויראה שהם אכן נמוכים יותר בתכונה זו מאוכלוסיית
 הסטודנטים הכללית.
 
@@ -821,6 +861,81 @@ question_text(
 ```
 
 התרגיל הינו תרגיל רשות, כלומר - ניתן להגיש את היחידה גם מבלי לענות על השאלה הנ"ל.
+
+
+## משוב
+
+נשמח לשמוע מכם משוב קצר על הלומדה. 
+המשוב הינו רשות ויעובד בצורה אנונימית.
+
+שימו לב: ברוב השאלות אין אפשרות לשנות את התגובה לאחר לחיצה על כפתור ההגשה
+
+```{r survey_q1, echo = FALSE}
+question("כמה קשה הייתה היחידה עבורך?",
+         type="single",
+         answer("קלה"        ,correct=TRUE,  message = "תגובתך: קלה"),
+         answer("בינונית"    ,correct=TRUE,  message = "תגובתך: בינונית"),
+         answer("מאתגרת"     ,correct=TRUE,  message = "תגובתך: מאתגרת"),
+         answer("קשה"        ,correct=TRUE,  message = "תגובתך: קשה"),
+         answer("קשה מאוד"   ,correct=TRUE,  message = "תגובתך: קשה מאוד"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q2, echo = FALSE}
+question("עד כמה את/ה מרגיש/ה שהבנת את החומר שנלמד ביחידה?",
+         type="single",
+         answer("במידה רבה"      , correct=TRUE,  message = "תגובתך: במידה רבה"),
+         answer("במידה סבירה" ,    correct=TRUE,  message = "תגובתך: במידה סבירה"),
+         answer("באופן חלקי"  ,    correct=TRUE,  message = "תגובתך: באופן חלקי"),
+         answer("במידה מעטה"  ,correct=TRUE,  message = "תגובתך: במידה מעטה"),
+         answer("במידה מעטה מאוד",correct=TRUE,  message = "תגובתך: במידה מעטה מאוד"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q3, echo = FALSE}
+question("אילו נושאים בלומדה היו קשים במיוחד עבורך?",type="learnr_checkbox",
+         answer("התפלגות בינומית", correct=TRUE),
+         answer("התפלגות נורמלית", correct=TRUE),
+         answer("התפלגות אחידה", correct=TRUE),
+         answer("דגימה מוקטור", correct=TRUE),
+         answer("התפלגות דגימה", correct=TRUE),
+         answer("מבחני עוצמה", correct=TRUE),
+         answer("אף נושא", correct=TRUE),
+         
+         correct = "תגובתך התקבלה",
+         try_again = "תגובתך התקבלה",
+         incorrect = "תגובתך התקבלה",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q4, echo = FALSE}
+  question_text(
+    "הערות ספציפיות לגבי חלקי היחידה השונים",
+    incorrect = "תגובתך התקבלה",
+    correct = "תגובתך התקבלה",
+    answer(text = "/'ק/'ק",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
+
+```{r survey_q5, echo = FALSE}
+  question_text(
+    "הערות כלליות לגבי היחידה",
+    incorrect = "תגובתך התקבלה",
+    correct = "תגובתך התקבלה",
+    answer(text = "/'ק/'ק",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
 
 
 ## הגשה

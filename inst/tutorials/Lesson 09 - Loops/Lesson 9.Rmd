@@ -91,8 +91,10 @@ for (i in 1:5){
 
 social_sleep  = social_sleep  %>% mutate(sleep = round(sleep,1),
                                          social = round(social))
-} # social sleep
 
+social = social_sleep %>% select(-sleep)
+
+}
 
 {
 exercises_df = data.frame(exercises = c("loops_ex1", "loops_ex2", "loops_q1", "loops_q2", "loops_ex3", "loops_q3",
@@ -102,6 +104,7 @@ exercises_df = data.frame(exercises = c("loops_ex1", "loops_ex2", "loops_q1", "l
                                      "פונקציות: שאלה 1", "פונקציות: כתיבת פונקציה", "פונקציות: שאלה 2", "פונקיות: תיקון פונקציה",
                                      "תרגיל מסכם: שאלה 1" , "תרגיל מסכם: שאלה 2"
                                      ))
+  
 
 
 check_hash_code   = function(hash){
@@ -146,6 +149,8 @@ for (i in 1:5){
 
 social_sleep  = social_sleep  %>% mutate(sleep = round(sleep,1),
                                          social = round(social))
+
+social = social_sleep %>% select(-sleep)
 ```
 
 ```{r prepare-func1}
@@ -157,10 +162,10 @@ mystery_function <- function(celsius) {
 
 ```{r prepare-func2}
 mystery_function_2 <- function(x, value) {
-    below <- sum(x < value)
-    equal <- sum(x == value)
+    n_below <- sum(x < value)
     n <- length(x)
-    return((below + 0.5 * equal) / n * 100)
+    report = paste0(n_below / n * 100, "%")
+    return(report)
 }
 ```
 
@@ -321,7 +326,6 @@ printed_string = "[1] \"David Scored 80 points\"\n[1] \"Pnina Scored 90 points\"
 בשורה המתאימה בכל סבב של הלולאה.
 
 ::: extra_functions
-**העשרה**  
 הפונקציות `paste` ו`paste0` משמשות כדי לחבר יחד מחרוזות (מילים, אותיות).
 בדוגמה הקודמת הפונקציה משלבת את שם הנבדק והציון שלו לכדי משפט קוהרנטי.
 
@@ -407,7 +411,7 @@ question("<div style='direction: rtl;'>
 
 בדוגמה בה חישבנו את סדרת פיבונאצ'י נעזרנו בהשמה לוקטור במיקום `i` כדי לשמור את הערכים שחישבנו בכל סבב של הלולאה.
 
-נוכל להיעזר בשיטה זו גם כדי לשמור תוצרים שחושביו מתוך הנתונים שלנו. למשל:
+נוכל להיעזר בשיטה זו גם כדי לשמור תוצרים שחושבו מתוך הנתונים שלנו. למשל:
 
 
 ```{r loops_save_example_1,  exercise=TRUE, exercise.eval = FALSE}
@@ -453,10 +457,14 @@ for (subj in subjects){
 print(means)
 ```
 
-התוצאה זהה, והשיטה המומלצת היא דווקא זו של השמה לפי אינדקס.   
-הראנו לכם את שיטה זו בעיקר כי היא עוזרת לנו להבין איך לפעול כשנרצה לשמור תוצאות לטבלה.
+התוצאה זהה, אך השיטה המומלצת היא השמה לפי אינדקס.
 
-במקרים בהם אנחנו רוצים לשמור מספר תוצאות בכל סבב  של הלולאה אנחנו יכולים לייצר מספר וקטורים ריקים שונים, ולשמור בכל אחד תוצאה אחרת (למשל וקטור נפרד לממוצעים, סטיות תקן, ערך מינמום וכו'), אבל לפעמים יהיה יותר יעיל לשמור את התוצאות יחד בטבלה - שאליה נוסיף את התוצאות שלנו בכל סבב של הלולאה.
+
+במקרים בהם אנחנו רוצים לשמור מספר תוצאות בכל סבב  של הלולאה אנחנו יכולים לייצר מספר וקטורים ריקים שונים ולשמור בכל אחד תוצאה אחרת.
+
+למשל וקטור נפרד לממוצעים, סטיות תקן, ערך מינמום וכו'.
+
+לרוב, יהיה יותר נח לשמור את התוצאות יחד בטבלה - שאליה נוסיף שורה, או מספר שורות, בכל סבב של הלולאה (באופן דומה להוספת הערכים בסוף הוקטור בדוגמה הקודמת).
 
 ```{r loops_save_example_3,  exercise=TRUE, exercise.eval = FALSE}
 
@@ -505,9 +513,9 @@ question("<div style='direction: rtl;'>
 מה מבצעת הלולאה בקטע הקוד האחרון?
 </div>",
          
-         answer(" לגיל הנבדק"),
-         answer("הלולאה ייצרת טבלה עם ארבע עמודות, מפצלת ושומרת אותה בשלושה קבצים נפרדים"),
-         answer("מייצרת שלושה טבלאות נפרדות, ושומרת אותן בהתאם לשם הקובץ ממנו יובאו"),
+         answer("מחליפה את שמותיהם של שלוש טבלאות נתונים"),
+         answer("מפצלת טבלה לשלוש טבלאות נפרדות"),
+         answer("מייצרת שלושה טבלאות נפרדות, ושומרת אותן כשלושה קבצים נפרדים"),
          answer("טוענת טבלאות משלושה קבצים ומאחדת אותן לטבלה אחת", correct = TRUE),
          allow_retry = TRUE,
          
@@ -518,60 +526,36 @@ question("<div style='direction: rtl;'>
 
 ### תרגיל בניית לולאה
 
-הנתונים בטבלה `social_sleep` מתארים את שעות השינה וציוני החברתיות עבור 5
+הנתונים בטבלה `social` מתארים את שעות השינה וציוני החברתיות עבור 5
 נבדקים בכל יום במשך חודש.
 
 הצצה לשורות הראשונות בטבלה:
 
 ```{r, echo = F}
-head(social_sleep, 4)
+head(social, 4)
 ```
 
-`תרגיל` צרו לולאה המחשבת עבור כל נבדק את המתאם בין שעות השינה והחברותיות
-באותו היום.
+`תרגיל` חשבו את ממוצע החברתיות עבור כל נבדק באמצעות לולאה.
 
-היעזרו בפונקציה `cor` המחשבת את המתאם בין שני וקטורים של מספרים באופן
-הבא:
-
-```{r, eval = F}
-r = cor(x = vector1, y = vector2)
-# שני הוקטורים הם וקטורים מספריים באותו האורך
-# והתוצה היא מספר בין -1 ל1
-```
 
 ```{r loops_ex3, exercise=TRUE, exercise.eval = FALSE}
 
 subjects = c("Yocheved","Alfred","Dilan","Shoshkeh", "Noam")
 
-correlations = c()
+# וקטור ריק שיכיל את הממוצעים
+social_means = c()
 
-# כתבו כאן את הלולאה
-# נרצה לעבור על הערכים בין 1 ל5
-for (__________){
-  
-  # שם הנבדק שנחשב עבורו את המתאם בסבב זה
-  subj = 
-  
-  #  שליפת הנתונים של הנבדק מתוך הטבלה 
-  # social_sleep
-  social_sleep_subj = 
-  
-  # חישוב המתאם בין העמודות
-  # sleep ו social
-  r =  
-  
-  # הוספת הערך שחושב לוקטור
-  # correlations
-    
+# בנו את הלולאה כאן
+for (){
 }
 
 
-
-# יצירת תרשים על סמך התוצאות  - אין צורך לערוך את חלק זה
+# יצירת תרשים על סמך התוצאות
 ggplot(data.frame( name = subjects,
-                   r = correlations))+
-  geom_col(aes(x = name, y = r), fill = "skyblue")+ # דרך נוספת לצייר עמודות
-  ylab("Correlation")
+                   social_mean = social_means))+
+  geom_col(aes(x = name, y = social_means), fill = "#418267")+
+  ylab("Mean rating")+
+  theme_minimal()
 
 ```
 
@@ -579,29 +563,31 @@ ggplot(data.frame( name = subjects,
 
 subjects = c("Yocheved","Alfred","Dilan","Shoshkeh", "Noam")
 
-correlations = c()
+social_means = c()
 
 # בנו את הלולאה כאן
-
-for (subj in subjects){
-  subj_data = social_sleep %>% filter(name == subj)
-  r = cor(subj_data$sleep, subj_data$social)
-  correlations = c(correlations, r)
+for (i in 1:length(subjects)){
+  subj = subjects[i]
+  subj_data = social %>% filter(name == subj)
+  subj_mean = mean(subj_data$social)
+  
+  social_means[i] = subj_mean 
 }
 
 
 # יצירת תרשים על סמך התוצאות
 ggplot(data.frame( name = subjects,
-                   r = correlations))+
-  geom_col(aes(x = name, y = r), fill = "skyblue")+
-  ylab("Correlation")
+                   social_mean = social_means))+
+  geom_col(aes(x = name, y = social_means), fill = "#418267")+
+  ylab("Mean rating")+
+  theme_minimal()
 ```
 
 ```{r loops_ex3-check}
 
 grade_this({
-if (identical(user_object_get("correlations"),
-              solution_object_get("correlations"))){
+if (identical(user_object_get("social_means"),
+              solution_object_get("social_means"))){
      pass("עבודה מצוינת!")
    } else {
      fail("ישנה טעות בקוד. נסו שוב")
@@ -617,39 +603,35 @@ if (identical(user_object_get("correlations"),
 לנו גם לבצע ניתוחים נוספים, שאינם אפשריים (או אינם נוחים) בכלים שלמדנו
 קודם.
 
-למשל, אם נניח שהנבדקים בטבלה שלנו מכירים זה את זה יכול להיות שנרצה לבדוק
-את המתאם בציוני החברותיות ביניהם - כדי לראות אם הם משפיעים זה על זה או
-מושפעים מגורמים משותפים.
+למשל, יכול להיות שנתעניין בהפרשי החברתיות בין כל צמד משתתפים.
 
-כדי לעשות זאת נצטרך להשוות בין כל צמד משתתפים ולבחון את המתאם בין
-הציונים שלהם. נוכל לעשות זאת באמצעות לולאה שנמצאת בתוך לולאה אחרת:
+כדי לחשב הפרש שכזה נצטרך להשוות בין כל צמד משתתפים. נוכל לעשות זאת באמצעות לולאה שנמצאת בתוך לולאה נוספת:
 
 הלולאה הראשונה תבחר נבדק אחד, והשנייה תערוך השוואה של נבדק זה אל מול כל
-שאר הנבדקים (כולל עצמו) אחד אחד.
+שאר הנבדקים אחד אחד. כשהלולאה השנייה תסיים - הלולאה הראשונה תעבור לנבדק הבא והשנייה תשווה את כל הנבדקים אליו וכן הלאה.
 
 ```{r nested_loops_example, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-social_sleep"}
 
-print(head(social_sleep)) # הצצה אל תוך קובץ הנתונים
+print(head(social)) # הצצה אל תוך קובץ הנתונים
 
 
 subjects = c("Yocheved","Alfred","Dilan","Shoshkeh", "Noam")
 
 df = data.frame(subj1 = c(), # טבלה ריקה 
                 subj2 = c(),
-                r = c())
+                mean_diff = c())
 
 for (subj1 in subjects){
   for (subj2 in subjects){
-      print(paste(subj1,"vs",subj2))     # הדפסה שנועדה להמחיש את האופן שבו הלולאות עובדות
-    
-      subj1_social = social_sleep %>% filter(name == subj1) %>% pull(social) # וקטור המכיל את דירוגי החברתיות של נבדק אחד
-      subj2_social = social_sleep %>% filter(name == subj2) %>% pull(social) # וקטור המכיל את דירוגי החברתיות של נבדק נוסף
+  
+      subj1_social = social %>% filter(name == subj1) %>% pull(social) # וקטור המכיל את דירוגי החברתיות של נבדק אחד
+      subj2_social = social %>% filter(name == subj2) %>% pull(social) # וקטור המכיל את דירוגי החברתיות של נבדק נוסף
       
-      r = cor(subj1_social, subj2_social) # נחשב את המתאם בין דירוגי החברותיות
+      mean_diff = mean(subj1_social - subj2_social) # נחשב את ממוצע הפרשי החברתיות
       
-      new_row = data.frame(subj1 = subj1, # נסדר את שמות הנבדקים שביניהם חישבנו את המתאם
+      new_row = data.frame(subj1 = subj1, # נסדר את שמות הנבדקים שביניהם חישבנו את ההפרש
                            subj2 = subj2,
-                           r = r)         # ואת מקדם המתאם שקיבלנו  בתור שורה בטבלה
+                           mean_diff = mean_diff)  # ואת ההפרש עצמו בתור שורה בטבלה
       
       df = bind_rows(df, new_row)         # נצרף את השורה שיצרנו לטבלה הכללית
   }
@@ -657,14 +639,15 @@ for (subj1 in subjects){
 
 print(head(df))   # נדפיס את השורות הראשונות של הטבלה שיצרנו
 
-# הצגת המתאמים באמצעות תרשים חום
-# ככל שהמתאם חזק יותר - צבע הרקע חזק יותר (בהתאם לכיוון המתאם)
-ggplot(df %>% mutate(r = ifelse(r ==1, NA, r)), # נמיר את המתאם של כל נבדק עם עצמו לערך חסר,
-       aes( x = subj1, y = subj2))+             #  כדי שלא יפיעו על סקאלת הצבעים
-  geom_tile(aes(fill = r))+
-  geom_text(aes(label = round(r,2)), color = "white")+
+
+ggplot(df ,
+       aes( x = subj1, y = subj2))+         
+  geom_tile(aes(fill = mean_diff))+
+  geom_text(aes(label = round(mean_diff,1)), color = "white")+
   scale_fill_gradient2(low = "red", high = "blue")+
-  theme_minimal()
+  theme_minimal()+
+  labs(title = "Rating differences", subtitle = "Subject 1 -Subject 2",
+       fill = "Mean difference", x = "Subject 1", y = "Subject 2")
 
 ```
 
@@ -681,12 +664,14 @@ ggplot(df %>% mutate(r = ifelse(r ==1, NA, r)), # נמיר את המתאם של 
 results = c()
 n_iterations = 10000
 
-for (i in 1:n_iterations){ # נחזור על התהליך 1000 פעם
-  result1 = sample(x = 1:6, size = 1) # הטלה ראשונה: נדגום אקראית מספר מ1 עד 6
-  result2 = sample(x = 1:6, size = 1) # הטלה שנייה: נדגום מספר נוסף
-  sum_of_both = result1 + result2 # נחשב את סכום את 2 ההטלות
+for (i in 1:n_iterations){             # נחזור על התהליך 1000 פעם
+  result1 = sample(x = 1:6, size = 1)  # הטלה ראשונה: נדגום אקראית מספר מ1 עד 6
+  result2 = sample(x = 1:6, size = 1)  # הטלה שנייה: נדגום מספר נוסף
+                                       # נלמד עוד על השימוש בפונקציה זו ביחידה הבאה
   
-  results[i] = sum_of_both # נוסיף את הסכום שקיבלנו לוקטור
+  sum_of_both = result1 + result2      # נחשב את סכום 2 ההטלות
+  
+  results[i] = sum_of_both             # נוסיף את הסכום שקיבלנו לוקטור
 }
 
 results_sum = data.frame(value = results) %>%   # נעביר את התוצאות לוקטור
@@ -695,11 +680,14 @@ results_sum = data.frame(value = results) %>%   # נעביר את התוצאות
             percent =n/n_iterations)
 
 
-ggplot(results_sum, aes( x = value, y = percent))+  # נמחיש את התוצאות: הגדרת צירים
-  geom_col()+                                       # הוספת עמודות
-  scale_y_continuous()
+ggplot(results_sum, aes( x = factor(value),   # נמחיש את התוצאות: הגדרת צירים
+                         y = percent))+  
+  geom_col(fill = "lightblue")+               # הוספת עמודות
+  labs(x = "Sum", y = "Percent")+
+                                              # שינוי הפורמט בו מוצגים האחוזים
+  scale_y_continuous(labels = function(x) paste0(round(x*100),"%"))+
+  theme_minimal()
 
-print(head(results_sum))
 ```
 
 ענו על השאלה הבאה על סמך תוצאות הסימולציה:
@@ -722,7 +710,7 @@ question(
 
 ```
 
-ביחידה הבאה נלמד בצורה מעמיקה יותר על סימולציות, השימושים השונים בהם
+ביחידה הבאה נלמד בצורה מעמיקה יותר על סימולציות, השימושים השונים בהן
 ואיך עורכים אותן.
 
 ## פונקציות
@@ -730,9 +718,9 @@ question(
 דרך נוספת בה אנחנו יכולים לעשות שימוש חוזר באותו הקוד כוללת הגדרה של
 פונקציות.
 
-מבחינה רעיונית, שיטה זו דומה מאוד לשימוש בלולאות - אבל במקום להריץ את
-הקוד שבלולאה מספר פעמים ברצף אנחנו "אורזים" אותו לשימוש עתידי כך שנוכל
-להשתמש בו בצורה נוחה מתי שיהיה לנו צורך בכך, במקום לכתוב מחדש את כל קטע
+מבחינה רעיונית, שיטה זו דומה מאוד לשימוש בלולאות, אבל במקום להריץ את
+הקוד שבלולאה מספר פעמים ברצף אנחנו "אורזים" אותו לשימוש עתידי - כך שנוכל
+להשתמש בו בצורה נוחה מתי שיהיה לנו צורך בכך במקום לכתוב מחדש את כל קטע
 הקוד.
 
 הגדרה של פונקציה תיראה כך:
@@ -746,7 +734,7 @@ my_function = function(a,b){
 }
 
 #שימוש בפונקציה
-result = my_function(1,2)
+result = my_function(a = 1, b = 2)
 
 ```
 
@@ -755,12 +743,12 @@ result = my_function(1,2)
 **1) הגדרת הארגומנטים שהפונקציה מקבלת:** בדוגמה הנ"ל הפונקציה מצפה לקבל
 מאיתנו 2 ערכים, אותם היא מכנה `a` ו`b`.
 
-**2) הגדרת הערכים שהפונקציה מחזירה:** חלק זה יקבע את התוצר שנקבל כשנשתמש
-בפונקציה בדוגמה הנ"ל הפונקציה מחזירה את הסכום של שני המספרים שהיא קיבלה
+**2) הגדרת הערכים שהפונקציה מחזירה:** הפקודה `return`בסוך הפונקציה קובעת את התוצר שנקבל כשנשתמש
+בפונקציה. בדוגמה הנ"ל הפונקציה מחזירה את האובייקט `c` המכיל את הסכום של שני המספרים שהפונקציה קיבלה
 מאיתנו.
 
-שימו לב: בניגוד ללולאות, אובייקטים שנייצר בתוך פונקציה לא יישמרו. התוצר
-היחיד שנקבל מהפונקציה הוא הערך שהפונקציה מחזירה.
+  שימו לב: אובייקטים שנייצר בתוך פונקציה לא יישמרו. התוצר היחיד שנקבל מהפונקציה הוא האובייקט שהפונקציה מחזירה. 
+
 
 ### דוגמא
 
@@ -799,6 +787,9 @@ question(
 
 ```
 
+שימו לב: הפונקציה הנ"ל יכלה לקבל בתור הארגומנט `celsius` אובייקטים שהינם מספר בודד או וקטור של מספרים. אם היינו מנסים להשתמש בה עם טבלה או ערכים שאינם מספריים היינו מקבלים הודעת שגיאה.
+
+
 ### תרגיל כתיבת פונקציה
 
 כתבו פונקציה המקבלת וקטור של מספרים ומחזירה אותו בתור ציוני תקן.
@@ -816,8 +807,8 @@ Z_score_function = # כתבו את הפונקציה כאן
   
   
   
-# השאירו את שורת הקוד הבאה כפי שהיא
-# השורה מיישמת את הפונקציה על וקטור ומדפיסה את התוכן שלו 
+# השאירו את שורות הקוד הבאות כפי שהן
+# השורות מיישמות את הפונקציה על וקטור ומדפיסות את הוקטור שהתקבל 
 test_vector = 1:10
 z_test_vector = Z_score_function(test_vector)
 print(z_test_vector)
@@ -857,9 +848,10 @@ if (identical(user_object_get("z_test_vector"),
 
 ```{r functions_example_3}
 mystery_function_2 <- function(x, value) {
-    below <- sum(x < value)
+    n_below <- sum(x < value)
     n <- length(x)
-    return((below) / n * 100)
+    report = paste0(n_below / n * 100, "%")
+    return(report)
 }
 
 ```
@@ -867,7 +859,6 @@ mystery_function_2 <- function(x, value) {
 ```{r guess_function_2,exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-func2" }
 
 mystery_function_2( x = 1:10, value = 5)
-
 ```
 
 ```{r functions_q2, echo = FALSE}
@@ -896,6 +887,7 @@ question(
 כרגע, הקוד מדפיס ערך חסר.
 
 זהו את הבעיה ותקנו אותה, כך שהקוד ימלא את הייעוד שלו.
+
 
 ```{r no_return, exercise=TRUE, exercise.eval = FALSE}
 limit_range <- function(vec, limits){
@@ -967,10 +959,12 @@ if (identical(test, vec)){
 כותרות ופרקים חדשים. מומלץ להוסיף הערה אחרי הסוגר השני ולפרט בה מה הקוד
 המקופל עושה, כדי שנוכל לעקוב אחרי מטרת הקוד מבלי לבטל את הצמצום.
 
-כדי שהקוד שלכם יהיה מסודר ונח לקריאה, עריכה ושימוש מומלץ להשתמש בשלושת
-הטכניקות.
+מומלץ להשתמש בשלושת השיטות כדי להבטיח שהקוד שלכם יהיה מסודר ונח לקריאה.
 
-תעתיקו את הקוד לRstudio ונסו בעצמכם (קיפולי קוד לא עובדים בלומדה).
+
+![](images/Rstudio%20logo.png){width="100"}
+
+העתיקו את הקוד הבא לRstudio ונסו בעצמכם (קיפולי קוד לא עובדים בלומדה).
 
 ```{r comments_example, eval = F}
 # 'קטע הקוד הבא נועד כדי להדגים שימוש בהערות, ראשי פרקים וקיפולי קוד
@@ -1055,14 +1049,15 @@ if (identical(test, vec)){
 **1) הגדרת פונקציות**: קובץ שבו נגדיר את כל הפונקציות בהן נעשה שימוש
 במהלך הניתוח
 
-**2) טעינת הנתונים וסידורם:** טעינת טבלאות הנתונים הגולמיות, חישוב
+**2) טעינת הנתונים ועריכתם:** טעינת טבלאות הנתונים הגולמיות, חישוב
 משתנים חשובים וסינון של תצפיות בעייתיות
 
 **3) הניתוח עצמו**: ביצוע מבחנים סטטיסטיים ויצירת תרשימים
 
 שיטה זו תאפשר לנו לעבוד על קובץ נפרד כל פעם, מבלי שנצטרך לכתוב או להריץ
-מחדש את הקבצים הקודמים בכל פעם.  
-  
+מחדש את הקבצים הקודמים בכל פעם.
+
+החלוקה עצמה משתנה בהתאם לאורך הניתוח, אופיו והעדפות אישיות - אבל העיקרון של הפרדת הניתוח למספר קבצים נפרדים הוא חשוב כדי שניתוחים ארוכים לא יהפכו למסורבלים. 
      
 
 ### איך נעביר את המידע בין הקבצים?
@@ -1070,18 +1065,24 @@ if (identical(test, vec)){
 
 **1) טעינת קובץ קוד:** נשתמש בפקודה `source` כדי לקרוא לקובץ קוד אחד
 מתוך קובץ אחר. השימוש הנפוץ ביותר בפקודה זו הוא כדי להריץ קובץ המכיל רק
-הגדרה של פונקציות, ובכך לייבא את הפונקציות לסביבת העבודה שלנו. לדוגמה:
-`source("name_of_file.R")`. נתרגל את השימוש בשיטה זו בסוף היחידה.
+הגדרה של פונקציות, ובכך לייבא את הפונקציות לסביבת העבודה שלנו. 
 
-**2) שמירת קבצי CSV:** את שיטה זו למדנו בסמסטר קודם, והיא כוללת לייצא את
-טבלאות הנתונים שעברו סינון ועיבוד ו/או את טבלאות הסיכום כקבצי CSV -
+לדוגמה: `source("name_of_file.R")`. 
+  
+נתרגל את השימוש בשיטה זו בסוף היחידה.
+
+**2) שמירת קבצי CSV:** את שיטה זו למדנו בסמסטר קודם, והיא כוללת ייצוא
+טבלאות כקבצי CSV -
 באמצעות הפקודה`write_csv`, שאותם נוכל לטעון בתחילת קובץ הקוד הבא.
+
+שיטה זו יכולה לשמש אותנו לשמור ולשתף את הנתונים המסוננים והערוכים או טבלאות סיכום שייצרנו. 
+ 
 
 **3) שמירת אובייקטים:** אם נרצה לייצא אובייקט שאינו בהכרח טבלה - נוכל
 לייצא אותו כקובץ RDS. פורמט זה מיועד לשמירה וטעינה של אובייקטים בR
 ומאפשר לנו לשמור ולטעון כל אובייקט שנרצה. שמירה נעשית באמצעות הפקודה
 \``saveRDS(object, "name_of_file.rds")` וייבוא באמצעות
-`readRDS("name_of_file.rds")`. פקודות אלו מתאימות לכל אובייקט בR, מכל
+`object = readRDS("name_of_file.rds")`. פקודות אלו מתאימות לכל אובייקט בR, מכל
 סוג שהוא. הוא נשמר בפורמט ייעודי של R ומיובא בצורה זהה לאובייקט המקורי.
 
 
@@ -1240,6 +1241,79 @@ question_text(
 
 
 בהצלחה!
+
+
+## משוב 
+
+נשמח לשמוע מכם משוב קצר על הלומדה. 
+המשוב הינו רשות ויעובד בצורה אנונימית.
+
+שימו לב: ברוב השאלות אין אפשרות לשנות את התגובה לאחר לחיצה על כפתור ההגשה
+
+```{r survey_q1, echo = FALSE}
+question("כמה קשה הייתה היחידה עבורך?",
+         type="single",
+         answer("קלה"        ,correct=TRUE,  message = "תגובתך: קלה"),
+         answer("בינונית"    ,correct=TRUE,  message = "תגובתך: בינונית"),
+         answer("מאתגרת"     ,correct=TRUE,  message = "תגובתך: מאתגרת"),
+         answer("קשה"        ,correct=TRUE,  message = "תגובתך: קשה"),
+         answer("קשה מאוד"   ,correct=TRUE,  message = "תגובתך: קשה מאוד"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q2, echo = FALSE}
+question("עד כמה את/ה מרגיש/ה שהבנת את החומר שנלמד ביחידה?",
+         type="single",
+         answer("במידה רבה"      , correct=TRUE,  message = "תגובתך: במידה רבה"),
+         answer("במידה סבירה" ,    correct=TRUE,  message = "תגובתך: במידה סבירה"),
+         answer("באופן חלקי"  ,    correct=TRUE,  message = "תגובתך: באופן חלקי"),
+         answer("במידה מעטה"  ,correct=TRUE,  message = "תגובתך: במידה מעטה"),
+         answer("במידה מעטה מאוד",correct=TRUE,  message = "תגובתך: במידה מעטה מאוד"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q3, echo = FALSE}
+question("אילו נושאים בלומדה היו קשים במיוחד עבורך?",type="learnr_checkbox",
+         answer("לולאות קוד", correct=TRUE),
+         answer("פונקציות", correct=TRUE),
+         answer("ניהול קבצי קוד", correct=TRUE),
+         answer("תרגיל מסכם", correct=TRUE),
+         answer("אף נושא", correct=TRUE),
+         
+         correct = "תגובתך התקבלה",
+         try_again = "תגובתך התקבלה",
+         incorrect = "תגובתך התקבלה",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q4, echo = FALSE}
+  question_text(
+    "הערות ספציפיות לגבי חלקי היחידה השונים",
+    incorrect = "תגובתך התקבלה",
+    correct = "תגובתך התקבלה",
+    answer(text = "/'ק/'ק",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
+
+```{r survey_q5, echo = FALSE}
+  question_text(
+    "הערות כלליות לגבי היחידה",
+    incorrect = "תגובתך התקבלה",
+    correct = "תגובתך התקבלה",
+    answer(text = "/'ק/'ק",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
 
 
 ## הגשה
