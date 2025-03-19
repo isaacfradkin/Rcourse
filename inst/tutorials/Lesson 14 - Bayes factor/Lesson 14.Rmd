@@ -868,6 +868,98 @@ question_text(
 ```
 
 
+## משוב
+
+בחלק זה נבקש את המשוב שלכם על הלומדה. אנא ענו בכנות וביסודיות, על מנת שנוכל להשתפר. התשובות ישמרו בצורה אנונימית ולא ישפיעו על בדיקת התרגיל עצמה.
+
+שימו לב: ברוב השאלות אין אפשרות לשנות את התגובה לאחר לחיצה על כפתור ההגשה
+
+```{r survey_q1, echo = FALSE}
+question(#"כמה קשה הייתה היחידה עבורך?",
+          "מה הייתה רמת הקושי של הלומדה עבורך?",
+         type="single",
+         answer("קלה"        ,correct=TRUE,  message = "תגובתך: קלה"),
+         answer("בינונית"    ,correct=TRUE,  message = "תגובתך: בינונית"),
+         answer("מאתגרת"     ,correct=TRUE,  message = "תגובתך: מאתגרת"),
+         answer("קשה"        ,correct=TRUE,  message = "תגובתך: קשה"),
+         answer("קשה מאוד"   ,correct=TRUE,  message = "תגובתך: קשה מאוד"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q2, echo = FALSE}
+question(#"עד כמה את/ה מרגיש/ה שהבנת את החומר שנלמד ביחידה?",
+        "עד כמה החומר הנלמד ביחידה הועבר בצורה ברורה לדעתך?",
+         type="single",
+         answer("במידה רבה"      , correct=TRUE,  message = "תגובתך: במידה רבה"),
+         answer("במידה סבירה" ,    correct=TRUE,  message = "תגובתך: במידה סבירה"),
+         answer("באופן חלקי"  ,    correct=TRUE,  message = "תגובתך: באופן חלקי"),
+         answer("במידה מעטה"  ,correct=TRUE,  message = "תגובתך: במידה מעטה"),
+         answer("במידה מעטה מאוד",correct=TRUE,  message = "תגובתך: במידה מעטה מאוד"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
+```{r survey_q3, echo = FALSE}
+question("כמה זמן לקח לך לפתור את הלומדה בערך?",
+         type="single",
+         answer("פחות משעה"      , correct=TRUE,  message = "תגובתך: פחות משעה"),
+         answer("שעה" ,    correct=TRUE,  message = "תגובתך: שעה"),
+         answer("שעתיים"  ,    correct=TRUE,  message = "תגובתך: שעתיים "),
+         answer("שלוש שעות"  ,correct=TRUE,  message = "תגובתך:  שלוש שעות"),
+         answer("ארבע שעות ומעלה",correct=TRUE,  message = "תגובתך:  ארבע שעות ומעלה "),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE)
+```
+
+```{r survey_q4, echo = FALSE}
+question("אילו נושאים בלומדה היו קשים במיוחד עבורך?",type="learnr_checkbox",
+         answer("מבוא לבייספקטור", correct=TRUE),
+         answer("משמעות ההשערה האלטרנטיבית", correct=TRUE),
+         answer("קבלת השערת האפס", correct=TRUE),
+         answer("מבחן חד זנבי", correct=TRUE),
+         answer("מבחנים טי להפרש תוחלות שני מדגמים)", correct=TRUE),
+         answer("בייספקטור עבור מובהקות מתאמים", correct=TRUE),
+         answer("אף נושא", correct=TRUE),
+         
+         correct = "תגובתך התקבלה",
+         try_again = "תגובתך התקבלה",
+         incorrect = "תגובתך התקבלה",
+         allow_retry = TRUE
+)
+```
+
+
+```{r survey_q5, echo = FALSE}
+  question_text(    "מצאת טעות? ספר/י לנו עליה (יש להקפיד ולציין את שם הפרק)",
+   # "הערות ספציפיות לגבי חלקי היחידה השונים",
+    incorrect = "תגובתך התקבלה",
+    correct = "תגובתך התקבלה",
+    answer(text = "/'ק/'ק",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
+
+```{r survey_q6, echo = FALSE}
+  question_text(
+        "יש לך עוד משהו לספר לנו? נשמח לשמוע משוב מפורט, הצעות כלליות או ספציפיות לפרק מסוים לגבי יחידה זאת.",
+   # "הערות כלליות לגבי היחידה",
+    incorrect = "תגובתך התקבלה",
+    correct = "תגובתך התקבלה",
+    answer(text = "/'ק/'ק",correct = TRUE),
+    rows = 10,
+    trim = FALSE
+  )
+```
+
+
+
 ## הגשה
   עברו על הקובץ וודאו שהגשתם את כל התרגילים ועניתם על כל השאלות
   
