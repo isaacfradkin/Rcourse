@@ -16,6 +16,7 @@ Imports:
     ggcheck (>= 0.0.5),
     gradethis (>= 0.2.14),
     learnrhash (>= 0.2.0),
+    pracma,
     psych,
     readr
 Remotes: 

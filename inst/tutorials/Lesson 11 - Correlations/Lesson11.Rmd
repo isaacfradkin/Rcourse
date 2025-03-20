@@ -4,7 +4,7 @@ author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. A
 output:
   learnr::tutorial:
     progressive: true
-    allow_skip: true
+    allow_skip: false
   
 
 description: >
@@ -33,7 +33,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(ggcheck)
-
+library(ggcorrplot)
 set.seed(1)
 single_subject_wellbeing_2021$age <- sample(c(18:75), nrow(single_subject_wellbeing_2021), replace = TRUE)
 
@@ -150,7 +150,8 @@ cor2
 בואו ניגש ישר לעניין, האם כסף קונה עושר?  
 חשבו את הקורלציה בין רמת ההכנסה (household_income) לרמת האושר (experienced_wellbeing) והדפיסו אותה
 
-```{r cor_ex, exercise=TRUE, exercise.eval = FALSE }
+```{r cor_ex, exercise=TRUE, exercise.eval = FALSE,exercise.reveal_solution = FALSE}
+
 main_cor <-
 
 ```
@@ -213,7 +214,8 @@ ggcorrplot(well_being_corr_matrix, lab = TRUE)
 צרו טבלה חדשה אשר כוללת רק את המשתנים הדמוגרפיים הללו ואת רמת ההכנסה (household_income) וחשבו בעזרתה  טבלת הקורלציות.  
 
 
-```{r cor_mat_ex, exercise=TRUE, exercise.eval = FALSE }
+```{r cor_mat_ex, exercise=TRUE,exercise.eval = FALSE,exercise.reveal_solution = FALSE}
+
 demo_df <- 
   
 demo_corr_matrix <-
@@ -427,6 +429,7 @@ single_subject_wellbeing_2021_under30 = filter(single_subject_wellbeing_2021,  a
 ggplot(single_subject_wellbeing_2021_under30, aes(x = household_income, y =experienced_wellbeing)) + geom_point() + geom_smooth(method = "lm")
 
 ```
+
 המגמה נראית מאוד דומה, אבל יש פחות נתונים.
 
 ### מגמות שאינן לינאריות

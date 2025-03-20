@@ -4,7 +4,7 @@ author: "Copyright 2024 Psychology Department. Hebrew University of Jerusalem. A
 output:
   learnr::tutorial:
     progressive: true
-    allow_skip: true
+    allow_skip: false
   
 
 description: >
@@ -150,7 +150,7 @@ question("מה היה קורה אם היינו משתמשים בדגימה בל�
 
 ### לולאת הבוטסטראפ
 השלב הבא יהיה לחזור על התהליך 1000 פעמים, לפחות.  
-מזל שלמדנו לולאות. בשיעורים הקודמים למדנו שכל חזרה על לולאה נקראית איטרציה, כדי לבצע מבחן בוטסטרפ צטרך לבצע מספר רב של איטרציות אבל נתחיל מלהוסיף מעט חזרות, כדי שנוכל ממש לראות את התוצר של כל חזרה נתחיל עם 5 חזרות.  
+מזל שלמדנו לולאות. בשיעורים הקודמים למדנו שכל חזרה על לולאה נקראית איטרציה, כדי לבצע מבחן בוטסטרפ נצטרך לבצע מספר רב של איטרציות אבל נתחיל מלהוסיף מעט חזרות, כדי שנוכל ממש לראות את התוצר של כל חזרה נתחיל עם 5 חזרות.  
 בואו נוסיף את הלולאה:
 
 ```{r}
@@ -432,10 +432,9 @@ print(paste0("The difference between distribution means is: ", mean(bootstrap_da
 
 ```
 
-קיבלנו תוצאה קצת מדהימה! ממדגם אחד שדגם 30 משתתפים מתוך האוכלוסיה כולה הצלחנו לשחזר כמט במדוייק את התפלגות הדגימה של האוכלוסיה, כפי שחולצה מתוך האוכלוסיה. זאת למרות שאנחנו יודעים שהאוכלוסיה לא מתפלגת נורמלי. בתיבה מטה נמצאת גרסה מתומצתת של הקוד. עכשיו אתם יכולים להתנסות בעצמכם.  
+קיבלנו תוצאה קצת מדהימה! ממדגם אחד שדגם 30 משתתפים מתוך האוכלוסיה כולה הצלחנו לשחזר באופן לא רע בכלל את התפלגות הדגימה של האוכלוסיה, כפי שחולצה מתוך האוכלוסיה. זאת למרות שאנחנו יודעים שהאוכלוסיה לא מתפלגת נורמלי. בתיבה מטה נמצאת גרסה מתומצתת של הקוד. עכשיו אתם יכולים להתנסות בעצמכם.  
 בצעו שני שינויים בקוד:  
 1. שנו את גודל הדגימה ל10 משתתפים והריצו את הקוד.  
-2. שנו את המדד המרכזי לרבעון הראשון (אחוזון 25).  
 
 ```{r boo_samp_dist_ex, exercise=TRUE, exercise.eval = FALSE }
 set.seed(22)
@@ -517,7 +516,7 @@ print(paste0("The difference between distribution means is: ", mean(bootstrap_da
 
 עד כה, אמור להיות מוכר, כמו מבחן t. אבל כדי לבצע את המבחן בצורה א-פרמטרית נצטרך בעצם ליצור את הנחת האפס באמצעות פרמוטציות ולהשוות אותה למדגם הנוכחי.  
 ועכשיו נצלול אל תוך השערת האפס, מה היא מניחה?  
-בגדול היא מניחה שהחלוקה לקבוצות היא אקראית וחסרת משמעות. בעצם אם המשתנה הבלתי תלוי חסר השפעה זה לא משנה מאיזה קבוצה נדגום, אנחנו נקבל אומדן זהה לחציון.  
+בגדול היא מניחה שהחלוקה לקבוצות היא אקראית וחסרת משמעות. בעצם אם המשתנה הבלתי תלוי חסר השפעה זה לא משנה מאיזה קבוצה נדגום, אנחנו נקבל אומדנים לאותו החציון.  
 
 איך נעשה את זה?  
 ההנחה הזאת בעצם אומרת שאם נאחד את שתי הקבוצות ונדגום מתוכן שתי קבוצות שונות באופן אקראי התוצאה לא אמורה להיות שונה באופן מהותי מתוצאות המדגם המקורי.  
@@ -547,8 +546,8 @@ ggplot(salary_df, aes(x=salary, col=group)) + geom_histogram(fill="white", alpha
 # השערת האפס בעצם תדגום מחדש את החלוקה לקבוצות
 # לכן יעזור לנו לייצר וקטור שמכיל את תוצאות שתי הקבוצות יחד
 all_salary_data <- salary_df$salary
-# נייצר גם משתנה שמכיל את גודל הקבוצות
-group_size <- length(salary_df$salary)/2
+# נייצר גם משתנה שמכיל את גודל קבוצת הסטודנטים שלמדו תכנות
+groupP_size <- length(salary_df$salary[salary_df$group=="programming"])
 
 # נוכל לערבב את הנתונים באמצעות אותה פונקציה
 all_salary_temp <- sample(all_salary_data, replace = FALSE)
@@ -566,10 +565,10 @@ print(length(all_salary_data)==length(all_salary_temp))
 
 # לאחר הערבוב אנחנו כבר לא יודעים מי שייך לאיזה קבוצה
 # אז נקצה אותם אקראית
-# יש כמה דרכים לעשות זאת, הדרך הפשוטה תהיה להכניס את החצי הראשון לקבוצה אחת ואת השני לקבוצה אחרת
 
-temp_programing <- all_salary_temp[1:group_size]
-temp_no_programing <- all_salary_temp[(group_size+1):nrow(salary_df)]
+
+temp_programing <- all_salary_temp[1:groupP_size]
+temp_no_programing <- all_salary_temp[(groupP_size+1):nrow(salary_df)]
 
 # יופי יש לנו מדגם מדומה
 # נוכל לחשב את הפרש החציונים 
@@ -587,8 +586,9 @@ print(temp_median_diff)
 set.seed(234)
 # צרו וקטור
 all_salary_data <-
-# חשבו את גודל הקבוצה
-group_size <-
+# חשבו את גודל אחת הקבוצות
+groupP_size <- 
+
 # ערבבו אותו
 all_salary_temp <- sample()
 # חלקו לקבוצות
@@ -606,12 +606,13 @@ print(as.numeric(round(temp_quantile_diff)))
 set.seed(234)
 # צרו וקטור
 all_salary_data <- salary_df$salary
-group_size <- length(all_salary_data)/2
+groupP_size <- length(salary_df$salary[salary_df$group=="programming"])
+
 # ערבבו אותו
 all_salary_temp <- sample(all_salary_data, replace = FALSE)
 # חלקו לקבוצות
-temp_programing <- all_salary_temp[1:group_size]
-temp_no_programing <- all_salary_temp[(group_size+1):nrow(salary_df)]
+temp_programing <- all_salary_temp[1:groupP_size]
+temp_no_programing <- all_salary_temp[(groupP_size+1):nrow(salary_df)]
 
 # חשבו והדפיסו את ההפרש במיקום האחוזון ה10
 temp_quantile_diff <-  quantile(temp_programing, probs = 0.1) -quantile(temp_no_programing, probs = 0.1)
@@ -627,13 +628,13 @@ grade_result(pass_if(~identical(.result, 215)),
 )
 ```
 
-עכשיו שהבנו את העיקרון של חישוב סטטיסטי על סמך חלוקה אקראית לקבוצות נוכל לעבור לחלק של ביצוע לולאת הפרמוטציות. העיקרון מאוד דומה לבוטסטרפ. בואו נראה:
+עכשיו שהבנו את העיקרון של חישוב סטטיסטי על סמך חלוקה אקראית לקבוצות נוכל לעבור לחלק של ביצוע לולאת הפרמוטציות. בואו נראה:
 
 ```{r}
 # נקבע את הפרמטרים   
 n_iter <- 10000
 # נאכסן את מספר התצפיות בכל קבוצה
-group_size <- nrow(salary_df)/2
+groupP_size <- length(salary_df$salary[salary_df$group=="programming"])
 # ניצור את הוקטור שישמור את התוצאות
 # שימו לב! במקרה זה המטרה היא לדמות את התפלגות האפס
 H0_dist <- numeric(n_iter)
@@ -645,9 +646,9 @@ for (i in 1:n_iter){
   # נערבב את הנתונים
   all_salary_temp <- sample(all_salary_data, replace = FALSE)
   # החצי הראשון יהיה הקבוצה שלמדה תכנות
-  temp_programing <- all_salary_temp[1:group_size]
+  temp_programing <- all_salary_temp[1:groupP_size]
   # והחצי השני יהיה קבוצה שלא
-  temp_no_programing <- all_salary_temp[(group_size+1):nrow(salary_df)]
+  temp_no_programing <- all_salary_temp[(groupP_size+1):nrow(salary_df)]
   # נחשב את הפרש החציונים
   temp_median_diff <- median(temp_programing) - median(temp_no_programing)
   #נאכסן את התוצאה
@@ -684,10 +685,10 @@ hist_plot
 בדקו את ההפרש בין גברים לנשים (כלומר החסירו את משכורות הנשים משל הגברים)  
 רמז - האם צריך לשנות משהו בלולאה עצמה? 
 
-```{r perm_2samp_ex, exercise=TRUE, exercise.eval = FALSE }
+```{r perm_2samp_ex, exercise=TRUE, exercise.eval = FALSE,exercise.reveal_solution = FALSE}
 set.seed(234)
 n_iter <- 10000
-group_size <- nrow(salary_df)/2
+groupF_size <- length(salary_df$salary[salary_df$gender=="Female"])
 H0_dist <- numeric(n_iter)
 all_salary_data <- salary_df$salary
   
@@ -696,9 +697,9 @@ for (i in 1:n_iter){
   # נערבב את הנתונים
   all_salary_temp <- sample(all_salary_data, replace = FALSE)
   # החצי הראשון יהיה הקבוצה שלמדה תכנות
-  temp_programing <- all_salary_temp[1:group_size]
+  temp_programing <- all_salary_temp[1:groupF_size]
   # והחצי השני יהיה קבוצה שלא
-  temp_no_programing <- all_salary_temp[(group_size+1):nrow(salary_df)]
+  temp_no_programing <- all_salary_temp[(groupF_size+1):nrow(salary_df)]
   # נחשב את הפרש החציונים
   temp_median_diff <- median(temp_programing) - median(temp_no_programing)
   #נאכסן את התוצאה
@@ -723,7 +724,7 @@ print(round(p,2))
 ```{r perm_2samp_ex-solution}
 set.seed(234)
 n_iter <- 10000
-group_size <- nrow(salary_df)/2
+groupF_size <- length(salary_df$salary[salary_df$gender=="Female"])
 H0_dist <- numeric(n_iter)
 all_salary_data <- salary_df$salary
   
@@ -732,9 +733,9 @@ for (i in 1:n_iter){
   # נערבב את הנתונים
   all_salary_temp <- sample(all_salary_data, replace = FALSE)
   # החצי הראשון יהיה הקבוצה שלמדה תכנות
-  temp_programing <- all_salary_temp[1:group_size]
+  temp_programing <- all_salary_temp[1:groupF_size]
   # והחצי השני יהיה קבוצה שלא
-  temp_no_programing <- all_salary_temp[(group_size+1):nrow(salary_df)]
+  temp_no_programing <- all_salary_temp[(groupF_size+1):nrow(salary_df)]
   # נחשב את הפרש החציונים
   temp_median_diff <- median(temp_programing) - median(temp_no_programing)
   #נאכסן את התוצאה
@@ -765,7 +766,7 @@ grade_result(pass_if(~identical(.result, 0.09)),
 )
 ```
 
-עם שינוי מאוד קטן בקוד יכולנו להשתמש באותה לולאה כדי לדמות את התפלגות האפס של שני מבחנים שונים! כלומר ברגע שהבנו את העיקרון, נפתחו בפנינו מגוון של אפשרויות. 
+עם שינוי מאוד קטן בקוד יכולנו להשתמש באותה לולאה כדי לדמות את התפלגות האפס של שני מבחנים שונים (כל עוד שמים לב שגדלי הקבוצות המקוריות עוברות התאמה)! כלומר ברגע שהבנו את העיקרון, נפתחו בפנינו מגוון של אפשרויות. 
 
 
 ## מבחן לשני מדגמים מזווגים
@@ -777,7 +778,7 @@ grade_result(pass_if(~identical(.result, 0.09)),
 ```{r paired_perm_q, echo = FALSE}
 question("איך אתם מציעים להתאים את התהליך למבחן זה?",
          answer("נרצה לערבב רק את הסדר של התצפיות אחרי לימודי התכנות (כך שהערכים של נבדקים שונים אחרי הלימוד יעורבבו באקראי)",  message ="לא נכון, ערבוב זה ינתק את הזיווג בין התצפיות ואותו לא נרצה לשנות. אבל, זה סוג של ערבוב שיכול להיות רלוונטי למבחן קורלציה. ראו הסבר בהמשך. "),
-         answer("עכשיו בכל פרמוטציה נרצה לדגום במקרה חצי מהנבדקים ולהפוך את סדר התצפיות שלהם (השכר שהרוויחו לפני לימודי התכנות יוחלף עם השכר שהרוויחו אחרי)", correct = TRUE, message = " "),
+         answer("עכשיו בכל פרמוטציה נרצה לדגום במקרה חלק מהנבדקים ולהפוך את סדר התצפיות שלהם (השכר שהרוויחו לפני לימודי התכנות יוחלף עם השכר שהרוויחו אחרי)", correct = TRUE, message = " "),
          answer("בכל פרמוטציה נרצה לאחד את שתי הקבוצות, לערבב את הנתונים ולחלק מחדש לקבוצת הלפני והאחרי בצורה אקראית", message = "לא נכון. זאת האופציה שמתאימה לשני מדגמים בלתי תלויים"),
          answer("בכל פרמוטציה נוסיף את ממוצע הקבוצה לחצי מהתצפיות המזווגת", message = "לא נכון"),
          allow_retry = TRUE
@@ -811,7 +812,7 @@ for (s in 1:length(before)){
   sub_data_temp <- c(before[s], after[s])
   # נערבב את הנתונים
   sub_salary_temp <- sample(sub_data_temp, replace = FALSE)
-  # התוצאה תהיה שבחצי מהמקרים תוצאות הנבדק ישארו זהות ובחצי הסדר יתהפך
+  # התוצאה תהיה שבחלק מהמקרים תוצאות הנבדק ישארו זהות ובחלק הסדר יתהפך
   # נכניס את הערכים לוקטורים
   temp_before[s] <- sub_salary_temp[1]
   temp_after[s] <- sub_salary_temp[2]
@@ -1015,7 +1016,8 @@ question("הרצתי את אותו מבחן פעמיים ודווקא כן קי�
 כתבו את הקוד שיבצע מבחן פרמוטציות ויבדוק האם המטבע הוגן. הנתונים קיימים כבר בסביבת העבודה שלכם בוקטור שנקרא: coin_sample. כל ערך בוקטור מייצג את הסיכוי לקבל עץ על פני 10 חזרות לכל מטבע שנדגם.  
 
 
-```{r one_samp_perm_ex, exercise=TRUE, exercise.eval = FALSE }
+```{r one_samp_perm_ex, exercise=TRUE, exercise.eval = FALSE,exercise.reveal_solution = FALSE}
+
 set.seed(156)
 # הנתונים  
 print(coin_sample)
@@ -1104,7 +1106,7 @@ print(round(p,1))
 ```{r one_samp_perm_ex-check}
 grade_result(pass_if(~identical(.result, 0.4)),
   
-    correct="מצויין! קיבלנו סיכוי  של 0.3 לקבל מדגם כזה תחת השערת האפס. כלומר לא נוכל לדחות את השערת האפס שהמטבעות הוגנים.", 
+    correct="מצויין! קיבלנו סיכוי  של 0.4 לקבל מדגם כזה או קיצוני ממנו תחת השערת האפס. כלומר לא נוכל לדחות את השערת האפס שהמטבעות הוגנים.", 
   incorrect = "עוד לא בדיוק הגעתם לערך המדויק. חזרו לדוגמה הקודמת וודאו שביצעתם את הלולאה כמו שצריך."
 )
 ```
@@ -1340,6 +1342,9 @@ learnrhash::encoder_logic()
 ```{r encode, echo=FALSE}
 learnrhash::encoder_ui()
 ```
+
+
+הדביקו את קוד הhash בתוך הגרשיים בפונקצייה הבאה כדי לוודא שעניתם על כל השאלות והתרגילים בלומדה.
 
 ```{r hash_check,  exercise = TRUE, exercise.eval = FALSE}
 
