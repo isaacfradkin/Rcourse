@@ -1,6 +1,6 @@
 ---
 title: "Lesson 11: Correlation and Linear Models"
-author: "Copyright 2025 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
+author: "Copyright 2026-2027 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 output:
   learnr::tutorial:
     progressive: true
@@ -160,7 +160,7 @@ gradethis::gradethis_setup()
 ### היכרות עם הנתונים
 בחלק זה אנחנו נעבוד עם סיכום של נתוני מדגם אמיתי אשר בחן את הקשר בין מרכיבים שונים של אושר - למשל, סיפוק מהחיים, השראה, כמות הרגשות הטובים, כמות הרגשות הרעים, גאווה, עניין, שיעמום, בטחון עצמי, לחץ ואופטימיות. 
 
-המשתתפים בניסוי ענו על שאלות בנידון על בסיס יומי לאורך תקופה מסוימת. במהלך התקופה הם דרגו כל מרכיב בין 1-100. בנתונים שלנו (income_wellbeing) נמצאים הממוצעים של תשובות המשתתפים מקובצים לפי רמת ההכנסה (באלפי דולרים לשנה), כך שכל תצפית היא בעצם ממוצע של כל משתתף (על פני מספר הפעמים שנדגם) ובין המשתתפים השונים באותה רמת הכנסה (houshold_income). בנוסף יש לנו מספר נתונים דמוגרפיים ונתונים על היחס של המשתתפים לכסף.
+המשתתפים בניסוי ענו על שאלות בנידון על בסיס יומי לאורך תקופה מסוימת. במהלך התקופה הם דרגו כל מרכיב בין 1-100. בנתונים שלנו (income_wellbeing) נמצאים הממוצעים של תשובות המשתתפים מקובצים לפי רמת ההכנסה (באלפי דולרים לשנה), כך שכל תצפית היא בעצם ממוצע של כל משתתף (על פני מספר הפעמים שנדגם) ובין המשתתפים השונים באותה רמת הכנסה (household_income). בנוסף יש לנו מספר נתונים דמוגרפיים ונתונים על היחס של המשתתפים לכסף.
 
 
 מקורות:
@@ -188,8 +188,8 @@ head(income_wellbeing)
 `method` - השיטה לחישוב הקורלציה. ברירת המחדל היא קורלציית פירסון אבל ניתן לחשב גם קורלציית ספירמן עלי ידי הכנסת הביטוי "spearman".   
 `use` - איזה תצפיות יכנסו לניתוח, בהקשר של ערכים חסרים.     
 
-הארגומנט use דומה מאוד לארגומנט na.rm שהכרנו בהקשר של פונקציות קודמות. כלומר, מטרת השימוש בו היא התמודדות עם ערכים חסרים.    
-אבל יש קצת יותר אפשרויות במקרה של קורלציה כיוון שהתצפיות תמיד מזווגת.    אפשרות ברירת המחדל של הארגומנט use היא ”everything“, אשר מקבילה לna.rm=FALSE, האפשרות בקצה השני היא ”pairwise.complete.obs“, בה משתמשים רק בתצפיות שכולן ערכים מספריים. 
+הארגומנט use קשור במהותו לארגומנט na.rm שהכרנו בהקשר של פונקציות קודמות. כלומר, מטרת השימוש בו היא התמודדות עם ערכים חסרים.    
+אבל יש קצת יותר אפשרויות במקרה של קורלציה כיוון שהפונקציה ערוכה להתמודד עם תרחיש בו יש מחושבת קורלציה להרבה משתנים יחד.    אפשרות ברירת המחדל של הארגומנט use היא ”everything“, אשר מקבילה למצב בו na.rm=FALSE, האפשרות בקצה השני היא ”complete.obs“, בה משתמשים רק בתצפיות שכולן ערכים מספריים ותצפיות המכילות NA פשוט יוסרו לפני החישוב. 
 יש עוד אפשרויות להתמודדות עם ערכים חסרים, הרלוונטים במקרה בו יש מספר משתנים, אנחנו לא נכסה את כל האפשרויות הללו בלומדה זאת.  
 
 
@@ -249,7 +249,7 @@ grade_result(pass_if(~identical(.result,
 
 ```{r, fig.width=8, fig.height=8}
 # ניצור טבלה חדשה רק עם שאלות השאלון
-well_being_df <- select(income_wellbeing, -household_income, -money_importance, -money_is_succes, -workweek, -p_of_male, -p_married, -education_level,-age)
+well_being_df <- select(income_wellbeing, -household_income, -money_importance, -money_is_success, -workweek, -p_of_male, -p_married, -education_level,-age)
 
 # נחשב את טבלת הקורלציות
 well_being_corr_matrix <- cor(well_being_df)
@@ -333,7 +333,8 @@ grade_result(pass_if(~identical(.result,
                      sum(cor(select(income_wellbeing, household_income, p_of_male, p_married, education_level,age))))),
   
     correct="טבלת הקורלציות מדויקת!", 
-  incorrect = "האם סיננתם את עמודות?"
+  incorrect = "האם סיננתם את העמודות המבוקשות?"
+
 )
 ```
 
@@ -441,7 +442,7 @@ question("מה המסקנה?",
 ```
 
 `תרגיל`  
-אז האם כסף (houshold_income) קונה אושר (experienced_wellbeing) בצורה מובהקת..?  
+אז האם כסף (household_income) קונה אושר (experienced_wellbeing) בצורה מובהקת..?  
 בצעו מבחן מובהקות והדפיסו את הp-value.
 
 ```{r cor_test_ex, exercise=TRUE, exercise.eval = FALSE }
@@ -602,13 +603,16 @@ ggplot(single_subject_wellbeing_2010, aes(x = household_income, y =experienced_w
 ```
 
 ניתן לראות שהקו שמתאר את הנתונים מתעגל ולכן בהכרח אינו לינארי.  
-חשוב שניקח מזה, שלמרות שהקשרים היחידים שנלמד להכיר בתואר ראשון הם לינארים, לא כל הקשרים הם לינארים. לכן גם במקרים בהם קשר לינארי לא מתאר טוב את הנתונים שלנו, זה לא תמיד אומר שאין קשר בינהם, אלא רק שאין קשר לינארי. לכן איורים הם כלי נהדר שיכול לעזור לנו להבין את הנתונים שלנו יותר טוב.  
+חשוב שניקח מזה, שלמרות שהקשרים היחידים שנלמד להכיר בתואר ראשון הם לינארים, לא כל הקשרים הם לינארים. לכן גם במקרים בהם קשר לינארי לא מתאר טוב את הנתונים שלנו, זה לא תמיד אומר שאין קשר בינהם, אלא רק שאין קשר לינארי. לכן איורים הם כלי נהדר שיכול לעזור לנו להבין את הנתונים שלנו יותר טוב.   
+
+ועכשיו נחזור ונתחבר רגע למהות והפרשנות של התוצאה הזאת. השערת החוקרים ב2010 הייתה שמדובר פה בשתי אוכלוסיות נפרדות, אוכלוסייה אחת בעלת הכנסה נמוכה (עד 75 אלף דולר בשנה) אשר מדגימה קשר לינארי בין הכנסה לאושר. האוכלוסיה השניה מאופיינת בבטחון כלכלי (הכנסה שלרוב אמורה להספיק למחיה ראויה) שאיננה מדגימה קשר בין אושר להכנסה. המסקנה הייתה שהכנסה לא מקושרת לאושר כל עוד יש בטחון כלכלי. תוצאה זאת לא נמצאה במחקר ב2021, ולכן עוד לא לחלוטין ברור מה הקשר בין הכנסה לאושר.   
 
 ## תרגיל מסכם
 
 `תרגיל 1`  
 קודם כל בואו נבחן את הנתונים מ2010 במבט קרוב יותר. 
-צרו שני מודלים לינארים לנתונים, אשר מתארים את משתנה האושר (experienced_wellbeing) באמצעות הכנסה (household_income). צרו מודל אחד עבור התצפיות שרמת ההכנסה שלהם היא עד 90 אלף דולר (כולל) בשנה ואחד עבור אלה שמרוויחים יותר.  
+צרו שני מודלים לינארים לנתונים, אשר מתארים את משתנה האושר (experienced_wellbeing) באמצעות הכנסה (household_income). צרו מודל אחד עבור התצפיות שרמת ההכנסה שלהם היא עד 90000  דולר (כולל) בשנה ואחד עבור אלה שמרוויחים יותר.  
+
 
 האם השיפוע של המודל הראשון יותר קיצוני? צרו וקטור המכיל את שני השיפועים יחד.
 
@@ -660,7 +664,7 @@ grade_result(pass_if(~identical(.result, c(lm(experienced_wellbeing~household_in
 
 אחד השינויים שנעשו במחקר מ2021 הוא לבחון גם את רמת החשיבות שהמשתתפים מייחסים לכסף. 
 הנתונים הללו נמצאים גם כן בטבלה income_wellbeing.
-חשבו את טבלת הקורלציות  בין אושר (experienced_wellbeing) רמת כנסה (household_income), חשיבות לכסף (money_importance) עד כמה המשתתפים רואים בכסף כהצלחה (money_is_succes) וכמה שעות בשבוע הם מקדישים לעבודה (workweek). הציגו את הטבלה בצורה גרפית.
+חשבו את טבלת הקורלציות  בין אושר (experienced_wellbeing) רמת כנסה (household_income), חשיבות לכסף (money_importance) עד כמה המשתתפים רואים בכסף כהצלחה (money_is_success) וכמה שעות בשבוע הם מקדישים לעבודה (workweek). הציגו את הטבלה בצורה גרפית.
 
 ```{r final_ex_2, exercise=TRUE, exercise.eval = FALSE,exercise.reveal_solution=FALSE}
 # צרו טבלה המכילה רק את הנתונים המבוקשים
@@ -677,7 +681,7 @@ print(sum(corr_matrix))
 
 ```{r final_ex_2-solution}
 # טבלה מסוננת
-filt_df <- select(income_wellbeing, experienced_wellbeing, household_income, money_importance, money_is_succes, workweek)
+filt_df <- select(income_wellbeing, experienced_wellbeing, household_income, money_importance, money_is_success, workweek)
 
 # נחשב את טבלת הקורלציות
 corr_matrix <- cor(filt_df)
@@ -692,7 +696,7 @@ print(sum(corr_matrix))
 ```
 
 ```{r final_ex_2-check}
-grade_result(pass_if(~identical(.result, sum(cor(select(income_wellbeing, experienced_wellbeing, household_income, money_importance, money_is_succes, workweek))))),
+grade_result(pass_if(~identical(.result, sum(cor(select(income_wellbeing, experienced_wellbeing, household_income, money_importance, money_is_success, workweek))))),
     correct="מצויין! טבלת קורלציות מעולה", 
   incorrect = "האם סיננתם את המשתנים הנכונים? בדקו את הקוד שלכם"
 )

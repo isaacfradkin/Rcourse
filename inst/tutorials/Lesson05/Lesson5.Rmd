@@ -1,6 +1,6 @@
 ---
 title: "Lesson 05: dplyr + tidyr"
-author: "Copyright 2025 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
+author: "Copyright 2026-2027 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 
 output:
   learnr::tutorial:
@@ -50,27 +50,38 @@ filter = dplyr::filter
 
 gradethis::gradethis_setup()
 knitr::opts_chunk$set(error = TRUE, warning = FALSE) 
+tutorial_options(exercise.completion = FALSE)
 
 
 {
-exercises_df = data.frame(exercises = c("exercise1_6_piping","q1_5", "exercise2_6_select","exercise3_6_filter",
-                                        "q2_5","q3_5","q4_5","q5_5",
-                                        "summary_2",
-                                        "exercise4_6_summary","exercise5_6_join","exercise6_6_gather"),
-                                        
-                          hebrew = c("פקד ההעברה: תרגיל",
-                                     "בחירת עמודות: שאלה",
-                                     "בחירת עמודות: תרגיל",
-                                     "סינון שורות: תרגיל", #
-                                     "סינון ערכים חסרים: שאלה",
-                                     "סיכום נתונים: שאלה 1",
-                                     "סיכום נתונים: שאלה 2",
-                                     "סיכום נתונים: שאלה 3", #
-                                     "סיכום נתונים: סיכום על סמך עמודה אחת (פיצרייה)",
-                                     "סיכום נתונים: סיכום על סמך מספר עמודות",
-                                     "צירוף נתונים: תרגיל",
-                                     "שינוי צורה: תרגיל"
-                                     ))
+  exercises_map <- c(
+  "ex_piping"     = "פקד ההעברה: תרגיל",
+  "Q_select"      = "בחירת עמודות: שאלה",
+  "ex_select"     = "בחירת עמודות: תרגיל",
+  "ex_filter"     = "סינון שורות: תרגיל",
+  "Q_filter"      = "סינון ערכים חסרים: שאלה",
+  "ex_mutate"     = "עריכת נתונים: תרגיל",
+  "Q_summarise_1" = "סיכום נתונים: שאלה 1",
+  "Q_summarise_2" = "סיכום נתונים: שאלה 2",
+  "Q_summarise_3" = "סיכום נתונים: שאלה 3",
+  "ex_summary"    = "סיכום נתונים: סיכום על סמך עמודה אחת (פיצרייה)",
+  "ex_summary_2"  = "סיכום נתונים: סיכום על סמך מספר עמודות",
+  "ex_bind_rows"  = "צירוף נתונים: צירוף טבלאות",
+  "ex_join"       = "צירוף נתונים: צירוף על סמך מספר עמודות",
+  "ex_pivot_wider" = "שינוי צורה: תרגיל ראשון",
+  "ex_pivot_longer"= "שינוי צורה: תרגיל שני",
+  "Q_final_1"     = "תרגיל מסכם: שאלה 1",
+  "Q_final_2"     = "תרגיל מסכם: שאלה 2"
+)
+
+exercises_df <- data.frame(
+  exercises = names(exercises_map),
+  hebrew    = as.character(exercises_map),
+  row.names = NULL,
+  stringsAsFactors = FALSE
+)
+
+
 
 check_hash_code   = function(hash){
     exercises = exercises_df$exercises
@@ -145,27 +156,46 @@ trial_data = data.frame(subject = rep(1:4,each = 3),
 
 ```
 
+```{r prepare-ex_bind_rows}
 
-```{r prepare-mood}
-set.seed(111)
-mood_scores = rep(runif(20,2,8), each = 3) + rnorm(60,0,2) + rep(c(-0.5,0,0.5),20)
-mood = data.frame(subject = rep(1:20, each = 3),
-                                 measurement_time = rep(c("T1","T2","T3"),20),
-                                 mood_score = ifelse(mood_scores>10,10,
-                                                      ifelse(mood_scores<0,0,mood_scores)) %>% round() )
+df1 = data.frame(species = c("Golden Eagle", "Red Fox", "Snow Leopard"),
+                 observed_count = c(2, 5, 1),
+                 region = c("North Park", "North Park", "North Park"),
+                 endangered = c(TRUE, FALSE, TRUE),
+                 stringsAsFactors = FALSE)
+
+df2 = data.frame(species = c("Red Fox", "Blue Iguana", "Mountain Goat"),
+                  observed_count = c(3, 4, 8),
+                  region = c("South Reserve", "South Reserve", "South Reserve"),
+                  endangered = c(FALSE, TRUE, FALSE),
+                  stringsAsFactors = FALSE)
+
 ```
 
+```{r prepare-ex_pivot_longer}
+
+duck_stats = data.frame(name         = c("Quack Sparrow", "Duck Norris", "Duck Vader", "Quackie Chan"),
+                       agility      = c(             82,            91,           74,             88),
+                       handsomeness = c(             95,            87,           79,             83),
+                       IQ           = c(            110,           125,           98,            115))
+
+```
 
 
 ##  מבוא
 
 ביחידה זו נלמד להשתמש במגוון פונקציות הנכללות בחבילות `dplyr` ו-`tidyr`
 
-פונקציות אלו מאוד נפוצות בשימוש בR כיוון שהן מאפשרות לעבד קבצי נתונים
-באופן פשוט, מסודר ויעיל.  
 
+חבילות אלו מותקנות בR כברירת מחדל, אך כדי להשתמש בהן יש לייבא אותן באמצעות שורות הקוד הבאות:
 
-חלק מהפונקציות שנכיר יאפשרו לנו לבצע פעולות שכבר למדנו (כמו סינון שורות או עמודות מטבלה), אך באופן שישמור על הקוד שלנו קריא ותמציתי. במקרים אחרים, נפגוש פונקציות המאפשרות עיבודים חדשים.
+```{r}
+library(dplyr)
+library(tidyr)
+```
+
+חלק מהפונקציות שנכיר יאפשרו לנו לבצע פעולות שכבר למדנו (כמו סינון שורות או עמודות מטבלה), אך באופן פשוט יותר, שיאפשר לנו לשמור על הקוד שלנו קריא ותמציתי. במקרים אחרים, נפגוש פונקציות המאפשרות עיבודים חדשים.
+
 
 שימו לב שיחידה זו ארוכה באופן משמעותי מהיחידות הקודמות. מומלץ להקדיש לה זמן וקשב, שכן היא נוגעת בתחומים מרכזיים בניתוח ועיבוד נתונים שמהווים את הבסיס ברוב הניתוחים שנעשים בR. 
 
@@ -217,21 +247,25 @@ n_unique_scores = scores %>%
 ```
 
 
-כדוגמה נוספת, נדפיס את ממוצע שורשי הציונים.
+כדוגמה נוספת, נחשב את ממוצע שורשי הציונים.
 
 ```{r}
 # וקטור הציונים
 scores = c(80.2,75.5,60,75.5,75.5,75.5,84,80.2,94)
 
 # ללא פקד ההעברה
-print(round(mean(sqrt(scores)),digits = 1))
+mean_sqrt = round(mean(sqrt(scores)),digits = 1)
+
+print(mean_sqrt)
+
 
 # עם פקד ההעברה
-scores %>%
-  sqrt()%>%                # חישוב שורשי הציונים
-  mean()%>%                # חישוב הערך הממוצע מתוך שורשי הציונים
-  round(digits = 1) %>%    # עיגול הממוצע שחושב לספרה אחת אחרי הנקודה העשרונית
-  print()                  # הדפסה
+mean_sqrt = scores %>%
+  sqrt()%>%          # חישוב שורשי הציונים
+  mean()%>%          # חישוב הערך הממוצע מתוך שורשי הציונים
+  round(digits = 1)  # עיגול הממוצע שחושב לספרה אחת אחרי הנקודה העשרונית
+
+print(mean_sqrt)
 
 ```
 
@@ -250,7 +284,7 @@ print(mean_number)
 ```
 
 
-```{r exercise1_6_piping,exercise=TRUE, exercise.eval = FALSE}
+```{r ex_piping,exercise=TRUE, exercise.eval = FALSE}
 
 numbers_as_text = c("12","14","15","7","34","22","17")
 
@@ -260,7 +294,7 @@ print(mean_number)
 
 ```
 
-```{r exercise1_6_piping-solution}
+```{r ex_piping-solution}
 
 numbers_as_text = c("12","14","15","7","34","22","17")
 
@@ -273,7 +307,7 @@ print(mean_number)
 
 ```
 
-```{r exercise1_6_piping-check}
+```{r ex_piping-check}
 grade_this_code(correct="מעולה!", 
   incorrect = "נסו שוב. שימו לב לבצע את הפעולות בדיוק לפי הסדר בו הן מופיעות"
   )
@@ -340,7 +374,7 @@ head(no_attention_check,3)
 ```
 
 
-```{r q1_5, echo = FALSE}
+```{r Q_select, echo = FALSE}
 question("<div style='direction: rtl;'>אם היינו מריצים את קטע הקוד האחרון (עדכון הטבלה שיצרנו כך שלא תכיל את נתוני הגיל) פעמיים ברציפות - היינו מקבלים הודעת שגיאה. מדוע?</div>",
          
          answer("כיוון שאי אפשר להריץ את אותו הקוד פעמיים", message = "באופן כללי, אין שום בעיה להריץ את אותו הקוד פעמים"),
@@ -357,14 +391,14 @@ question("<div style='direction: rtl;'>אם היינו מריצים את קטע 
 
 `תרגיל` צרו טבלה חדשה שכוללת רק את מספרי ההרצה (session_id) ואת תוצאות מבחן תשומת הלב (attention_check)
 
-```{r exercise2_6_select, exercise=TRUE, exercise.eval = FALSE }
+```{r ex_select, exercise=TRUE, exercise.eval = FALSE }
 
 session_and_attention = ______________
 
 print(session_and_attention)
 ```
 
-```{r exercise2_6_select-check}
+```{r ex_select-check}
 grade_result(
   pass_if(~identical(.result,
                      session_and_attention %>% 
@@ -490,28 +524,31 @@ filtered_table = need_for_cognition  %>%
 `תרגיל` : סננו את הקובץ כך שיכיל רק תצפיות של גברים מתחת לגיל 40 שעברו את מבחני הקשב
 
 
-```{r exercise3_6_filter, exercise=TRUE, exercise.eval = FALSE,}
+```{r ex_filter, exercise=TRUE, exercise.eval = FALSE,}
 # גברים מתחת לגיל 40 שעברו את מבחני הקשב 
-female_or_male_by_age = need_for_cognition %>%
+valid_young_males = need_for_cognition %>%
     filter(___________)
+
+print(head(valid_young_males))
              
 ```
 
-```{r exercise3_6_filter-check}
-grade_result(
-  pass_if(~identical(.result,
-                     need_for_cognition %>%
-                          filter(gender == "male" & age < 40 & attention_check==1)
-
-                     )),
+```{r ex_filter-check}
+grade_this({
   
-           
-  correct="!עבודה מצוינת", 
-  incorrect = "נסו שוב"
+  user_df = user_object_get("valid_young_males") %>% arrange()
+  target =  need_for_cognition %>%
+    filter(gender == "male" & age < 40 & attention_check==1) %>%
+    arrange()
+
+  if (identical(user_df, target)){
+    pass("מעולה!")
+  }else { fail( "נסו שוב")}
+  
+}
 )
 
 ```
-
 
 
 ### ערכים חסרים
@@ -542,24 +579,34 @@ grade_result(
 להלן מספר דוגמאות:
 
 ```{r e8}
+library(tidyr) # נייבא את החבילה הכוללת את הפונקציה
+               # drop_na
 
 nrow(need_for_cognition) # מספר התצפיות בטבלה המקורית
 
-# פונקציה זו מקבלת את שמות העמודות שעל בסיסן נרצה להשמיט את התוצאות
-# בדוגמה זו השמטנו שורות  בהן הערך בעמודת המגדר היה חסר
-table1 =  need_for_cognition %>% drop_na(gender)
+
+# נציין בסוגריים את שמות העמודות שנרצה לסנן על בסיסן את הנתונים
+# בדוגמה זו השמטנו שורות בהן הערך בעמודת המגדר היה חסר
+table1 =  need_for_cognition %>%
+  drop_na(gender)
+
 nrow(table1) # מספר התצפיות אחרי סינון ערכים חסרים
 
+
 # באותו האופן, ניתן להשמיט שורות שיש בהן ערך חסר *בעמודה אחת לפחות* מתוך העמודות שצוינו
-table2 =  need_for_cognition %>% drop_na(gender, nfc_01, nfc_02r, nfc_03r)
+table2 =  need_for_cognition %>% 
+  drop_na(gender, nfc_01, nfc_02r, nfc_03r)
+
 nrow(table2) #מספר התצפיות אחרי סינון ערכים חסרים
 
+
 # או להשמיט שורות שיש בהן תצפית חסרה כלשהי, בעמודה כלשהי
-table3 = need_for_cognition %>% drop_na()
+table3 = need_for_cognition %>% 
+  drop_na()
+
 nrow(table3) # מספר התצפיות אחרי סינון ערכים חסרים
 
 ```
-
 
 
 `תרגיל:` סננו מתוך הטבלה את כל התצפיות המכילות ערך חסר באחת השאלות של השאלון (העמודות שמתחילות ב"nfc")
@@ -575,7 +622,7 @@ print(paste("Filtered", nrow(need_for_cognition) - nrow(filtered_table),"rows"))
 ```
 
 
-```{r q2_5, echo = FALSE}
+```{r Q_filter, echo = FALSE}
 
 question_text(
   "<div style='direction: rtl;'>כמה תצפיות סיננתם?</div>",
@@ -583,7 +630,7 @@ question_text(
   allow_retry = TRUE,
   
            
-  correct="אליפות!", 
+  correct="מעולה!", 
   incorrect = "נסו שוב"
 )
 
@@ -591,43 +638,17 @@ question_text(
 
 ### החלפת ערכים חסרים
 
-במידה והחלטנו להחליף את הערכים החסרים נצטרך לבחור באחת משתי גישות:
-
-להחליף את הערכים החסרים בערך קבוע כלשהו או
-ל"מלא" את הערכים החסרים בערכים מהשורה מעל או מתחת לערך החסר.
-
-בקובץ שלנו ישנם ערכים חסרים בעמודת המגדר. ייתכן ואלו נובעים ממקרים בהם הנבדק בחר שלא למלא את השאלה הרלוונטית. במידה וזה המצב - נוכל להחליף את הערכים החסרים בערך שמבטא את זה שאותם נבדקים בחרו שלא לשתף את המגדר שלהם.
-
-ההחלפה מתבצעת באמצעות הפונקציה `replace_na` השייכת לחבילה `tidyr`.
+כדי להחליף את הערכים החסרים נוכל להיעזר בפונקציה `replace_na`.
 
 ```{r}
 library(tidyr)
+
 table2 = need_for_cognition %>%
   replace_na(list(gender= "Preferred not to say"))
 ```
 
 שימו לב שאופן השימוש בפונקציה זו קצת שונה מאלו שהתמשנו בהן עד עכשיו. הפונקציה מקבלת רשימה (list, מבנה נתונים שלא נתמקד בו בקורס זה) המפרטת את הערכים בהם נרצה למלא את הערכים החסרים בעמודה / עמודות מסויימות.
  
-   
-הגישה השנייה, שכוללת מילוי של הערכים החסרים על סמך הערכים הסמוכים אליהם, היא פרקטיקה שנמצאת בשימוש רק במצבים בהם הנתונים שלנו נוצרו באופן שיצדיק זאת. 
-
-למשל - ייתכן ואנחנו מציגים לנבדקים תמונה ואז מבקשים מהם לענות על מספר שאלות לגביה. בגלל האופן בו יצרנו את הניסוי, הזהות של התמונה שהוצגה בכל סבב מופיעה רק בשורה הראשונה של הנתונים ובשאר התגובות מופיע ערך חסר בעמודה המתאימה. במקרים כאלו ייתכן ונרצה להחליף את הערכים החסרים של שאר התצפיות בסבב בערך התקף הראשון שמופיע לפניהם. הפונקציה שתשמש אותנו לשם כך נקראת `fill` והיא יודעת להחליף ערכים חסרים בערכים שמעליהם או מתחתם בטבלה (לבצע השלמה כלפי "מטה" או "מעלה", בהתאמה).
-
-בדוגמה הבאה נמלא את הערכים החסרים בעמודת הגירוי (stimulus) על פי הערך הקודם שהופיע בעמודה:
-
-```{r}
-
-df = data.frame(round = rep(1:2, each = 4), # נייצר נתונים ל2 סבבים, כשכל סבב מכיל 4 תגובות
-                response_i = rep(1:4,2), #נחזור פעמיים על הרצף 1 עד 4 כדי לייצר את מספר התגובה עבור כל סבב 
-                stimulus = c("Img1",NA,NA,NA,"Img2",NA,NA,NA) )
-
-print(df)
-
-filled_df = df %>% fill(stimulus, .direction = "down")
-
-print(filled_df)
-```
-
 
 ### ערכים כפולים
 
@@ -641,7 +662,7 @@ print(filled_df)
 ```{r e10}
 # בקובץ המקורי אין כפילויות, ולכן נייצר טבלה עם מספר כפילויות לצורך ההדגמה
 table1 = need_for_cognition %>%
-  slice(c(1:1000,36,207,6)) # נחתוך את אלף השורות הראשונות + חזרה כפולה על מספר שורות
+  slice(c(1:1000, 36,207,6)) # נייצר עותק של 1000 השורות הראשונות של הטבלה, מלוות בחזרה נוספת על שורות 36, 207 ו6
 
 nrow(table1) # מספר השורות לפני מחיקת כפילויות
 
@@ -750,6 +771,10 @@ head(need_for_cognition)
 ```
 
 
+שימו לב: בדוגמה הנ"ל דרסנו את הטבלה הישנה בשם need_for_cognition והחלפנו אותה בגרסה חדשה של אותה הטבלה אחרי שערכנו לה את העמודות..
+כלומר - בפועל, האפקט שקיבלנו הוא של עדכון הטבלה need_for_cognition. 
+
+
 מספר דוגמאות נוספות, המייצרות עמודות על בסיס השוואה של ערכי העמודות:
 
 ```{r}
@@ -762,8 +787,70 @@ need_for_cognition = need_for_cognition %>%
                                "25 or older")        # אם לא - הערך עבור מקרים בהם התנאי אינו מתקיים
   )
 
+
+head(need_for_cognition)
 ```
 
+
+`תרגיל`
+צרו טבלה חדשה בשם need_for_cognition_2`המכילה את העמודות הבאות (בנוסף לעמודות המקוריות של הטבלה):
+
+
+`nfc1_and_4`:  סכום התגובות של כל נבדק עבור שאלות 1 ו4 (היעזרו בפקד +)  
+  
+`attention_check`: עמודה שתחליף את העמודה הקיימת בשם זה ותכלול את המחרוזת `"Pass"` עבור מי שעבר בהצלחה את בדיקת הקשב (1) ו`"Fail"` עבור מי שנכשל בה (0)
+
+
+```{r ex_mutate, exercise=TRUE, exercise.eval = FALSE}
+
+
+need_for_cognition_2 =  __________
+  
+  
+head(need_for_cognition_2)
+
+```
+
+```{r ex_mutate-check}
+
+grade_this({
+  # שימוש בפונקציה הנכונה לשליפת האובייקט
+  user_df <- user_object_get("need_for_cognition_2")
+  
+  # יצירת טבלת המטרה להשוואה
+  target <- need_for_cognition %>% 
+    mutate(
+      nfc_1_and_4 = nfc_01 + nfc_04,
+      attention_check = ifelse(attention_check == 0, "Fail", "Pass")
+    )
+  
+  # 1. בדיקה ראשונית - האם העמודות בכלל קיימות?
+  if (!"nfc_1_and_4" %in% names(user_df)) {
+    fail("לא נמצאה עמודה בשם nfc_1_and_4. וודאו שכתבתם שם העמודה בהתאם להנחיות.")
+  }
+  
+  if (!"attention_check" %in% names(user_df)) {
+    fail("העמודה attention_check חסרה בטבלה החדשה.")
+  }
+
+  # 2. חישוב לוגי של נכונות התוכן (שימוש ב-isTRUE ו-all עם na.rm)
+  # הערה: השתמשתי ב-as.character כדי לוודא שאין בעיית סוגים ב-attention_check
+  check_nfc <- isTRUE(all(user_df$nfc_1_and_4 == target$nfc_1_and_4, na.rm = TRUE))
+  check_att <- isTRUE(all(as.character(user_df$attention_check) == target$attention_check, na.rm = TRUE))
+
+  # 3. מתן משוב לפי התוצאות
+  if (check_nfc && check_att) {
+    pass("עבודה יפה!")
+  } else if (!check_nfc) {
+    fail("החישוב של nfc_1_and_4 אינו תקין. האם סכמתם את nfc_01 ו-nfc_04?")
+  } else if (!check_att) {
+    fail("הערכים בעמודת attention_check אינם תואמים להוראות, וודאו שהמרתם אותם למחרוזת  בהתאם להנחיות")
+  } else {
+    fail("משהו בטבלה לא תקין, עברו על ההוראות ונסו שוב-mutate.")
+  }
+})
+
+```
 
 
 ## סיכום נתונים
@@ -787,9 +874,15 @@ summary_table = table2 %>%     # נשתמש בטבלה שחישבנו בה את 
                                             # מחזירה ערך לוגי בהתאם להאם הערך חסר או לא
                                             # והסכימה ממירה את ערכי האמת והשקר ל1 ו0 בהתאמה וסופרת כמה ערכי אמת קיבלנו
      )
-print(summary_table)
+
+summary_table
 
 ```
+
+::: text-block1
+כדי לסכם את הנתונים השתמשנו במספר פונקציות שהכרנו בעבר בהקשר של פעולות סיכום שניתן לבצע על וקטור מספרי (למשל - חישוב ממוצע). בדוגמה הנ"ל השתמשנו גם בפונקציה `n()` המשמשת לספירת כמות התצפיות בפונקציות מחבילת dplyr ובפוןנקציה is.na בשילוב עם sum כדי לחשב את כמות הערכים החסרים (ראו הערות בקוד לפירוט על האופן בו חישוב זה מתבצע)
+:::
+
 
 כפי שניתן לראות בדוגמה, הפלט של הפונקציה הוא טבלה, המכילה שורה אחת ועמודה עבור כל מדד שחישבנו בפונקציה `summarise`.
 
@@ -825,7 +918,7 @@ print(summary_table_by_group)
 כאל קבוצה נוספת וחישבה את מדדי הסיכום גם עבורם.
 
 
-```{r q3_5, echo = FALSE}
+```{r Q_summarise_1, echo = FALSE}
 question_text(
   "<div style='direction: rtl;'> מה היה ממוצע מדד nfc אצל הנשים במדגם? </div>",
          answer("3.15", correct = TRUE),
@@ -837,7 +930,7 @@ question_text(
 )
 ```
 
-```{r q4_5, echo = FALSE}
+```{r Q_summarise_2, echo = FALSE}
 question_text(
   "<div style='direction: rtl;'> כמה תצפיות חסרות היו במדד הnfc אצל גברים? </div>",
          answer("14", correct = TRUE),
@@ -848,7 +941,7 @@ question_text(
 )
 ```
 
-```{r q5_5, echo = FALSE}
+```{r Q_summarise_3, echo = FALSE}
 question_text(
   "<div style='direction: rtl;'> כמה נבדקים יש בקובץ שערך המגדר שלהם חסר, אבל הציון שלהם במדד nfc תקין? </div>",
          answer("23", correct = TRUE),
@@ -870,7 +963,7 @@ question_text(
 בנוסף לעמודת מספרי השבועות, טבלת הסיכום צריכה להכיל שתי עמודות שיקראו `mean_pizzas` ו`days_open`
 
 
-```{r summary_2, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-pizza"}
+```{r ex_summary, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-pizza"}
 
 head(pizza)
 
@@ -879,7 +972,7 @@ pizza_summ =  ___________
 print(pizza_summ)
 ```
 
-```{r summary_2-solution}
+```{r ex_summary-solution}
 head(pizza)
 
 pizza_summ = pizza %>%
@@ -890,7 +983,7 @@ pizza_summ = pizza %>%
 print(pizza_summ)
 ```
 
-```{r summary_2-check}
+```{r ex_summary-check}
 grade_this(
   
    if ( !identical(user_object_get("pizza_summ") %>% pull(mean_pizzas),
@@ -918,7 +1011,7 @@ grade_this(
 
 העמודות צריכות לכלול את מספר התצפיות בתת הקבוצה, את ממוצע מדד הnfc עבור תת קבוצה זו ואת אחוז הנבדקים שעברו את מבחן הקשב.(כמספר בין 0 ל100)
 
-```{r exercise4_6_summary, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-table2"}
+```{r ex_summary_2, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-table2"}
 
 summary_table2 = table2 %>% 
   # נייצר עמודה נוספת המבחינה בין נבדקים מעל ומתחת לגיל 30
@@ -936,7 +1029,7 @@ summary_table2 = table2 %>%
 print(summary_table2)
 ```
 
-```{r exercise4_6_summary-solution}
+```{r ex_summary_2-solution}
 summary_table2 = table2 %>% 
   # נייצר עמודה נוספת המבחינה בין נבדקים מעל ומתחת לגיל 30
   mutate(over_30 = ifelse(age >30,"over 30","30 or under")) %>%
@@ -949,7 +1042,7 @@ summary_table2 = table2 %>%
 print(summary_table2)
 ```
 
-```{r exercise4_6_summary-check}
+```{r ex_summary_2-check}
 grade_this(
   
    if ( !identical(user_object_get("summary_table2") %>% pull(n_observations),
@@ -1026,7 +1119,7 @@ print(full_df)
 
 ```
 
-במידה וישנן עמודות שקיימות רק באחת מהטבלאות, הפונקצייה תמלא את עמודה זו בערכים חסרים עבור כל התצפיות של הטבלה השנייה
+במידה וישנן עמודות שקיימות רק באחת מהטבלאות, הפונקצייה תמלא את עמודה זו בערכים חסרים עבור כל התצפיות של הטבלה השנייה.
 
 
 ```{r e116, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-rbind"}
@@ -1060,6 +1153,53 @@ print(full_df)
 ```
 
 שימו לב שכדי שחיבור כזה יתנהל בצורה נכונה הטבלאות חייבות להיות מסודרות באופן זהה, כך שסדר השורות זהה בין הטבלאות.
+
+
+
+`תרגיל` צירוף טבלאות
+
+בחנו את שתי הטבלאות הבאות וחברו אותם לטבלה אחת בהתאם לנתונים המוצגים בהם.
+קראו לטבלה החדשה `df3`.
+
+```{r ex_bind_rows, exercise=TRUE, exercise.eval = FALSE , exercise.setup = "prepare-ex_bind_rows"}
+
+print(df1)
+print(df2)
+
+# df3 =  # חברו את שתי הטבלאות הנ"ל לטבלה אחת
+# print(df3) # וודאו שהטבלה שקיבלתם תקינה
+```
+
+
+```{r ex_bind_rows-check}
+
+
+
+grade_this({
+  # שימוש בפונקציה הנכונה לשליפת האובייקט
+  user_df <- user_object_get("df3")
+  
+  # יצירת טבלת המטרה להשוואה
+  target <- bind_rows(df1,df2)
+  
+  wrong = bind_cols(df1,df2)
+  
+  # אנחנו ממיינים את שתי הטבלאות לפי כל העמודות שלהן כדי להשוות ביניהן
+  user_sorted <- user_df %>% dplyr::arrange(across(everything()))
+  target_sorted <- target %>% dplyr::arrange(across(everything()))
+  
+  # הסרת שמות שורות (row names) שעלולים להפריע להשוואה
+  rownames(user_sorted) <- NULL
+  rownames(target_sorted) <- NULL
+
+  if (isTRUE(all.equal(user_sorted, target_sorted))) {
+    pass("מעולה!")
+  } else {
+    fail("נסו שוב")
+  }
+})
+
+```
 
 ### הצלבת תצפיות
 
@@ -1185,7 +1325,7 @@ print(df_full)
 :::
 
 
-`תרגיל:`
+`תרגיל:`צירוף על סמך מספר עמודות
 
 הטבלה `results` כוללת את הישגי הנבדקים בסבבים שונים של מטלה ממוחשבת, אך היא אינה מציינת מה היה התנאי בכל סבב (קל / בינוני / קשה). 
 
@@ -1199,14 +1339,14 @@ print(results)
 print(trial_data)
 ```
 
-```{r exercise5_6_join, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-join"}
+```{r ex_join, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-join"}
 results_with_condition = ______________________
 
 print(results_with_condition)
 
 ```
 
-```{r exercise5_6_join-solution}
+```{r ex_join-solution}
 
 results_with_condition = left_join(results,
                                    trial_data,
@@ -1215,7 +1355,7 @@ results_with_condition = left_join(results,
 ```
 
 
-```{r exercise5_6_join-check}
+```{r ex_join-check}
 grade_this({
   
     results_with_condition = left_join(results, trial_data, by = c("subject","trial"))
@@ -1235,6 +1375,12 @@ grade_this({
 
 })
 ```
+
+
+::: text-block1
+שימו לב: במידה ולא תציינו על סמך אילו עמודות לערוך את הצירוף (באמצעות הארגומנט `by`) הצירוף יתבצע על סמך כל העמודות החופפות בין הטבלאות.
+במידה והצירוף שהתכוונתם לערוך שונה מברירת המחדל הזו, צירוף כזה עשוי לייצר בעיות ולכן מומלץ לציין את העמודות שעל בסיסן תרצו לערוך את הצירוף באופן מוצהר, דרך הארגומנט `by`
+:::
 
 
 ## שינויי צורה
@@ -1259,7 +1405,7 @@ print(long_df)
 ```
 
 
-כאן יש לנו עמודה אחת המכילה את הערכים (הציון במטלה) ועמודה נוספת המציינת באיזו חזרה מדובר (ראשונה או שנייה). במידה והיינו מוסיפים נתונים מחזרות נוספות - הטבלה הייתה נהיית **ארוכה** יותר. נהוג לכנות את העמודה המפרטת את סוג המדד (בדוגמה שלנו - מספר החזרה) "עמודת מפתח" (או בלעז - key).
+כאן יש לנו עמודה אחת המכילה את הערכים (הציון במטלה) ועמודה נוספת המציינת באיזו חזרה מדובר (ראשונה או שנייה). במידה והיינו מוסיפים נתונים מחזרות נוספות - הטבלה הייתה נהיית **ארוכה** יותר. נהוג לכנות את העמודה המפרטת את סוג המדד (בדוגמה שלנו - מספר החזרה) "עמודת המפתחות" (או בלעז: keys).
 
 
 #### מה עדיף?
@@ -1269,20 +1415,22 @@ print(long_df)
 כפועל יוצא מכך, לא נדיר שאנחנו צריכים להמיר את הטבלאות שלנו מפורמט אחד לפורמט האחר. למזלנו - ישנו צמד פונקציות שמאפשר לנו לעשות זאת בקלות יחסית.
 
 
-### spread - פורמט ארוך לפורמט רחב
 
-הפונקציות בהן נשתמש נקראות `spread` ו`gather` מהחבילה `tidyr`.
+### pivot_wider - פורמט ארוך לפורמט רחב
+
+הפונקציות בהן נשתמש נקראות `pivot_wider` ו-`pivot_longer` מהחבילה `tidyr`.
 
 
-השימוש בפונקציות הוא די פשוט. בנוסף לטבלה עצמה (אותה ניתן להעביר לפונקציה באמצעות פקד העברה) הפונקציות צריכות לקבל מאיתנו :
+נתחיל עם הפונקציה `pivot_wider` שכשמה - מקבלת טבלה בפורמט ארוך ומעבירה אותה לפורמט רחב.  
+בנוסף לטבלה עצמה (אותה ניתן להעביר לפונקציה באמצעות פקד העברה) הפונקציה צריכה לקבל מאיתנו שני ארגומנטים:
 
 ::: text-block1
 
-  **1)key:**
-  שם העמודה המכילה את המפתחות - החלוקה לפיה אנחנו מעוניינים להפריד את הערכים למספר עמודות שונות. בדוגמה הקודמת קראנו לעמודה זו "iteration" והיא הכילה את הערכים "first" ו"second".
+  **1) names_from:**
+שם עמודת המפתחות, המכילה את הקטגוריות שאנחנו מעוניינים להפוך לשמות עמודות. בדוגמה הקודמת קראנו לעמודה זו "iteration" והיא הכילה את הערכים "first" ו"second".
   
-  **2)value:**
-  שם עמודה המכילה את הערכים עצמם. בדוגמה הקודמת קראנו לעמודה זו "score".
+  **2) values_from:**
+  שם עמודה המכילה את הערכים עצמם. בדוגמה הקודמת קראנו לעמודה זו "score". הערכים בעמודה זו יהוו את התוכן בעמודות החדשות שיווצרו.
 
 :::
 
@@ -1292,38 +1440,89 @@ print(long_df)
 library(tidyr)
 
 wide_df = long_df %>%
-  spread(key = "iteration", value = "score")
+  pivot_wider(names_from = iteration,
+              values_from = score)
 
-head(wide_df)
+print(wide_df)
 ```
 
+בדוגמה הנ"ל העברנו לפונקציה טבלה בפורמט ארוך וביקשנו ממנה שתעביר אותו לפורמט רחב - כך שעמודת הציונים (score) תחולק בין עמודות שונות, המייצגות כל אחת חזרה אחרת של המטלה (בהתאם לערכים בעמודה iteration)
 
 
 
-נתובנן בדוגמה נוספת. הפעם הנתונים (הפיקטיביים) מתארים את ציוני הIQ של בני משפחה שונים.  
+`תרגיל`: נסו בעצמכם
+
+נתבונן בדוגמה נוספת. הפעם הנתונים (הפיקטיביים) מתארים את ציוני ה-IQ של בני משפחה שונים, בפורמט ארוך.
+
 
 ```{r}
-
 print(long_df2)
+```
 
+המירו את הטבלה לפורמט רחב.
+שימו לב לציין את העמודה שעל פיה אתם מעונינים לחלק את העמודות כארגומנט `names_from` (במקרה הזה: התפקיד במשפחה), ואת העמודה המכילה את הציונים כארגומנט `values_from` (במקרה הזה: ציון האינטליגנציה).
 
-wide_df2 = long_df2 %>%
-  spread(key = "familial_role", value = "IQ")
+```{r ex_pivot_wider, exercise=TRUE, exercise.eval = FALSE }
+
+wide_df2 = long_df2 %>%  ___________
 
 print(wide_df2)
 
 ```
 
+```{r ex_pivot_wider-check}
+grade_this({
+  
+  target = long_df2 %>%
+    tidyr::pivot_wider(names_from = "familial_role", values_from = "IQ") %>%
+    dplyr::arrange(across(everything()))
+  
+  wrong1 = long_df2 %>%
+    tidyr::pivot_wider(names_from = "IQ", values_from = "familial_role") %>%
+    dplyr::arrange(across(everything()))
+  
+  users_df = user_object_get("wide_df2")%>% 
+    dplyr::arrange(across(everything()))
+  
+  
+  if (isTRUE(all.equal(users_df, target, check.attributes = FALSE))) {
+    pass("עבודה מצוינת!")
+    
+  }else if  (isTRUE(all.equal(wrong1, target, check.attributes = FALSE))) {
+    fail("נסו שוב. שימו לב ששמות העמודות (names_from) אמורים להגיע מהתפקיד המשפחתי")
+    
+  }else if (ncol(users_df) == ncol(long_df2)){
+    fail("נראה שמספר העמודות לא השתנה. האם העברתם את הטבלה לפורמט רחב?")
+ 
+  }else{
+    fail("נסו שוב")
+  }
 
-שימו לב: מאחר והטבלה הארוכה לא הכילה ייצוג עבור כל תפקיד בכל אחת מהמשפחות - בטבלה בפורמט רחב ישנם ערכים חסרים.
+})
+```
+
+::: text-block1
+מאחר והטבלה בפורמט הארוך לא הכילה ציון .IQ עבור כל תפקיד בכל אחת מהמשפחות - בטבלה בפורמט רחב ישנם ערכים חסרים (`NA`).
+:::
 
 
-### פורמט רחב לפורמט ארוך
+### pivot_longer - פורמט רחב לפורמט ארוך
 
 
-הפונקציה `gather` מבצעת את הפעולה ההופכית לפונקציה שראינו עכשיו. היא מקבלת טבלה בפורמט רחב ומאגדת את חלק מהעמודות שלה יחד לכדי פורמט ארוך.
+הפונקציה `pivot_longer` מבצעת את הפעולה ההופכית לפונקציה שראינו עכשיו. היא מקבלת טבלה בפורמט רחב ומאגדת את חלק מהעמודות שלה יחד לכדי פורמט ארוך.
 
-כמו קודמתה, גם היא מקבלת פירוט של שם עמודת המפתחות (key) ועמודת הערכים (value), אך מאחר ועמודות אלו עוד לא קיימות - הערכים שנזין כאן ישמשו כדי לקבוע את הכותרות עבור עמודות אלו. בנוסף לערכים אלו, הפונקציה צריכה לקבל פירוט של העמודות אותן נרצה לקבץ.
+הפונקציה צריכה לקבל את הפירוט הבא:
+
+::: text-block1
+1. **cols**: אילו עמודות אנחנו רוצים "לאסוף" לפורמט ארוך.
+
+2. **names_to**: מה יהיה השם של עמודת המפתחות החדשה (זו שתכיל את שמות העמודות ש"אספנו").
+
+3. **values_to**: מה יהיה השם של עמודת הערכים החדשה.
+
+מאחר והארגומנטים `names_to` ו`values_to` לא מתייחסים לעמודות קיימות, אלא קובעים את שמותיהם של עמודות חדשות - נצטרך לציין את שמות העמודות כמחרוזות (כלומר - להקיף את השם הרצוי בגרשיים)
+
+:::
 
 למשל:
 
@@ -1331,54 +1530,101 @@ print(wide_df2)
 library(tidyr)
 
 long_df  = wide_df  %>%
-  gather(key = "iteration", value = "score", first, second)
+  pivot_longer(cols = c(first, second),
+               names_to = "iteration",
+               values_to = "score")
 
 ```
 
-שורות הקוד האלו הופכות את הטבלה שיצרנו מוקדם יותר חזרה לפורמט רחב. התכנה תיקח את העמודות "first" ו"second" ותייצר מהן עמודה אחת בשם "iteration" המכילה את המפתחות, ועמודה נוספת בשם "score" שתכיל את הערכים עצמם.
+שורות הקוד האלו הופכות את הטבלה שיצרנו מוקדם יותר חזרה לפורמט ארוך. התוכנה תיקח את העמודות "first" ו"second", ותייצר מהן עמודה אחת בשם "iteration" המכילה את המפתחות, ועמודה נוספת בשם "score" שתכיל את הערכים עצמם.
 
-במידה ולא היינו מציינים את שמות העמודות שרצינו לאחד - הפונקציה הייתה מקבצת את כל העמודות יחד, ובכלל כך גם את העמודה "subject". כדי למנוע זאת ציינו את העמודות הספציפיות אותן נרצה לקבץ. יכולנו לבצע את אותה הפעולה גם באמצעות הקוד הבא:
 
-```{r}
+`תרגיל`: פורמט רחב לארוך
 
-long_df  = wide_df  %>%
-  gather(key = "iteration", value = "score", -subject)
+בטבלה `duck_stats` מפורטים ציוניהם של ארבעה ברווזים בשלושה מדדים שונים (זריזות, יופי ואינטליגנציה).
+המירו את הטבלה לפורמט ארוך כך שהיא תכלול שלוש עמודות: שם הברווז, שם המדד הרלוונטי והציון של הברווז באותו מדד.
+
+את הטבלה החדשה שמרו בשם `long_duck_stats`.
+
+
+```{r ex_pivot_longer, exercise=TRUE, exercise.eval = FALSE, exercise.setup = "prepare-ex_pivot_longer"}
+
+print(duck_stats)
+
+#long_duck_stats = 
+
+# print(long_duck_stats)
 
 ```
 
-הפעם, במקום לציין אלו עמודות לקבץ - ביקשנו שהפונקציה תקבץ את כל העמודות למעט העמודה המכילה את זהות הנבדקים. 
+```{r ex_pivot_longer-check}
+grade_this({
+  
+  target <- duck_stats %>% 
+    tidyr::pivot_longer(cols = c(agility, handsomeness, IQ),
+                        names_to = "measure",
+                        values_to = "score") %>% 
+    arrange(across(everything())) 
+
+
+  user_df <- user_object_get("long_duck_stats") %>% 
+    arrange(across(everything()))
+
+  # Correct answer (ignoring exact col names if they chose something else, though target uses measure/score)
+  if (nrow(user_df) == 12 && ncol(user_df) == 3 && !("name" %in% user_df[[2]])) {
+    pass("עבודה מצוינת!")
+    
+  # All columns gathered, including name
+  } else if (nrow(user_df) > 12) {
+    fail("נסו שוב. האם זכרתם להשאיר את עמודת השמות מחוץ לקיבוץ העמודות (באמצעות cols)?")
+    
+  # Only two of the three measures gathered
+  } else if (nrow(user_df) < 12) {
+    fail("נסו שוב. האם זכרתם לקבץ את כל שלוש עמודות המדדים?")
+    
+  } else {
+    fail("נסו שוב")
+  }
+})
+
+```
+
 
 ## תרגיל מסכם
+
+היחידה הזו ארוכה, ומכילה הרבה חומר חדש. 
+בהתאם, התרגיל המסכם דורש יישום של כמה נושאים חדשים ויתכן שתצטרכו לחזור לחלקים הרלוונטים בלומדה או בסיכומים שלכם כדי לפתור אותו.
+בהצלחה!
+
+
 
 ![](images/Rstudio logo.png){width="100"}   
 
 `תרגיל:`
-הורידו מהמודל את הקובץ `mood.csv` וטענו אותו לתוך R [(קישור לקובץ במודל)](https://moodle.huji.ac.il/2025-26/mod/resource/view.php?id=32215).
+
+הורידו מהמודל את הקובץ `mood.csv` וטענו אותו לסביבת העבודה שלכם בR.
 
 טבלה זו מכילה מדידות מצב רוח (0 - נמוך, 10 - מרומם) בשלושה זמנים שונים עבור 20 נבדקים.
 
 חשבו את ההפרש במצב הרוח בין T2 לT1 ובין T3 לT2 עבור כל נבדק. היעזרו לשם כך בשינוי פורמט הטבלה כך שכל מדידה תיוצג באמצעות עמודה נפרדת.
+לאחר שהעברתם את הטבלה לפורמט רחב - תוכלו לחשב שתי עמודות חדשות, אחת עבור כל אחד מההפרשים.
 
-לאחר מכן, צרו טבלה חדשה המכילה עבור כל נבדק את מספר הנבדק ואת שתי עמודות ההפרשים שיצרתם והמירו אותה לטבלה בפורמט ארוך (שימו לב לשמור על עמודת מספרי הנבדקים מחוץ לקיבוץ העמודות).
+אחרי שחישבתם את הפרשי דירוגי מצב הרוח, צרו טבלה חדשה המכילה רק את מספר הנבדק ואת שתי עמודות ההפרשים שחישבתם. המירו את טבלה זו לפורמט ארוך, כך שבטבלה החדשה יהיו לכם שני ציוני הפרשים עבור כל נבדק, המיוצגים בשתי שורות נפרדות, ועמודת מפתחות שמציינת לגבי כל שורה לאיזה מההפרשים היא מתייחסת (בין T1 לT2 או בין T2 לT3).
 
-סכמו את הנתונים באמצעות `group_by` ו `summarise` כך שתקבלו את הערך הממוצע של כל אחד מסוגי ההפרשים ושמרו את עמודת ממוצעי ההפרשים (שאמורה להכיל רק 2 ערכים - אחד לכל סוג הפרש) בשם `mood_diff_means`.
+סכמו את הנתונים באמצעות `group_by` ו `summarise` כך שתקבלו את הערך הממוצע וסטיית התקן של כל אחד מההפרשים.
 
+אתם יכלים להיעזר בתבנית הבאה על מנת לפתור את התרגיל. יש לפתוח קובץ סקריפט בRstudio, להעתיק אליו את התבנית ולהשלים את החלקים החסרים.
 
-מומלץ להעתיק את הקוד לRstudio, לעבוד עליו בסביבת העבודה של התוכנה ולהעתיק חזרה את הקוד הסופי כשהוא מוכן.
+```{r exercise6_6_gather, eval=FALSE}
 
-
-```{r exercise6_6_gather, exercise=TRUE, exercise.eval = FALSE, exercise.setup ="prepare-mood"}
-
-## ייבאו את הקובץ
 library(readr)
 library(tidyr)
 library(dplyr)
 
+## ייבאו את הקובץ
 mood = ____________ 
 
-# ~~~ מחקו את כל השורות  מעל נקודה זו בהעתקה חזרה לחלונית הקוד   ~~~ 
-
-head(mood)
+head(mood) # וודאו שהיבוא צלח
 
 # המירו את הטבלה לפורמט רחב וחשבו את ההפרשים בציוני מצב הרוח
 wide_mood = __________________
@@ -1392,37 +1638,51 @@ long_mood_diff = ____________
 # סכמו את הנתונים
 mood_diff_summary = _____________
 
-# שלפו את עמודת ממוצעי ההפרשים
-mood_diff_means = ____________
+print(mood_diff_summary)
 ```
 
-```{r exercise6_6_gather-check}
 
-grade_result(
-  pass_if(~identical(sum(.result),
-                     
-                     mood %>% spread(key = "measurement_time",   # to wide
-                value = "mood_score") %>%
-  mutate(diff2_1 = T2-T1,              # calc diffs
-         diff3_2 = T3-T2) %>%
+```{r Q_final_1, echo = FALSE}
+question_text(
+  "<div dir='rtl' style='text-align: right;'>
+  מה היה ההפרש הממוצע בציוני מצב רוח בין זמן המדידה <strong>
+  הראשון</strong>
+  ל<strong>שני</strong>?<br>
+  <span style='font-weight: normal;'>
+  עגלו לשני מקומות לאחר הנקודה העשרונית.<br>
+  ציון חיובי מעיד על מצב רוח מרומם יותר בנקודת המדידה השנייה.
+  </span>
+  </div>",
+  answer("0.45", correct = TRUE),
+  answer("-0.45", correct = F, message = "שימו לב לכיוון המדד - ציון שלילי מעיד על ציון מצב רוח גבוה יותר במדידה הראשונה"),
+  answer("0.7", correct = F, message = "שימו לב שהשאלה נוגעת להפרשים בין זמן המדידה הראשון והשני, ולא בין השני והשלישי"),
+  answer("0.70", correct = F, message = "שימו לב שהשאלה נוגעת להפרשים בין זמן המדידה הראשון והשני, ולא בין השני והשלישי"),
+  allow_retry = TRUE,
     
-  select(- T1, - T2, - T3) %>%              # select only diff columns
-  gather(key = "time", value = "diff", -subject) %>%   # to long 
-  
-  group_by(time) %>%
-  summarise(mn = mean(diff)) %>%
-  pull(mn) %>%
-    sum()
-)),
-
-         
-  correct="מעולה!", 
-  incorrect = "ישנה טעות בחישוב. נסו שוב"
-
+  correct="נכון מאוד", 
+  incorrect = "נסו שוב"
 )
-
 ```
 
+```{r Q_final_2, echo = FALSE}
+question_text(
+  "<div dir='rtl' style='text-align: right;'>
+  מה הייתה סטיית התקן של ההפרשים בציוני מצב רוח בין זמן המדידה <strong>
+  השני</strong>
+  ל<strong>שלישי</strong>?<br>
+  <span style='font-weight: normal;'>
+  עגלו לשני מקומות לאחר הנקודה העשרונית.<br>
+  ציון חיובי מעיד על מצב רוח מרומם יותר בנקודת המדידה השלישית.
+  </span>
+  </div>",
+  answer("3.26", correct = TRUE),
+  answer("2.78", correct = F, message = "שימו לב - השאלה נוגעת להפרשי הדירוגים בין זמן המדידה השני לשלישי"),
+  allow_retry = TRUE,
+    
+  correct="נכון מאוד", 
+  incorrect = "נסו שוב"
+)
+```
 
 
 ## משוב
@@ -1430,6 +1690,19 @@ grade_result(
 בחלק זה נבקש את המשוב שלכם על הלומדה. אנא ענו בכנות וביסודיות, על מנת שנוכל להשתפר. התשובות ישמרו בצורה אנונימית ולא ישפיעו על בדיקת התרגיל עצמה.
 
 שימו לב: ברוב השאלות אין אפשרות לשנות את התגובה לאחר לחיצה על כפתור ההגשה.
+
+```{r survey_q_tirgul, echo = FALSE}
+question("האם השתתפת בתרגול שהוקדש ליחידה זו?",
+         type="single",
+         answer("כן"        ,correct=TRUE,  message = "תגובתך: כן"),
+         answer("לא"    ,correct=TRUE,  message = "תגובתך: לא"),
+         answer("התרגול עוד לא התקיים"     ,correct=TRUE,  message = "תגובתך: התרגול עוד לא התקיים"),
+         answer("לא,אבל צפיתי בהקלטה"        ,correct=TRUE,  message = "תגובתך: לא,אבל צפיתי בהקלטה"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
 
 ```{r survey_q1, echo = FALSE}
 question(#"כמה קשה הייתה היחידה עבורך?",
@@ -1445,6 +1718,7 @@ question(#"כמה קשה הייתה היחידה עבורך?",
          allow_retry = TRUE
 )
 ```
+
 
 ```{r survey_q2, echo = FALSE}
 question(#"עד כמה את/ה מרגיש/ה שהבנת את החומר שנלמד ביחידה?",
