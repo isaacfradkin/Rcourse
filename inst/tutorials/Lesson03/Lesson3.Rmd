@@ -4,7 +4,7 @@ author: "Copyright 2026-2027 Psychology Department. Hebrew University of Jerusal
 output:
   learnr::tutorial:
     progressive: true
-    allow_skip: false
+    allow_skip: true
 description: >
   <div style='direction: rtl;'>
   בשיעור זה נלמד סוג מסוים של משתנים, הוקטורים (משתנים המכילים יותר מערך אחד). נלמד גם על פונקציות בסיסיות של שפת התכנות שמאפשרות לבצע חישובים על וקטורים בקלות.
@@ -1158,6 +1158,19 @@ grade_this({if (identical(.result, -7.5)) {
 
 בחלק זה נבקש את המשוב שלכם על הלומדה. אנא ענו בכנות וביסודיות, על מנת שנוכל להשתפר. התשובות ישמרו בצורה אנונימית ולא ישפיעו על בדיקת התרגיל עצמה.  
 שימו לב: ברוב השאלות אין אפשרות לשנות את התגובה לאחר לחיצה על כפתור ההגשה.
+```{r survey_q_tirgul, echo = FALSE}
+question("האם השתתפת בתרגול שהוקדש ליחידה זו?",
+         type="single",
+         answer("כן"        ,correct=TRUE,  message = "תגובתך: כן"),
+         answer("לא"    ,correct=TRUE,  message = "תגובתך: לא"),
+         answer("התרגול עוד לא התקיים"     ,correct=TRUE,  message = "תגובתך: התרגול עוד לא התקיים"),
+         answer("לא,אבל צפיתי בהקלטה"        ,correct=TRUE,  message = "תגובתך: לא,אבל צפיתי בהקלטה"),
+         correct = "",
+         incorrect = "",
+         allow_retry = TRUE
+)
+```
+
 
 ```{r survey_q1, echo = FALSE}
 question("מה הייתה רמת הקושי של הלומדה עבורך? יש להתייחס לכמה הבנת את החומר ולרמת הקושי של התרגול עבורך. ",
