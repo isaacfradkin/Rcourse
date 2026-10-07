@@ -5,3 +5,10 @@
 **/*.html
 **/figure-html/
 **/.gitignore
+*.png
+**/*.png
+*.dcf
+**/*.dcf
+*.png
+/inst/tutorials/Lesson14/Lesson-14_files/figure-html
+/inst/tutorials/Lesson13/Lesson13_files/figure-html

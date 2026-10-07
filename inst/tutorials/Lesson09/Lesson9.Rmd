@@ -1,5 +1,5 @@
 ---
-title: "Lesson 9: Loops and Efficiant Coding" 
+title: "Lesson 9: Loops and Efficient Coding" 
 author: "Copyright 2026-2027 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 
 output:

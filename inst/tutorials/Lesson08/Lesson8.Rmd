@@ -1,6 +1,6 @@
 ---
 title: "Lesson 08 - Semester A summary exercise" 
-author: "Copyright 2025 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
+author: "Copyright 2026-2027 Psychology Department. Hebrew University of Jerusalem. All rights reserved"
 
 output:
   learnr::tutorial:
