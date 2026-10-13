@@ -931,7 +931,7 @@ question(" איך יראה הגרף?  ",
 כעת ניצור את האיור בשלבים:   
 שלב ראשון הגדרת הצירים - כתבו בתיבת הקוד הבאה את הקוד שיוצר את השכבה הראשונה של הגרף ורק מגדיר את המשתנים השונים. 
 
-```{r final_ex1_axis_code, exercise = TRUE}
+```{r final_ex1_axis_code, exercise = TRUE, exercise.reveal_solution=FALSE}
 
 ```
 
@@ -981,7 +981,7 @@ scatter_plot_gender
 הריצו את הקוד כדי לראות את האיור.  
 חסר לנו רק לערוך את הצבעי הגרף, החוקר השתמש
 בפלטת צבעים מוכנה. הוסיפו את הפונקציה המתאימה ושנו את פלטת הצבעים:  
-```{r final_ex1_palette_code, exercise = TRUE}
+```{r final_ex1_palette_code, exercise = TRUE, exercise.reveal_solution=FALSE}
 # הוסיפו כאן את הקוד שמוסיף פלטת צבעים לגרף
 scatter_plot_gender
 ```
@@ -1041,7 +1041,7 @@ question("מה ניתן ללמוד מהגרף?",
 
 הפעם נגדיר את השכבה הראשונה והשניה יחד. הדביקו בתיבה מטה את  הקוד אשר מגדיר את הצירים של הגרף והוסיפו פונקציה מקבוצת geom אשר תיצור כבר את הגרף המתאים.  
 
-```{r final_ex2_axis_code, exercise = TRUE}
+```{r final_ex2_axis_code, exercise = TRUE, exercise.reveal_solution=FALSE}
 
 
 ```
