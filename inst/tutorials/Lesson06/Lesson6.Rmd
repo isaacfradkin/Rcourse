@@ -74,6 +74,13 @@ scatter_plot_gender <- ggplot(final_ex_nfc_data, aes(x = nfc_sum, y = prime_scor
 ##### פונקציה לבדיקה
 exercises_df <- data.frame(
   exercises = c("hist_bins_q", "hist_ex", "bar_ex", "box_plot_q", "outlier_q", "smooth_ex", "col_size_scatter_ex", "lim_ex", "basic_col_ex", "adv_col_ex", "design_question", "final_ex1_q", "final_ex2_q"
+  exercises = c("hist_bins_q", "hist_ex", "bar_ex", "box_plot_q", "outlier_q", "smooth_ex", "col_size_scatter_ex", "lim_ex", "basic_col_ex", "adv_col_ex", "design_question", "final_ex1_axis_code",
+"final_ex1_geoms_q",
+"final_ex1_palette_code",
+"final_ex1_q",
+"final_ex2_axis_code",
+"final_ex2_aesthetics_q",
+"final_ex2_q"
   ),
   hebrew = c(
     "היסטוגרמה: שאלה",
@@ -87,8 +94,13 @@ exercises_df <- data.frame(
     "התאמות ותצוגה – צבע וגודל: תרגיל 1", 
     "התאמות ותצוגה – צבע וגודל: תרגיל 2",
     "התאמות ותצוגה – עיצוב: שאלה",
-    "תרגיל מסכם: שאלה 1", 
-    "תרגיל מסכם: שאלה 2"
+    "תרגיל מסכם 1 - קוד הגדרת הצירים",
+"תרגיל מסכם 1 - שאלת פונקציה",
+"תרגיל מסכם 1 - קוד פלטת צבעים",
+"תרגיל מסכם 1 - שאלה מסכמת",
+"תרגיל מסכם 2 - קוד הגדרת הצירים",
+"תרגיל מסכם 2 - שאלת עיצוב",
+"תרגיל מסכם 2 - שאלה מסכמת"
   )
 )
 
@@ -920,7 +932,7 @@ question(" איך יראה הגרף?  ",
 כעת ניצור את האיור בשלבים:   
 שלב ראשון הגדרת הצירים - כתבו בתיבת הקוד הבאה את הקוד שיוצר את השכבה הראשונה של הגרף ורק מגדיר את המשתנים השונים. 
 
-```{r final_ex1_axis_code, exercise = TRUE,exercise.reveal_solution=FALSE}
+```{r final_ex1_axis_code, exercise = TRUE}
 
 ```
 
@@ -953,7 +965,7 @@ grade_this({
 ```
 
 ```{r final_ex1_geoms_q, echo = FALSE}
-question("על גבי הגדרת הצירים שכתבתם, אילו שכבות צריך להוסיף כדי לשחזר את הגרף המלא? (בחרו את כל התשובות הנכונות)",
+question("על גבי הגדרת הצירים שכתבתם, אילו שכבות geom צריך להוסיף כדי לשחזר את הגרף המלא? (בחרו את כל התשובות הנכונות)",
          type = "checkbox",
          answer("geom_point()", correct = TRUE, message = "נכון, geom_point() מוסיף את הנקודות עצמן."),
          answer("geom_smooth(method = \"lm\")", correct = TRUE, message = "נכון, geom_smooth() עם method=\"lm\" מוסיף את קו המגמה הלינארי."),
@@ -965,14 +977,12 @@ question("על גבי הגדרת הצירים שכתבתם, אילו שכבות 
 )
 ```
 
-### עריכת הצבעים
 נתון לכם משתנה אשר מכיל את הגרף בשם:  
 scatter_plot_gender  
 הריצו את הקוד כדי לראות את האיור.  
 חסר לנו רק לערוך את הצבעי הגרף, החוקר השתמש
 בפלטת צבעים מוכנה. הוסיפו את הפונקציה המתאימה ושנו את פלטת הצבעים:  
-
-```{r final_ex1_palette_code, exercise = TRUE,exercise.reveal_solution=FALSE}
+```{r final_ex1_palette_code, exercise = TRUE}
 # הוסיפו כאן את הקוד שמוסיף פלטת צבעים לגרף
 scatter_plot_gender
 ```
@@ -1032,7 +1042,7 @@ question("מה ניתן ללמוד מהגרף?",
 
 הפעם נגדיר את השכבה הראשונה והשניה יחד. הדביקו בתיבה מטה את  הקוד אשר מגדיר את הצירים של הגרף והוסיפו פונקציה מקבוצת geom אשר תיצור כבר את הגרף המתאים.  
 
-```{r final_ex2_axis_code, exercise = TRUE,exercise.reveal_solution=FALSE}
+```{r final_ex2_axis_code, exercise = TRUE}
 
 
 ```
