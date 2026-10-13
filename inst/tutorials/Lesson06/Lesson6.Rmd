@@ -73,7 +73,6 @@ scatter_plot_gender <- ggplot(final_ex_nfc_data, aes(x = nfc_sum, y = prime_scor
 
 ##### פונקציה לבדיקה
 exercises_df <- data.frame(
-  exercises = c("hist_bins_q", "hist_ex", "bar_ex", "box_plot_q", "outlier_q", "smooth_ex", "col_size_scatter_ex", "lim_ex", "basic_col_ex", "adv_col_ex", "design_question", "final_ex1_q", "final_ex2_q"
   exercises = c("hist_bins_q", "hist_ex", "bar_ex", "box_plot_q", "outlier_q", "smooth_ex", "col_size_scatter_ex", "lim_ex", "basic_col_ex", "adv_col_ex", "design_question", "final_ex1_axis_code",
 "final_ex1_geoms_q",
 "final_ex1_palette_code",
