@@ -4,8 +4,8 @@ author: "Copyright 2026-2027 Psychology Department. Hebrew University of Jerusal
 
 output:
   learnr::tutorial:
-    progressive: true
-    allow_skip: true
+    progressive: true,
+    allow_skip: true,
     
 description: >
  <div style='direction: rtl;'>
@@ -256,6 +256,8 @@ print(df)
 
 grade_this({
   
+  library(tidyr)
+  
   target = data.frame(
     session = c("s01_t1","s01_t2","s01_t3","s02_t1","s02_t2"),
     score = c(45,65,57,71,52)
@@ -271,10 +273,10 @@ grade_this({
   user_df = user_object_get("df")
   
   same_content = isTRUE(all.equal(user_df, target, check.attributes = FALSE))
-  same_names = names(target) == names(user_df)
+  same_names = all(names(target) == names(user_df))
   
   
-  if (same_content & same_names) {
+  if (same_content &same_names) {
     
     pass("עבודה מצוינת!")
     
