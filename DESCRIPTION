@@ -9,7 +9,6 @@ Description: This package is designed to help BA students at the HUJI Psychology
 License: file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Suggests: 
     learnr
 Imports: 
@@ -21,8 +20,9 @@ Imports:
     pracma,
     psych,
     readr
-Remotes:  
+Remotes: 
     rstudio/gradethis,
     rstudio/ggcheck,
     rundel/learnrhash
 LazyData: true
+Config/roxygen2/version: 8.1.1
